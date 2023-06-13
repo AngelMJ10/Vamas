@@ -12,9 +12,9 @@ $perfil = $_SESSION['login']['nivelacceso'];
   
   // Permisos de acuerod al perfil
   $permisos = [
-    "A" => ["reportes.php", "usuario.php","compras.php"],
-    "S" => [ "reportes.php","compras.php"],
-    "C" => ["compras.php"]
+    "A" => ["reportes.php", "usuario.php","compras.php","empresa.php"],
+    "S" => [ "reportes.php","compras.php","empresa.php"],
+    "C" => ["compras.php","empresa.php"]
   ];
 // BANDERA-s epusa para determinar sentidos como uninterruptop, verdadero o falso
   $autorizado = false;

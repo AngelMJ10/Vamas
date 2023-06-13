@@ -14,20 +14,23 @@ switch ($permiso) {
     $opciones = [
       ["menu" => "Usuarios", "url" => "index.php?view=usuario.php"],
       ["menu" => "Reportes", "url" => "index.php?view=reportes.php"],
-      ["menu" => "Compras", "url" => "index.php?view=compras.php"]
+      ["menu" => "Compras", "url" => "index.php?view=compras.php"],
+      ["menu" => "Empresas", "url" => "index.php?view=empresa.php"]
     ];
   break;
   
   case "S":
     $opciones = [
       ["menu" => "Reportes", "url" => "index.php?view=reportes.php"],
-      ["menu" => "Compras", "url" => "index.php?view=compras.php"]
+      ["menu" => "Compras", "url" => "index.php?view=compras.php"],
+      ["menu" => "Empresas", "url" => "index.php?view=empresa.php"]
     ];
   break;
 
   case "C":
     $opciones = [
-      ["menu" => "Reportes", "url" => "index.php?view=reportes.php"]
+      ["menu" => "Reportes", "url" => "index.php?view=reportes.php"],
+      ["menu" => "Empresas", "url" => "index.php?view=empresa.php"]
     ];
   break;
 }
