@@ -188,3 +188,4 @@ INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje)
 VALUES('2','5','Análisis de datos','Analizar los datos recogidos y hacer una conclusión de lo que necesita el restaurante','0/10%');
 
 SELECT * FROM tareas;
+TRUNCATE TABLE tareas;

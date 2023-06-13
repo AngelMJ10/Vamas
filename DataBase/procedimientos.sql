@@ -120,8 +120,7 @@ BEGIN
 END $$
 	
 CALL listar_tarea_colaboradores(1);
-SELECT * FROM colaboradores;
-
+TRUNCATE TABLE tareas;
 SELECT * FROM tareas;
 
 UPDATE tareas SET evidencia = 'hola' , fecha_evidencia = NOW() WHERE idtarea = 1;
