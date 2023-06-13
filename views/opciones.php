@@ -13,6 +13,7 @@ switch ($permiso) {
   case "A":
     $opciones = [
       ["menu" => "Usuarios", "url" => "index.php?view=usuario.php"],
+      ["menu" => "Proyectos", "url" => "index.php?view=proyecto.php"],
       ["menu" => "Reportes", "url" => "index.php?view=reportes.php"],
       ["menu" => "Compras", "url" => "index.php?view=compras.php"],
       ["menu" => "Empresas", "url" => "index.php?view=empresa.php"]

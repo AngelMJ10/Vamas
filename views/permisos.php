@@ -12,7 +12,7 @@ $perfil = $_SESSION['login']['nivelacceso'];
   
   // Permisos de acuerod al perfil
   $permisos = [
-    "A" => ["reportes.php", "usuario.php","compras.php","empresa.php"],
+    "A" => ["reportes.php", "usuario.php","compras.php","empresa.php","proyecto.php"],
     "S" => [ "reportes.php","compras.php","empresa.php"],
     "C" => ["compras.php","empresa.php"]
   ];
