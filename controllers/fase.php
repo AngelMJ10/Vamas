@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require_once '../models/fase.php';
+    require_once '../models/Fase.php';
 
     if (isset($_POST['op'])) {
 

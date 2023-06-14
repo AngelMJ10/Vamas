@@ -1,5 +1,6 @@
 function sendWork(idtarea) {
     const documento = document.querySelector("#documento").files[0];
+    const correo = document.querySelector("#correo");
     const mensaje = document.querySelector("#mensaje");
     const confirmacion = confirm("¿Estás seguro del documento ingresado?");
     if (confirmacion) {
@@ -8,6 +9,7 @@ function sendWork(idtarea) {
         formData.append("idtarea", idtarea);
         formData.append("documento", documento, documento.name);
         formData.append("mensaje", mensaje.value);
+        formData.append("correo", correo.value);
 
         fetch('../controllers/tarea.php', {
             method: 'POST',
@@ -57,6 +59,23 @@ function openModal(id) {
     });
 }
 
+function listarCorreo(){
+    const correo = document.querySelector("#correo");
+    const parametros = new URLSearchParams();
+    parametros.append("op","listarCorreo");
+    fetch(`../controllers/tarea.php`, {
+        method: 'POST',
+        body: parametros
+    })
+        .then(respuesta => respuesta.text())
+        .then(datos => {
+            correo.innerHTML = datos;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
 function list(){
     const table = document.querySelector("#tabla-tareas");
     const bodytable = table.querySelector("tbody");
@@ -83,4 +102,5 @@ function list(){
     });
 }
 
+listarCorreo();
 list();

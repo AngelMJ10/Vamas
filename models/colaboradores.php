@@ -69,6 +69,18 @@
             }
         }
 
+        public function listarCorreo(){
+            try {
+                $query = "SELECT idcolaboradores,usuario,correo FROM colaboradores WHERE nivelacceso IN ('A','S')";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute();
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
     }
 
 ?>

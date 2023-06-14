@@ -4,7 +4,7 @@
    //La sesión contendrá datos del login en formato de arreglo
     $_SESSION["login"] = [];    
     
-    require_once '../models/colaboradores.php';
+    require_once '../models/Colaboradores.php';
 
     if (isset($_POST['op'])) {
         

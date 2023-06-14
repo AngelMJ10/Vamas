@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require_once '../models/tarea.php';
+    require_once '../models/Tarea.php';
     require_once '../models/Mail.php';
 
     if (isset($_POST['op'])) {
@@ -21,7 +21,7 @@
                         <td class='p-3' data-label='Fín de la fase'>{$registro['fechafin']}</td>
                         <td class='p-3' data-label='Usuario'>{$registro['usuario']}</td>
                         <td class='p-3' data-label='Rol'>{$registro['roles']}</td>
-                        <td class='p-3' data-label='Porcentaje de la fase'>{$registro['porcentaje']}</td>
+                        <td class='p-3' data-label='Porcentaje de la fase'>{$registro['porcentaje_tarea']}/{$registro['porcentaje']}</td>
                         <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>{$estado}</td>
                         <td data-label='Acciones'>
                             <div class='btn-group' role='group'>
@@ -82,7 +82,7 @@
             $mensaje = $mensajeAdicional . $mensaje. "</h4>";
         
             // Arreglo con datos a guardar en la tabla de recuperación
-            $correo = '1342364@senati.pe';
+            $correo = $_POST['correo'];
         
             // Llamar al método sendWork
             
@@ -91,17 +91,36 @@
             sendEmail($correo, $documento, 'Avance de trabajo: ', $mensaje);
         }
 
-        if ($_POST['op'] == 'probando') {
-            $idtarea  = 1;
-            $datos = $tarea->getWork($idtarea);
-            $mensajeAdicional = "
-                <h2>{$datos['nombrefase']}</h2>
-                <strong>Avance de trabajo</strong>
-                <p>{$datos['tarea']}</p>
-                <hr>
-                <h4>
-            ";
-            echo $mensajeAdicional;
+        if ($_POST['op'] == 'listarCorreo') {
+            require_once '../models/Colaboradores.php';
+            $colaborador = new Colaborador();
+            $datos = $colaborador->listarCorreo();
+            $etiqueta = "<option value='0'>Seleccione la empresa</option>";
+            echo $etiqueta;
+            foreach ($datos as $registro) {
+                $etiqueta = "<option value='{$registro['correo']}'>{$registro['usuario']}</option>";
+                echo $etiqueta;
+            }
+        }
+
+        if ($_POST['op'] == 'PruebaUpdate') {
+            $idtarea = $_POST['idtarea'];
+            $documento = "";
+            $datos =$tarea->getWork($idtarea);
+            $mensaje = $_POST['mensaje'];
+            $fecha = date('Y-m-d');
+            $hora = date('h:i:s');
+            $datos['porcentaje'];
+            $porcentaje = $_POST['porcentaje'];
+            $data = [
+                "e_mensaje"   => $mensaje,
+                "e_documento"   => $documento,
+                "e_fecha"   => $fecha,
+                "e_hora"   => $hora,
+                "p_porcentaje"   => $porcentaje,
+                "t_idtarea"   => $idtarea,
+            ];
+            $tarea->enviarTareas($data);
         }
         
     }

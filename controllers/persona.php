@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require_once '../models/persona.php';
+    require_once '../models/Persona.php';
 
     if (isset($_POST['op'])) {
 

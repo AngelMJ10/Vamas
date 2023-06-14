@@ -172,6 +172,7 @@ CREATE TABLE tareas
 	idcolaboradores		SMALLINT	NOT NULL,
 	roles			VARCHAR(40)	NOT NULL,
 	tarea			VARCHAR(200)	NOT NULL,
+	porcentaje_tarea	VARCHAR(20)	NULL DEFAULT '0',
 	porcentaje		VARCHAR(20)	NOT NULL,
 	evidencia		JSON		NULL DEFAULT'[]',
 	fecha_create		DATETIME	NOT NULL DEFAULT NOW(),
@@ -182,10 +183,9 @@ CREATE TABLE tareas
 )ENGINE = INNODB;
 
 INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje)
-VALUES(1,4,'Programador Front-end','Hacer el boceto y presentar su avance','0/10%');
+VALUES(1,4,'Programador Front-end','Hacer el boceto y presentar su avance','10%');
 
 INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje)
-VALUES('2','5','Análisis de datos','Analizar los datos recogidos y hacer una conclusión de lo que necesita el restaurante','0/10%');
+VALUES('2','5','Análisis de datos','Analizar los datos recogidos y hacer una conclusión de lo que necesita el restaurante','10%');
 
 SELECT * FROM tareas;
-TRUNCATE TABLE tareas;

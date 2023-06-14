@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require_once '../models/empresa.php';
+    require_once '../models/Empresa.php';
 
     if (isset($_POST['op'])) {
 
@@ -35,7 +35,7 @@
             echo $etiqueta;
             foreach ($datos as $registro){
                
-                $etiqueta ="<option value={$registro['idempresa']}>{$registro['nombre']}</option>";
+                $etiqueta ="<option value='{$registro['idempresa']}'>{$registro['nombre']}</option>";
                 echo $etiqueta;
             }
         }

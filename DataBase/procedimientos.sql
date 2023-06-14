@@ -103,7 +103,8 @@ BEGIN
         SELECT 1 FROM colaboradores WHERE idcolaboradores = _idcolaboradores 
         AND nivelacceso IN ('A', 'S')
     ) THEN
-        SELECT fas.idfase,tar.idtarea, fas.nombrefase, fas.fechainicio, fas.fechafin, fas.comentario, col.usuario, tar.roles, tar.tarea, tar.porcentaje, tar.estado
+        SELECT fas.idfase,tar.idtarea, fas.nombrefase, fas.fechainicio, fas.fechafin, fas.comentario, col.usuario,
+		tar.roles, tar.tarea,tar.porcentaje_tarea, tar.porcentaje, tar.estado
         FROM tareas tar
         INNER JOIN fases fas ON tar.idfase = fas.idfase
         INNER JOIN colaboradores col ON tar.idcolaboradores = col.idcolaboradores
@@ -118,17 +119,13 @@ BEGIN
         ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
     END IF;
 END $$
-	
 CALL listar_tarea_colaboradores(1);
-TRUNCATE TABLE tareas;
 SELECT * FROM tareas;
-
-UPDATE tareas SET evidencia = 'hola' , fecha_evidencia = NOW() WHERE idtarea = 1;
 
 --------------------------------------
 
 DELIMITER $$
-CREATE PROCEDURE obtener_tarea(IN _idtarea SMALLINT)º
+CREATE PROCEDURE obtener_tarea(IN _idtarea SMALLINT)
 BEGIN
 	 SELECT fas.idfase,tar.idtarea, fas.nombrefase, fas.fechainicio, fas.fechafin, fas.comentario, col.usuario, tar.roles, tar.tarea, tar.porcentaje, tar.estado
         FROM tareas tar
@@ -139,3 +136,63 @@ BEGIN
 END $$
 
 CALL obtener_tarea(1);
+
+--------------------------------------
+
+SELECT idcolaboradores,usuario,correo FROM colaboradores WHERE NOT nivelacceso = 'C';
+SELECT idcolaboradores,usuario,correo FROM colaboradores WHERE nivelacceso IN ('A','S');
+
+UPDATE tareas
+      SET evidencia = JSON_ARRAY_APPEND(evidencia, '$', JSON_OBJECT(
+      'mensaje', 'a',
+      'documento', 'a',
+      'fecha', 'a',
+      'hora', 'a'
+      
+)), porcentaje = '5/10%' WHERE idtarea = 3
+
+DELIMITER $$
+CREATE PROCEDURE enviar_evidencia
+(
+	IN e_mensaje VARCHAR(255),
+	IN e_documento VARCHAR(255),
+	IN e_fecha VARCHAR(20),
+	IN e_hora VARCHAR(20),
+	IN p_porcentaje INT,
+	IN t_idtarea SMALLINT
+)
+BEGIN
+	DECLARE p_porcentaje_actual INT;
+	DECLARE p_porcentaje_nuevo INT;
+	DECLARE p_max_porcentaje INT; -- Variable para almacenar el valor máximo permitido
+	
+	SELECT porcentaje, porcentaje_tarea INTO p_max_porcentaje, p_porcentaje_actual
+	FROM tareas
+	WHERE idtarea = t_idtarea;
+	
+	SET p_porcentaje_nuevo = p_porcentaje_actual + p_porcentaje;
+	
+	IF p_porcentaje_nuevo > p_max_porcentaje THEN
+		SET p_porcentaje_nuevo = p_max_porcentaje;
+	END IF;
+	
+	UPDATE tareas
+	SET evidencia = JSON_ARRAY_APPEND(evidencia, '$', JSON_OBJECT(
+		'mensaje', e_mensaje,
+		'documento', e_documento,
+		'fecha', e_fecha,
+		'hora', e_hora,
+		'porcentaje',p_porcentaje
+	)),
+	porcentaje_tarea = p_porcentaje_nuevo
+	WHERE idtarea = t_idtarea;
+END $$
+DELIMITER ;
+
+
+
+CALL enviar_evidencia('a', 'a', 'a', 'a', 1,3);
+DROP PROCEDURE enviar_evidencia;
+                
+SELECT * FROM tareas;
+

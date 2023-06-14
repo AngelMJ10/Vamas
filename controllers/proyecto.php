@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require_once '../models/proyecto.php';
+    require_once '../models/Proyecto.php';
 
     if (isset($_POST['op'])) {
 
@@ -72,14 +72,14 @@
         }
 
         if ($_POST['op'] == 'countUsers') {
-            require_once '../models/colaboradores.php';
+            require_once '../models/Colaboradores.php';
             $colaborador = new Colaborador();
             $datos = $colaborador->countUsers();
             echo "{$datos['users']}";
         }
 
         if ($_POST['op'] == 'listarColaborador') {
-            require_once '../models/colaboradores.php';
+            require_once '../models/Colaboradores.php';
             $colaborador = new Colaborador();
             $datos = $colaborador->listarColaborador();
             $etiqueta = "<option value='0'>Seleccione el usuario responsable</option>";

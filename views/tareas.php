@@ -271,15 +271,18 @@
         <form action="">
           <div class="form-group">
             <div class="row">
-              <div class="col-md-4">
-                <div class="form-floating">
-                  <textarea name="mensaje" class="form-control" placeholder="Mensaje" id="mensaje"></textarea>
+              <div class="col-md-4 mb-3">
                   <label for="mensaje" class="form-label">Mensaje</label>
-                </div>
+                  <textarea name="mensaje" class="form-control" placeholder="Mensaje" id="mensaje"></textarea>
               </div> 
               <div class="col-md-4">
                 <label for="documento">Documento:</label>
                 <input type="file" class="form-control form-control-sm text-right mb-3" id="documento" accept=".pdf">
+              </div>
+              <div class="col-md-4">
+                <label for="">Correo</label>
+                <select name="correo" id="correo" class="form-control form-control-sm">
+                </select>
               </div>
             </div>
             <button type="button" class="btn btn-sm btn-outline-success" id="enviarTarea">Enviar Tarea</button>
