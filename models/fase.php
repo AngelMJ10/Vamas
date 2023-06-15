@@ -39,6 +39,17 @@
                 die($e->getMessage());
             }
         }
+
+        public function obtenerPorcentajeF($idfase){
+            try {
+                $query = "CALL hallar_porcentaje_fase(?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array($idfase));
+
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
     }
 
-?>
+?>  

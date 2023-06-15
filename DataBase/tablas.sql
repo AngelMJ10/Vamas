@@ -119,6 +119,7 @@ CREATE TABLE proyecto
 	precio			DECIMAL(6,2)	NOT NULL,
 	condiciones		JSON		NULL,
 	idusuariore		SMALLINT	NOT NULL,
+	porcentaje		DECIMAL(5,2)	NULL DEFAULT'0',
 	estado			CHAR(1)		NOT NULL DEFAULT '1',
 	fecha_create		DATETIME	NOT NULL DEFAULT NOW(),
 	fecha_update		DATETIME	NULL,
@@ -135,6 +136,8 @@ VALUES ('2','2','Sistema de ventas pra un restaurante','Prueba 3','2023-05-29','
 
 SELECT * FROM proyecto;
 
+CALL listar_proyecto();
+
 ----------------------------------------------------------
 
 CREATE TABLE fases
@@ -146,6 +149,8 @@ CREATE TABLE fases
 	fechainicio		DATE		NOT NULL,
 	fechafin		DATE		NOT NULL,
 	comentario		VARCHAR(200)	NOT NULL,
+	porcentaje_fase		DECIMAL(5,2)	NULL DEFAULT'0',
+	porcentaje		DECIMAL(5,2)	NOT NULL,
 	fecha_create		DATETIME	NOT NULL DEFAULT NOW(),
 	fecha_update		DATETIME	NULL,
 	estado			CHAR(1)		NOT NULL DEFAULT '1',
@@ -153,15 +158,17 @@ CREATE TABLE fases
 	CONSTRAINT fk_idresponsable_fas FOREIGN KEY (idresponsable) REFERENCES colaboradores (idcolaboradores)
 )ENGINE = INNODB;
 
-INSERT INTO fases(idproyecto,idresponsable,nombrefase,fechainicio,fechafin,comentario) 
+INSERT INTO fases(idproyecto,idresponsable,nombrefase,fechainicio,fechafin,comentario,porcentaje) 
 VALUES(1,3,'Creación del boceto','2023-05-29','2023-05-31',
-	'En esta fase se crearán diferentes tipos de bocetos e ideas para la pagina y se eligirá uno');
+	'En esta fase se crearán diferentes tipos de bocetos e ideas para la pagina y se eligirá uno',25);
 
-INSERT INTO fases(idproyecto,idresponsable,nombrefase,fechainicio,fechafin,comentario) 
-VALUES('2','2','Creación de la Vista','2023-05-31','2023-06-03',
-	'En esta fase se creará la vista basada en el boceto escogido');
+INSERT INTO fases(idproyecto,idresponsable,nombrefase,fechainicio,fechafin,comentario,porcentaje) 
+VALUES(1,'2','Creación de la Vista','2023-05-31','2023-06-03',
+	'En esta fase se creará la vista basada en el boceto escogido',25);
+
 
 SELECT * FROM fases;
+CALL listar_fase();
 
 ----------------------------------------------------------
 
@@ -172,8 +179,8 @@ CREATE TABLE tareas
 	idcolaboradores		SMALLINT	NOT NULL,
 	roles			VARCHAR(40)	NOT NULL,
 	tarea			VARCHAR(200)	NOT NULL,
-	porcentaje_tarea	VARCHAR(20)	NULL DEFAULT '0',
-	porcentaje		VARCHAR(20)	NOT NULL,
+	porcentaje_tarea	DECIMAL(5,2)	NULL DEFAULT 0,
+	porcentaje		DECIMAL(5,2)	NOT NULL,
 	evidencia		JSON		NULL DEFAULT'[]',
 	fecha_create		DATETIME	NOT NULL DEFAULT NOW(),
 	fecha_update		DATETIME	NULL,
@@ -182,10 +189,19 @@ CREATE TABLE tareas
 	CONSTRAINT fk_idcolaboradores_tar FOREIGN KEY (idcolaboradores) REFERENCES colaboradores (idcolaboradores)
 )ENGINE = INNODB;
 
-INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje)
-VALUES(1,4,'Programador Front-end','Hacer el boceto y presentar su avance','10%');
 
 INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje)
-VALUES('2','5','Análisis de datos','Analizar los datos recogidos y hacer una conclusión de lo que necesita el restaurante','10%');
+VALUES(1,4,'Programador Front-end','Hacer el boceto y presentar su avance',10);
+
+INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje)
+VALUES('1','5','Programador Front-end','Hacer el boceto y presentar su avance',20);
+
+INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje)
+VALUES('1','4','Programador Front-end','Hacer el boceto y presentar su avance',60);
 
 SELECT * FROM tareas;
+SELECT * FROM fases;
+
+SELECT tar.porcentaje_tarea * tar.porcentaje /100 FROM tareas tar;
+
+SELECT fas.porcentaje_fase * fas.porcentaje /100 FROM fases fas;

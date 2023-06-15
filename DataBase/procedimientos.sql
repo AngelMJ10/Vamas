@@ -22,8 +22,9 @@ CALL listar_habilidades();
 DELIMITER $$
 CREATE PROCEDURE listar_proyecto()
 BEGIN
-    SELECT pro.idproyecto,pro.titulo,pro.descripcion,pro.fechainicio,pro.fechafin,pro.precio,emp.nombre,pro.estado,col.usuario,
-     COUNT(fas.idfase) AS Fases
+    SELECT pro.idproyecto,pro.titulo,pro.descripcion,pro.fechainicio,pro.fechafin,pro.precio,
+		emp.nombre,pro.estado,col.usuario,
+     COUNT(fas.idfase) AS Fases,pro.porcentaje
     FROM proyecto pro
     INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
     LEFT JOIN fases fas ON pro.idproyecto = fas.idproyecto
@@ -41,7 +42,7 @@ DELIMITER $$
 CREATE PROCEDURE obtener_proyecto(IN _idproyecto SMALLINT)
 BEGIN
 	SELECT pro.idproyecto,tip.idtipoproyecto,tip.tipoproyecto,emp.idempresa,emp.nombre,pro.titulo,pro.descripcion,
-		pro.fechainicio,pro.fechafin,pro.precio,pro.estado,col.usuario,
+		pro.fechainicio,pro.fechafin,pro.precio,pro.porcentaje,pro.estado,col.usuario,
 	COUNT(fas.idfase) AS Fases
 	FROM proyecto pro
 	INNER JOIN tiposproyecto tip ON pro.idtipoproyecto = tip.idtipoproyecto
@@ -54,6 +55,7 @@ END $$
 
 CALL obtener_proyecto(1);
 
+--------------------------------------------
 
 -- Listar Fases
 
@@ -62,7 +64,7 @@ CREATE PROCEDURE listar_fase()
 BEGIN
     SELECT pro.idproyecto,fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyecto', pro.fechafin AS 'FinProyecto', 
 		pro.precio, emp.nombre AS 'empresa', col.usuario, fas.nombrefase, fas.fechainicio, 
-		fas.fechafin, fas.comentario,fas.estado
+		fas.fechafin, fas.comentario,fas.porcentaje_fase, fas.porcentaje,fas.estado
     FROM fases fas
     INNER JOIN proyecto pro ON pro.idproyecto = fas.idproyecto
     INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
@@ -71,8 +73,10 @@ BEGIN
     ORDER BY pro.idproyecto, fas.fechainicio, fas.fechafin; -- Ordenar por el idproyecto ascendente
 END $$
 
+DROP PROCEDURE listar_fase;
 CALL listar_fase();
 
+------------------------------------------------------------
 
 -- Listar las fases de un proyecto con el ID del un  proyecto
 
@@ -93,7 +97,7 @@ END $$
 DROP PROCEDURE listar_fase_proyecto;
 CALL listar_fase_proyecto(1);
 
-
+---------------------------------------------
 -- Listar tarea
 
 DELIMITER $$
@@ -137,19 +141,7 @@ END $$
 
 CALL obtener_tarea(1);
 
---------------------------------------
-
-SELECT idcolaboradores,usuario,correo FROM colaboradores WHERE NOT nivelacceso = 'C';
-SELECT idcolaboradores,usuario,correo FROM colaboradores WHERE nivelacceso IN ('A','S');
-
-UPDATE tareas
-      SET evidencia = JSON_ARRAY_APPEND(evidencia, '$', JSON_OBJECT(
-      'mensaje', 'a',
-      'documento', 'a',
-      'fecha', 'a',
-      'hora', 'a'
-      
-)), porcentaje = '5/10%' WHERE idtarea = 3
+-----------------------------------------------------
 
 DELIMITER $$
 CREATE PROCEDURE enviar_evidencia
@@ -162,20 +154,7 @@ CREATE PROCEDURE enviar_evidencia
 	IN t_idtarea SMALLINT
 )
 BEGIN
-	DECLARE p_porcentaje_actual INT;
-	DECLARE p_porcentaje_nuevo INT;
-	DECLARE p_max_porcentaje INT; -- Variable para almacenar el valor máximo permitido
-	
-	SELECT porcentaje, porcentaje_tarea INTO p_max_porcentaje, p_porcentaje_actual
-	FROM tareas
-	WHERE idtarea = t_idtarea;
-	
-	SET p_porcentaje_nuevo = p_porcentaje_actual + p_porcentaje;
-	
-	IF p_porcentaje_nuevo > p_max_porcentaje THEN
-		SET p_porcentaje_nuevo = p_max_porcentaje;
-	END IF;
-	
+
 	UPDATE tareas
 	SET evidencia = JSON_ARRAY_APPEND(evidencia, '$', JSON_OBJECT(
 		'mensaje', e_mensaje,
@@ -184,15 +163,46 @@ BEGIN
 		'hora', e_hora,
 		'porcentaje',p_porcentaje
 	)),
-	porcentaje_tarea = p_porcentaje_nuevo
+	porcentaje_tarea = p_porcentaje
 	WHERE idtarea = t_idtarea;
 END $$
 DELIMITER ;
-
-
-
-CALL enviar_evidencia('a', 'a', 'a', 'a', 1,3);
 DROP PROCEDURE enviar_evidencia;
+CALL enviar_evidencia('a', 'a', 'a', 'a', 70,3);
                 
 SELECT * FROM tareas;
 
+-------------------------------------------- PORCENTAJES ------------------------------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE hallar_porcentaje_proyecto(IN _idproyecto SMALLINT)
+BEGIN 
+	UPDATE proyecto pro
+	SET pro.porcentaje = (
+		SELECT SUM(fas.porcentaje_fase * fas.porcentaje / 100)
+		FROM fases fas
+		WHERE fas.idproyecto = _idproyecto AND fas.estado != 0
+	)
+	WHERE pro.idproyecto = _idproyecto;
+END $$
+
+CALL hallar_porcentaje_proyecto(1)
+
+-----------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE hallar_porcentaje_fase(IN _idfase SMALLINT)
+BEGIN
+	UPDATE fases fas
+	SET fas.porcentaje_fase = (
+		SELECT SUM(tar.porcentaje_tarea * tar.porcentaje /100) FROM tareas tar
+		WHERE tar.idfase = fas.idfase AND tar.estado != 0
+	)
+	WHERE fas.idfase = idfase;
+END $$
+
+CALL hallar_porcentaje_fase(1);
+
+SELECT * FROM tareas;
+SELECT * FROM fases;
+SELECT * FROM proyecto;

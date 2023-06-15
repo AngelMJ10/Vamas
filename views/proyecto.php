@@ -134,10 +134,9 @@
               <thead>
                   <th>#</th>
                   <th>Titulo</th>
-                  <th>Descripción</th>
                   <th>Fecha de Inicio</th>
                   <th>Fecha de Fin</th>
-                  <th>Precio</th>
+                  <th>Porcentaje</th>
                   <th>Empresa</th>
                   <th>N° Fases</th>
                   <th>Estado</th>
@@ -333,12 +332,12 @@
   </div>
 </div>
 
-<!-- Modal Phase -->
+<!-- Modal Fase -->
 <div class="modal fade" id="modalFase" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
       <div class="modal-header text-light" style='background-color: #005478;'>
-        <h1 class="modal-title fs-5" id="modalEditarLabel">Editar Datos</h1>
+        <h1 class="modal-title fs-5" id="modalEditarLabel">Registrar Fase</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -410,6 +409,24 @@
         </form>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Info -->
+<div class="modal fade" id="modal-info" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header text-light" style='background-color: #005478;'>
+        <h1 class="modal-title fs-5" id="modalEditarLabel">Información del Proyecto</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="body-info">
+      
+        <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>
       </div>

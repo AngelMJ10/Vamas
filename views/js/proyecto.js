@@ -86,6 +86,35 @@ function get(id) {
     });
 }
 
+function info(id) {
+    const modal = document.querySelector("#modal-info");
+    const body = document.querySelector("#body-info");
+  
+    const parametrosURL = new URLSearchParams();
+    parametrosURL.append("op", "info");
+    parametrosURL.append("idproyecto", id);
+  
+    fetch('../controllers/proyecto.php', {
+      method: 'POST',
+      body: parametrosURL
+    })
+    .then(respuesta => {
+      if (respuesta.ok) {
+        return respuesta.text();
+      } else {
+        throw new Error('Error en la solicitud');
+      }
+    })
+    .then(datos => {
+        body.innerHTML = datos;
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
 function addPhase(id) {
     const modal = document.querySelector("#modalFase");
     const tipoproyecto = document.querySelector("#tipoProyecto-phase");
@@ -279,5 +308,6 @@ listarColaboradores();
 listartipoproyecto();
 listarempresa();
 listar();
+
 const btnRegistrar = document.querySelector("#registrar-datos");
 btnRegistrar.addEventListener("click", registrar);

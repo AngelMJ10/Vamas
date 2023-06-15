@@ -27,6 +27,37 @@ function sendWork(idtarea) {
     }
 }
 
+function enviarTrabajo(idtarea) {
+    const documento = document.querySelector("#documento").files[0];
+    const correo = document.querySelector("#correo");
+    const porcentaje = document.querySelector("#porcentaje");
+    const mensaje = document.querySelector("#mensaje");
+    const confirmacion = confirm("¿Estás seguro del documento ingresado?");
+    if (confirmacion) {
+        const formData = new FormData();
+        formData.append("op", "enviarTrabajo");
+        formData.append("idtarea", idtarea);
+        formData.append("documento", documento, documento.name);
+        formData.append("mensaje", mensaje.value);
+        formData.append("correo", correo.value);
+        formData.append("porcentaje", porcentaje.value);
+
+        fetch('../controllers/tarea.php', {
+            method: 'POST',
+            body: formData
+        }).then(respuesta => {
+            if (respuesta.ok) {
+                alert('Trabajo enviado correctamente');
+                location.reload();
+            } else {
+                alert('Error en la solicitud');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    }
+}
+
 function openModal(id) {
     const modal = document.querySelector("#modalWork");
     const idtarea = id; 
@@ -49,7 +80,7 @@ function openModal(id) {
     .then(datos => {
         const btnEnviar = document.querySelector("#enviarTarea");
         btnEnviar.addEventListener("click", function () {
-            sendWork(idtarea); // Pasar el valor de idempresa a la función update
+            enviarTrabajo(idtarea); // Pasar el valor de idempresa a la función update
         });
         const bootstrapModal = new bootstrap.Modal(modal);
         bootstrapModal.show();

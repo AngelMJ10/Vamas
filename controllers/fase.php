@@ -126,6 +126,11 @@
             $comentario = $_POST['comentario'];
             $fase->registerPhase($idproyecto, $idresponsable, $nombrefase, $fechainicio, $fechafin ,$comentario);
         }
+
+        if ($_POST['op'] == 'obtenerPorcentajeF') {
+            $idfase = $_POST['idfase'];
+            $fase->obtenerPorcentajeF($idfase);
+        }
     }
 
 ?>
