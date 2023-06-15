@@ -168,6 +168,11 @@
             // Enviando Correo
             sendEmail($correo, $documento, 'Avance de trabajo: ', $mensaje);
         }
+
+        if ($_POST['op'] == 'obtenerID') {
+            $idtarea  = $_POST['idtarea'];
+            echo json_encode($tarea->obtenerID($idtarea));
+        }
         
     }
 

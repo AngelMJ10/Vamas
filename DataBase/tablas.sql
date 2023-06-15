@@ -165,6 +165,10 @@ VALUES(1,3,'Creación del boceto','2023-05-29','2023-05-31',
 INSERT INTO fases(idproyecto,idresponsable,nombrefase,fechainicio,fechafin,comentario,porcentaje) 
 VALUES(1,'2','Creación de la Vista','2023-05-31','2023-06-03',
 	'En esta fase se creará la vista basada en el boceto escogido',25);
+	
+INSERT INTO fases(idproyecto,idresponsable,nombrefase,fechainicio,fechafin,comentario,porcentaje) 
+VALUES(2,'4','Creación de un modelo de base de datos','2023-05-31','2023-06-03',
+	'En esta fase se definirá la base de datos',25);
 
 
 SELECT * FROM fases;
@@ -198,6 +202,9 @@ VALUES('1','5','Programador Front-end','Hacer el boceto y presentar su avance',2
 
 INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje)
 VALUES('1','4','Programador Front-end','Hacer el boceto y presentar su avance',60);
+
+INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje)
+VALUES('3','4','Analista de datos','Hacer un modelo de base de datos',60);
 
 SELECT * FROM tareas;
 SELECT * FROM fases;

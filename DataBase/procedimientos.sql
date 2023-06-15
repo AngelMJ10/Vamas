@@ -85,7 +85,7 @@ CREATE PROCEDURE listar_fase_proyecto(IN _idproyecto SMALLINT)
 BEGIN
 SELECT fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyecto', pro.fechafin AS 'FinProyecto', 
 		pro.precio, emp.nombre AS 'empresa', col.usuario, fas.nombrefase, fas.fechainicio, 
-		fas.fechafin, fas.comentario,fas.estado
+		fas.fechafin, fas.comentario,fas.estado,fas.porcentaje_fase
     FROM fases fas
     INNER JOIN proyecto pro ON pro.idproyecto = fas.idproyecto
     INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
@@ -131,7 +131,8 @@ SELECT * FROM tareas;
 DELIMITER $$
 CREATE PROCEDURE obtener_tarea(IN _idtarea SMALLINT)
 BEGIN
-	 SELECT fas.idfase,tar.idtarea, fas.nombrefase, fas.fechainicio, fas.fechafin, fas.comentario, col.usuario, tar.roles, tar.tarea, tar.porcentaje, tar.estado
+	 SELECT fas.idfase,tar.idtarea, fas.nombrefase, fas.fechainicio, fas.fechafin, fas.comentario, col.usuario,
+		tar.roles, tar.tarea, tar.porcentaje, tar.estado
         FROM tareas tar
         INNER JOIN fases fas ON tar.idfase = fas.idfase
         INNER JOIN colaboradores col ON tar.idcolaboradores = col.idcolaboradores
@@ -206,3 +207,18 @@ CALL hallar_porcentaje_fase(1);
 SELECT * FROM tareas;
 SELECT * FROM fases;
 SELECT * FROM proyecto;
+
+------------------------------
+-- Obtener ids
+
+DELIMITER $$
+CREATE PROCEDURE obtener_ids(IN _idtarea SMALLINT)
+BEGIN
+SELECT pro.idproyecto,fas.idfase,idtarea
+FROM tareas tar
+INNER JOIN fases fas ON tar.idfase = fas.idfase
+INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
+WHERE tar.idtarea = _idtarea;
+END $$
+
+CALL obtener_ids(5);

@@ -67,6 +67,18 @@
                 die($e->getMessage());
             }
         }
+
+        public function obtenerID($idtarea){
+            try {
+                $query = "CALL obtener_ids(?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array($idtarea));
+                $datos = $consulta->fetch(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
     }
 
 ?>

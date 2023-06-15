@@ -89,6 +89,7 @@
                             <th>Fin de la Fase</th>
                             <th>Usuario Responsable</th>
                             <th>Comentario</th>
+                            <th>Porcentaje</th>
                             <th>Estado</th>
                         </thead>
 
@@ -97,6 +98,11 @@
             
             foreach ($datos as $registro) {
                 $estado = $registro['estado'] == 1 ? 'Activo' : $registro['estado'];
+                $porcentaje = $registro['porcentaje_fase'];
+                if ($porcentaje) {
+                    $porcentaje = rtrim($porcentaje, "0");
+                    $porcentaje = rtrim($porcentaje, ".");
+                }
                 echo "                 
                     <tr class='mb-2'>
                         <td class='p-3' data-label='#'>{$contador}</td>
@@ -105,6 +111,7 @@
                         <td class='p-3' data-label='Fin de la fase'>{$registro['fechafin']}</td>
                         <td class='p-3' data-label='Usuario Responsable'>{$registro['usuario']}</td>
                         <td class='p-3' data-label='Comentario'>{$registro['comentario']}</td>
+                        <td class='p-3' data-label='Porcentaje'>{$porcentaje}%</td>
                         <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
                     </tr>
                 ";

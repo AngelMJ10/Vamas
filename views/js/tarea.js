@@ -58,6 +58,72 @@ function enviarTrabajo(idtarea) {
     }
 }
 
+function obtenerID(idtarea){
+        const formData = new FormData();
+        formData.append("op", "obtenerID");
+        formData.append("idtarea", idtarea);
+
+        fetch('../controllers/tarea.php', {
+            method: 'POST',
+            body: formData
+        }).then(respuesta => {
+            if (respuesta.ok) {
+                return respuesta.json();
+            } else {
+                alert('Error en la solicitud');
+            }
+        })
+        .then(datos => {
+            const idfase = datos.idfase;
+            const idproyecto = datos.idproyecto;
+            obtenerPorcentajeF(idfase);
+            obtenerPorcentajeP(idproyecto);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+function obtenerPorcentajeF(idfase){
+    const formData = new FormData();
+    formData.append("op", "obtenerPorcentajeF");
+    formData.append("idfase", idfase);
+
+    fetch('../controllers/fase.php', {
+        method: 'POST',
+        body: formData
+    }).then(respuesta => {
+        if (respuesta.ok) {
+            alert('Fase actualizada Correctamente');
+        } else {
+            alert('Error en la solicitud');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function obtenerPorcentajeP(idproyecto){
+    const formData = new FormData();
+    formData.append("op", "obtenerPorcentajeP");
+    formData.append("idproyecto", idproyecto);
+
+    fetch('../controllers/proyecto.php', {
+        method: 'POST',
+        body: formData
+    }).then(respuesta => {
+        if (respuesta.ok) {
+            alert('Proyecto actualizado Correctamente');
+        } else {
+            alert('Error en la solicitud');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
 function openModal(id) {
     const modal = document.querySelector("#modalWork");
     const idtarea = id; 
@@ -80,8 +146,13 @@ function openModal(id) {
     .then(datos => {
         const btnEnviar = document.querySelector("#enviarTarea");
         btnEnviar.addEventListener("click", function () {
-            enviarTrabajo(idtarea); // Pasar el valor de idempresa a la función update
+            // Pasar el valor de idtarea a las siguientes funciones
+            enviarTrabajo(idtarea); 
+            obtenerID(idtarea);
+            obtenerPorcentajeF(idfase);
+            obtenerPorcentajeP(idproyecto);
         });
+        
         const bootstrapModal = new bootstrap.Modal(modal);
         bootstrapModal.show();
     })
