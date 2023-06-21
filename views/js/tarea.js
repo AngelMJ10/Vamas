@@ -126,6 +126,7 @@ function obtenerPorcentajeP(idproyecto){
 
 function openModal(id) {
     const modal = document.querySelector("#modalWork");
+    const asunto = document.querySelector("#asunto")
     const idtarea = id; 
   
     const parametrosURL = new URLSearchParams();
@@ -144,6 +145,8 @@ function openModal(id) {
       }
     })
     .then(datos => {
+        datos = JSON.parse(datos); // Si el resultado es un JSON, debes parsearlo
+        asunto.value = datos.tarea;
         const btnEnviar = document.querySelector("#enviarTarea");
         btnEnviar.addEventListener("click", function () {
             // Pasar el valor de idtarea a las siguientes funciones
@@ -163,6 +166,7 @@ function openModal(id) {
 
 function listarCorreo(){
     const correo = document.querySelector("#correo");
+    const Ncorreo = document.querySelector("#para");
     const parametros = new URLSearchParams();
     parametros.append("op","listarCorreo");
     fetch(`../controllers/tarea.php`, {

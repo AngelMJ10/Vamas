@@ -187,7 +187,7 @@ BEGIN
 	WHERE pro.idproyecto = _idproyecto;
 END $$
 
-CALL hallar_porcentaje_proyecto(1)
+CALL hallar_porcentaje_proyecto(2)
 
 -----------------------------------
 

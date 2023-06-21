@@ -100,7 +100,7 @@
             require_once '../models/Colaboradores.php';
             $colaborador = new Colaborador();
             $datos = $colaborador->listarCorreo();
-            $etiqueta = "<option value='0'>Seleccione la empresa</option>";
+            $etiqueta = "<option value='0'>Seleccione el usuario</option>";
             echo $etiqueta;
             foreach ($datos as $registro) {
                 $etiqueta = "<option value='{$registro['correo']}'>{$registro['usuario']}</option>";

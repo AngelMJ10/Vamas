@@ -37,6 +37,13 @@ function sendEmail($destino,$ruta, $asunto, $mensaje) {
         $mail->Subject = $asunto;
         $mail->Body    = $mensaje;
         $mail->AltBody = 'El mensaje requiere soporte HTML';
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            )
+        );
     
         $mail->send();
         echo json_encode(["status" => true]);

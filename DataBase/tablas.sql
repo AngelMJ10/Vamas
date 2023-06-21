@@ -207,6 +207,7 @@ INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje)
 VALUES('3','4','Analista de datos','Hacer un modelo de base de datos',60);
 
 SELECT * FROM tareas;
+SELECT * FROM colaboradores;
 SELECT * FROM fases;
 
 SELECT tar.porcentaje_tarea * tar.porcentaje /100 FROM tareas tar;
