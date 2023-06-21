@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "vamas-390501",
+  "private_key_id": "7ca65ced97aff327a04b7cf35a5b21e7ae951532",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC0WmgnKIDECAfl\n5+2GCoC5T7BBm5KhDrvTnrRpkDgfzkDGf7LeIvkdvpVqTTfmZkg9vZ1hqV+8wS/p\nqfMzapkoagIOdnkMW4CBHgvJIOC8NnvwZJfrVAuC3/FwSmjd8XIOzUF9/DTspCvx\nFYvuY9ffMwRZWvjuEojh8j+qYmJncRJO+ojx7Cn8z6b4CkAzw8wJ7aOcar+In0L2\nLzkB/PQW5++FRgjHvTCFYeod8YknCcRUayqVdJGTnwCHH+DMivpyjLvk8yZLJ0zQ\nLIr+w6mBhD24X4aWPq6ff0SS/NnT69wL3uViKYvgg45JbtRA+x9Dg9Zga1LoU8Xl\nKPuy5NANAgMBAAECggEABbJBTeRiEZM+j0iV8XyaPFm7QGt/bLKzkTRBsqH8nFlc\nFGSmq66nf8CJ2ISsxx1KtNO1eFxBvi13Vop1jaamVbw9i3RUeo+Bj70bRUFShJ0t\nQrADNjlgeDuKoeuDdzT2LVb403FiBPJRsT8JTlXnw8PRvfIXBxPQycXftIFeENRG\n9g9hDmszI2q93bO1VwYk4HpmWYknITOoJ/n0D3O7osp+QZxDogSPiZR2V7Z/KVSq\n084wpgpadJD4SJxJ2kusXHV/72JvsneX4fKodJKhJi96jfyNkPsOARI4bcBuzdRX\nmzO8eV6Qv/Z3MSpG2lhrK3fA/ZN0thC6KNNkt8XkZQKBgQDleWJR1CU91bYPm4gQ\nXoDhJHeddNSblAXqSPFsGfHIw6xFAAUCcIGGESBLSRFJXTa9XR+jlBuGGJGQfY25\n+z3wl8yWACig8M4NZqf7yxY7AfXGffrE5U9pQJKMe/94Ozy6MwUUzFWi0sG7IyDn\nUMZfI7o4/pJeMxDPY0a/1shCdwKBgQDJM24xRVaIEHDjPCiAHXPnwq6n3Tp0skkv\nZeIzqeB9hWE/1V9gq+K3OYsibOJ/xlEOxfZ9WtS3e2MuB7PmIyRb1cE6lilpP9JI\nYb3pUxKCRrhVSq5CNvR98N3wnOoaAV6jyZR01oWLByz5flP93NRigfRAONbVmd3o\nowShfgJ+mwKBgH8D0AMBDNgMGajL6uU8mdOErtytlRzEMv35//9Y4PbCL/FFUICI\nK3k8s4ZYXEQiXzEzgVa2nQF9Sd0TUcY2pZMtQqVoUxS6FSNfxe1d/OEOda63fn1L\ne8gDYNp3q/EtwLBDmzVm4KOuSmM9z3GZySNSEDqJ1hRj6ZMRHVEEHnaDAoGBAJmo\niJhibwJ9I+m3MOsfEzzFpuOWhiVHX7MuKUHxk/vo2GuKxkurGft6m/LPm2+gApm4\nwFXd/6SdPBKUWWUCI6trJSZcNgYmcq9KzmIaSoFqBy9EWK9DDxf701QGUpdHwoJt\n2c4dY2HZOhTU0MqJUz5kJyjA//mjiCE6FrhK5xbPAoGAdJIk/gi7AqS6y3/1euYH\nyn+26989RXl2HY2THwtC5pIUDTjO2kArH+q1amlOduEu6pnoHJt3+ZB7zya7xtGt\nHX7hYiBgmCm3EyVxZNc3Pws1sgra38PqoGgjQ5p1gQmOaC7jvC4WuYKu+ihK5ewU\nHn8FIpwAR6WqiA7mZEuS1Cg=\n-----END PRIVATE KEY-----\n",
+  "client_email": "vamascarga@vamas-390501.iam.gserviceaccount.com",
+  "client_id": "105870637804184807190",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/vamascarga%40vamas-390501.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

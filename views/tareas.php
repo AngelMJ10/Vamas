@@ -15,15 +15,6 @@
 </head>
 <body>
 <link rel="stylesheet" href="./css/style.css">
-<style>
-    body {
-      background-image: url("../img/logos\ vamas_Mesa\ de\ trabajo\ 1\ copia\ 2.png");
-      background-repeat: no-repeat;
-      background-size: 50%;
-      background-position: center ;
-      opacity: 0.9;
-    }
-</style>
 
   <div class="capa text-center">
     <h1>Tareas</h1>
@@ -42,6 +33,7 @@
     <!-- Tabs -->
     <div class="tab-content" id="myTabContent">
 
+    <!-- Tab de listar -->
       <div class="tab-pane fade show active" id="listar" role="tabpanel" aria-labelledby="listar-tab">
 
         <div class="accordion" id="acordion1">
@@ -125,6 +117,7 @@
         </div>
       </div>
 
+    <!-- Tab para registrar -->
       <div class="tab-pane fade mb-5" id="registrar" role="tabpanel" aria-labelledby="registrar-tab">
         <div class="card shadow-lg border-0">
             <div class="card-header text-white capa-listar py-3" style="background: #005478">
@@ -259,44 +252,60 @@
   </div>
 </div>
 
+<!-- Modal para enviar tareas -->
 <div class="modal fade" id="modalWork" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
       <div class="modal-header text-light" style='background-color: #005478;'>
-        <h1 class="modal-title fs-5" id="modalEditarLabel">Información sobre la Fase</h1>
+        <h1 class="modal-title fs-5" id="modalEditarLabel">Enviar Trabajo</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="info-phase">
 
-        <form action="">
-          <div class="form-group">
-            <div class="row mb-3">
-
-              <div class="col-md-3 mb-3">
-                  <label for="mensaje" class="form-label">Mensaje:</label>
-                  <textarea name="mensaje" class="form-control" placeholder="Mensaje" id="mensaje"></textarea>
-              </div> 
-
-              <div class="col-md-3 mb-3">
-                <label for="documento">Documento:</label>
-                <input type="file" class="form-control form-control-sm text-right mb-3" id="documento" accept=".pdf">
-              </div>
-
-              <div class="col-md-3 mb-3">
-                <label for="">Correo:</label>
-                <select name="correo" id="correo" class="form-control form-control-sm">
-                </select>
-              </div>
-
-              <div class="col-md-3 mb-3">
-                <label for="">Porcentaje de la tarea:</label>
-                <input type="number" name="porcentaje" id="porcentaje" class="form-control form-control-sm">
-              </div>
-
-            </div>
-            <button type="button" class="btn btn-sm btn-outline-success" id="enviarTarea">Enviar Tarea</button>
+        <div class="card text-left">
+          <div class="card-header">
+            <h4 class="card-title">Enviar trabajo</h4>
           </div>
-        </form>
+          <div class="card-body">
+  <div class="mb-3">
+    <div class="input-group mb-3">
+      <span class="input-group-text bg-light" id="correo2">Para:</span>
+      <select name="correo" id="correo" class="form-control form-control-sm" aria-label="correo" aria-describedby="correo"></select>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <div class="input-group mb-3">
+      <span class="input-group-text bg-light" id="asunto2">Asunto</span>
+      <input type="text" class="form-control" id="asunto" readonly placeholder="Asunto" aria-label="asunto" aria-describedby="asunto">
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <div class="input-group mb-3">
+      <input type="file" class="form-control form-control-sm text-right mb-3" id="documento" accept=".pdf">
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <div class="input-group mb-3">
+      <span class="input-group-text bg-light" id="">Mensaje</span>
+      <textarea type="text" class="form-control" id="mensaje" placeholder="Mensaje" aria-label="asunto" aria-describedby="mensaje"></textarea>
+    </div>
+  </div>
+  
+  <div class="mb-3">
+    <div class="input-group mb-3">
+      <span class="input-group-text bg-light" id="porcentaje2">Porcentaje de la tarea</span>
+      <input type="number" class="form-control" id="porcentaje" placeholder="Porcentaje %" aria-label="asunto" aria-describedby="asunto">
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <button type="button" class="btn btn-outline-success w-50" id="enviarTarea">Enviar Tarea</button>
+  </div>
+</div>
+        </div>
 
       </div>
       <div class="modal-footer">

@@ -173,6 +173,20 @@ CALL enviar_evidencia('a', 'a', 'a', 'a', 70,3);
                 
 SELECT * FROM tareas;
 
+DELIMITER $$
+CREATE PROCEDURE delete_evidencia
+(
+	IN t_idtarea SMALLINT
+)
+BEGIN
+	UPDATE tareas
+	SET evidencia = '[]'
+	WHERE idtarea = t_idtarea;
+END $$
+
+CALL delete_evidencia(3);
+
+
 -------------------------------------------- PORCENTAJES ------------------------------------------------------
 
 DELIMITER $$

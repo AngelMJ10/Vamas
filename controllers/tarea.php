@@ -2,6 +2,8 @@
     session_start();
     require_once '../models/Tarea.php';
     require_once '../models/Mail.php';
+    require '../vendor/autoload.php';
+
 
     if (isset($_POST['op'])) {
 
@@ -100,7 +102,7 @@
             require_once '../models/Colaboradores.php';
             $colaborador = new Colaborador();
             $datos = $colaborador->listarCorreo();
-            $etiqueta = "<option value='0'>Seleccione la empresa</option>";
+            $etiqueta = "<option value='0'>Seleccione el usuario</option>";
             echo $etiqueta;
             foreach ($datos as $registro) {
                 $etiqueta = "<option value='{$registro['correo']}'>{$registro['usuario']}</option>";
@@ -168,7 +170,7 @@
             // Enviando Correo
             sendEmail($correo, $documento, 'Avance de trabajo: ', $mensaje);
         }
-
+        
         if ($_POST['op'] == 'obtenerID') {
             $idtarea  = $_POST['idtarea'];
             echo json_encode($tarea->obtenerID($idtarea));

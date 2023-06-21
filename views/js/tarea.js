@@ -29,34 +29,44 @@ function sendWork(idtarea) {
 
 function enviarTrabajo(idtarea) {
     const documento = document.querySelector("#documento").files[0];
-    const correo = document.querySelector("#correo");
-    const porcentaje = document.querySelector("#porcentaje");
-    const mensaje = document.querySelector("#mensaje");
+    const correo = document.querySelector("#correo").value;
+    const porcentaje = document.querySelector("#porcentaje").value;
+    const mensaje = document.querySelector("#mensaje").value;
+    
+    // Validación de campos
+    if (!documento || !correo || !porcentaje || !mensaje) {
+      alert("Por favor, completa todos los campos.");
+      return;
+    }
+    
     const confirmacion = confirm("¿Estás seguro del documento ingresado?");
     if (confirmacion) {
-        const formData = new FormData();
-        formData.append("op", "enviarTrabajo");
-        formData.append("idtarea", idtarea);
-        formData.append("documento", documento, documento.name);
-        formData.append("mensaje", mensaje.value);
-        formData.append("correo", correo.value);
-        formData.append("porcentaje", porcentaje.value);
-
-        fetch('../controllers/tarea.php', {
-            method: 'POST',
-            body: formData
-        }).then(respuesta => {
-            if (respuesta.ok) {
-                alert('Trabajo enviado correctamente');
-                location.reload();
-            } else {
-                alert('Error en la solicitud');
-            }
-        }).catch(error => {
-            console.error('Error:', error);
+      const formData = new FormData();
+      formData.append("op", "enviarTrabajo");
+      formData.append("idtarea", idtarea);
+      formData.append("documento", documento, documento.name);
+      formData.append("mensaje", mensaje);
+      formData.append("correo", correo);
+      formData.append("porcentaje", porcentaje);
+    
+      fetch('../controllers/tarea.php', {
+        method: 'POST',
+        body: formData
+      })
+        .then(respuesta => {
+          if (respuesta.ok) {
+            alert('Trabajo enviado correctamente');
+            location.reload();
+          } else {
+            throw new Error('Error en la solicitud');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Ocurrió un error al enviar el trabajo. Por favor, inténtalo nuevamente.');
         });
     }
-}
+}  
 
 function obtenerID(idtarea){
         const formData = new FormData();
@@ -126,6 +136,7 @@ function obtenerPorcentajeP(idproyecto){
 
 function openModal(id) {
     const modal = document.querySelector("#modalWork");
+    const asunto = document.querySelector("#asunto")
     const idtarea = id; 
   
     const parametrosURL = new URLSearchParams();
@@ -144,6 +155,8 @@ function openModal(id) {
       }
     })
     .then(datos => {
+        datos = JSON.parse(datos); // Si el resultado es un JSON, debes parsearlo
+        asunto.value = datos.tarea;
         const btnEnviar = document.querySelector("#enviarTarea");
         btnEnviar.addEventListener("click", function () {
             // Pasar el valor de idtarea a las siguientes funciones
@@ -163,6 +176,7 @@ function openModal(id) {
 
 function listarCorreo(){
     const correo = document.querySelector("#correo");
+    const Ncorreo = document.querySelector("#para");
     const parametros = new URLSearchParams();
     parametros.append("op","listarCorreo");
     fetch(`../controllers/tarea.php`, {

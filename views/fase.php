@@ -109,11 +109,11 @@
               <thead>
                   <th>#</th>
                   <th>Nombre del Proyecto</th>
-                  <th>Empresa</th>
                   <th>Nombre de la Fase</th>
                   <th>Responsable</th>
                   <th>Inicio de la Fase</th>
                   <th>Fin de la Fase</th>
+                  <th>Porcentaje</th>
                   <th>Estado</th>
                   <th>Acción</th>
               </thead>

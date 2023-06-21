@@ -11,8 +11,13 @@
             foreach ($datos as $registro){
                 $estado = $registro['estado'] == 1 ? 'Activo' : $registro['estado'];
                 $porcentaje = $registro['porcentaje'];
-                if ($porcentaje == "0.00") {
-                    $porcentaje = "0";
+                // If para poder quitar ".00" de los porcentajes y en caso del que porcentaje sea NULL,
+                // Se muestre como "0" 
+                if ($porcentaje) {
+                    $porcentaje = rtrim($porcentaje, "0");
+                    $porcentaje = rtrim($porcentaje, ".");
+                } elseif ($porcentaje == null) {
+                    $porcentaje = 0;
                 }
                 echo "
                     <tr class='mb-2'>
