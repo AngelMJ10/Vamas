@@ -169,6 +169,71 @@
             sendEmail($correo, $documento, 'Avance de trabajo: ', $mensaje);
         }
 
+        if ($_POST['op'] == 'SEND') {
+            require_once '../vendor/autoload.php';
+            $client = new Google_Client();
+            $client->setAuthConfig('path/to/credentials.json');
+            $client->addScope(Google_Service_Drive::DRIVE_FILE);
+            $idtarea = $_POST['idtarea'];
+            $documento = "";
+
+            // Verificar si el usuario envió el archivo
+            if (isset($_FILES['documento']) && $_FILES['documento']['error'] === UPLOAD_ERR_OK) {
+                // Carpeta
+                $rutaDestino = '../views/evidencias/';
+        
+                // Fecha y hora
+                $fechaActual = date("c");       //c = complete (FECHA + HORA)
+        
+                // Encriptado fecha y hora.pdf
+                $nombreArchivo = sha1($fechaActual) . ".pdf";
+        
+                // Ruta final
+                $rutaDestino .= $nombreArchivo;
+        
+                if (move_uploaded_file($_FILES['documento']['tmp_name'], $rutaDestino)) {
+                    // Se logró subir el archivo
+                    // Acciones por definir ...
+                    $documento = $rutaDestino; // Guardar la ruta del documento en lugar del nombre del archivo
+                } else {
+                    // Error al mover el archivo
+                    echo "Error al mover el archivo";
+                    exit;
+                }
+            }
+
+            $datos =$tarea->getWork($idtarea);
+            $mensajeAdicional = "
+                <h2>{$datos['nombrefase']}</h2>
+                <p>Avance de trabajo</p>
+                <p>{$datos['tarea']}</p>
+                <hr>
+                <h4>
+            ";
+
+            $mensaje = $_POST['mensaje'];
+            $fecha = date('Y-m-d');
+            $hora = date('h:i:s');
+            $datos['porcentaje'];
+            $porcentaje = $_POST['porcentaje'];
+            $data = [
+                "e_mensaje"   => $mensaje,
+                "e_documento"   => $documento,
+                "e_fecha"   => $fecha,
+                "e_hora"   => $hora,
+                "p_porcentaje"   => $porcentaje,
+                "t_idtarea"   => $idtarea,
+            ];
+            $tarea->enviarTareas($data);
+            $mensaje = $mensajeAdicional . $mensaje. "</h4>";
+        
+            // Arreglo con datos a guardar en la tabla de recuperación
+            $correo = $_POST['correo'];
+
+            // Enviando Correo
+            sendEmail($correo, $documento, 'Avance de trabajo: ', $mensaje);
+        }
+
         if ($_POST['op'] == 'obtenerID') {
             $idtarea  = $_POST['idtarea'];
             echo json_encode($tarea->obtenerID($idtarea));

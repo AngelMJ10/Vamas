@@ -1,0 +1,17 @@
+{
+    "name": "user/vamas",
+    "autoload": {
+        "psr-4": {
+            "User\\Vamas\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "AngelMJ10",
+            "email": "angelitomasna200410@gmail.com"
+        }
+    ],
+    "require": {
+        "google/apiclient": "^2.0"
+    }
+}
