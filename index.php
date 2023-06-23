@@ -5,7 +5,7 @@
 //¡CUIDADO!
 //Si el usuario YA inició sesión, NO debe visualizar este view
 if (isset($_SESSION['login']) && $_SESSION['login'] == true){
-    header("location:views/proyecto.php");
+    header("location:views/");
   }
 
 ?>
@@ -51,7 +51,7 @@ if (isset($_SESSION['login']) && $_SESSION['login'] == true){
         </form>
     </div>
 
-   <script src="views/js/login.js">
+   <script src="login.js">
    </script>
 
 </body>

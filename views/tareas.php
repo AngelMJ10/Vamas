@@ -95,24 +95,8 @@
           </div>
         </div>
         
-        <div class="table-responsive mt-3" id="tabla-tareas">
-          <table class="table table-hover"> 
-
-              <thead>
-                  <th>#</th>
-                  <th>Nombre de la fase</th>
-                  <th>Inicio de la Fase</th>
-                  <th>Fin de la Fase</th>
-                  <th>Usuario</th>
-                  <th>Rol</th>
-                  <th>Porcentaje</th>
-                  <th>Estado</th>
-                  <th>Acciones</th>
-              </thead>
-
-              <tbody>
-              </tbody>
-          
+        <div class="table-responsive mt-3" >
+          <table class="table table-hover" id="tabla-tareas"> 
             </table>
         </div>
       </div>
@@ -190,59 +174,117 @@
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
       <div class="modal-header text-light" style='background-color: #005478;'>
-        <h1 class="modal-title fs-5" id="modalEditarLabel">Editar Datos</h1>
+        <h1 class="modal-title fs-5" id="modalEditarLabel">Información de la Tarea</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form>
           <div class="row mb-2 mt-2">
-              <div class="col-md-4">
+
+              <div class="col-md-3">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" readonly id="Nproyecto" placeholder="Proyecto" name="proyecto">
+                    <label for="proyecto" class="form-label">Nombre del Proyecto</label>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" readonly id="Nfase" placeholder="Fase" name="fase">
+                    <label for="fase" class="form-label">Nombre de la fase</label>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" readonly id="Ntarea" placeholder="Tarea" name="tarea">
+                  <label for="tarea" class="form-label">Nombre de la Tarea</label>
+                </div>
+              </div>
+              
+              <div class="col-md-3">
+                <div class="form-floating mb-3">
+                  <textarea type="text" class="form-control" readonly id="comentario-fase" placeholder="comentario de la fase" name="comentario-fase"></textarea>
+                  <label for="comentario-tarea" class="form-label">comentario fase</label>
+                </div>
+              </div>
+
+          </div>
+
+          <div class="row mb-3">
+
+              <div class="col-md-3">
                   <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="nombre-editar" placeholder="Nombre" name="nombre">
-                      <label for="nombre" class="form-label">Nombre</label>
+                      <input type="text" class="form-control" readonly id="inicio-fase" placeholder="Inicio de la fase" name="documento">
+                      <label for="inicio-fase" class="form-label">Inicio Fase</label>
                   </div>
               </div>
-              <div class="col-md-4">
+
+              <div class="col-md-3">
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" readonly id="fin-fase" placeholder="Fin de la fase" name="fin-fase">
+                  <label for="fin-fase" class="form-label">Fin Fase</label>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" readonly id="inicio-tarea" placeholder="Fin de la tarea" name="inicio-tarea">
+                  <label for="inicio-tarea" class="form-label">Inicio Tarea</label>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" readonly id="fin-tarea" placeholder="Fin de la tarea" name="fin-tarea">
+                  <label for="fin-tarea" class="form-label">Fin Tarea</label>
+                </div>
+              </div>
+
+          </div>
+
+          <div class="row mb-3">
+
+              <div class="col-md-3">
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" readonly id="usuario-Fase" placeholder="Usuario encargado" name="usuario-fase">
+                  <label for="usuario-fase" class="form-label">Usuario Fase</label>
+                </div>
+              </div>
+
+              <div class="col-md-3">
                   <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="razonsocial-editar" placeholder="Razón Social" name="razonsocial">
-                      <label for="razonsocial" class="form-label">Razón Social</label>
+                      <input type="text" class="form-control" readonly id="usuario-tarea" placeholder="Usuario asignado" name="usuario">
+                      <label for="usuario" class="form-label">Usuario Tarea</label>
                   </div>
               </div>
-              <div class="col-md-4">
-                  <div class="form-floating mb-3">
-                      <select name="tipodocumento" id="tipodocumento-editar" class="form-control form-control-sm">
-                        <label for="tipodocumento">Seleccione el tipo de Documento:</label>
-                        <option value="">Seleccione</option>
-                        <option value="DNI">DNI</option>
-                        <option value="RUC">RUC</option>
-                        <option value="Pasaporte">Pasaporte</option>
-                      </select>
-                  </div>
+
+              <div class="col-md-3">
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" readonly id="rol" placeholder="Rol" name="rol">
+                  <label for="rol" class="form-label">Rol</label>
+                </div>
               </div>
+
               
           </div>
 
-          <div class="row mb-2">
-              <div class="col-md-4">
-                  <div class="form-floating mb-3">
-                      <input type="number" class="form-control" id="documento-editar" placeholder="Nro de Documento" name="documento">
-                      <label for="documento" class="form-label">Documento</label>
-                  </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-floating mb-3">
-                  <select name="estado" id="estado-editar" class="form-control form-control-sm">
-                    <label for="estado">Seleccione el tipo estado:</label>
-                    <option value="">Seleccione</option>
-                    <option value="1">Activo</option>
-                    <option value="0">Inactivo</option>
-                  </select>
-                </div>
-              </div>
-          </div>
-          <button type="button" id="editar-registro"  class="btn btn-outline-primary">Agregar</button>
-
         </form>
+
+        <div class="table-responsive">
+          <table class="table table-hover mt-3" id="tabla-evidencias">
+            <thead>
+              <tr>
+                <th>Mensaje</th>
+                <th>Documento</th>
+                <th>Fecha</th>
+                <th>Porcentaje</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -264,48 +306,49 @@
 
         <div class="card text-left">
           <div class="card-header">
-            <h4 class="card-title">Enviar trabajo</h4>
+              <h4 class="card-title">Enviar trabajo</h4>
           </div>
           <div class="card-body">
-  <div class="mb-3">
-    <div class="input-group mb-3">
-      <span class="input-group-text bg-light" id="correo2">Para:</span>
-      <select name="correo" id="correo" class="form-control form-control-sm" aria-label="correo" aria-describedby="correo"></select>
-    </div>
-  </div>
+              <div class="mb-3">
+                  <div class="input-group mb-3">
+                      <span class="input-group-text bg-light" id="correo2">Para:</span>
+                      <select name="correo" id="correo3" class="form-control form-control-sm" aria-label="correo" aria-describedby="correo"></select>
+                  </div>
+              </div>
 
-  <div class="mb-3">
-    <div class="input-group mb-3">
-      <span class="input-group-text bg-light" id="asunto2">Asunto</span>
-      <input type="text" class="form-control" id="asunto" readonly placeholder="Asunto" aria-label="asunto" aria-describedby="asunto">
-    </div>
-  </div>
+              <div class="mb-3">
+                  <div class="input-group mb-3">
+                      <span class="input-group-text bg-light" id="asunto2">Asunto</span>
+                      <input type="text" class="form-control" id="asunto" readonly placeholder="Asunto" aria-label="asunto" aria-describedby="asunto">
+                  </div>
+              </div>
 
-  <div class="mb-3">
-    <div class="input-group mb-3">
-      <input type="file" class="form-control form-control-sm text-right mb-3" id="documento" accept=".pdf">
-    </div>
-  </div>
+              <div class="mb-3">
+                  <div class="input-group mb-3">
+                      <input type="file" class="form-control form-control-sm text-right mb-3" id="documento">
+                  </div>
+              </div>
 
-  <div class="mb-3">
-    <div class="input-group mb-3">
-      <span class="input-group-text bg-light" id="">Mensaje</span>
-      <textarea type="text" class="form-control" id="mensaje" placeholder="Mensaje" aria-label="asunto" aria-describedby="mensaje"></textarea>
-    </div>
-  </div>
-  
-  <div class="mb-3">
-    <div class="input-group mb-3">
-      <span class="input-group-text bg-light" id="porcentaje2">Porcentaje de la tarea</span>
-      <input type="number" class="form-control" id="porcentaje" placeholder="Porcentaje %" aria-label="asunto" aria-describedby="asunto">
-    </div>
-  </div>
+              <div class="mb-3">
+                  <div class="input-group mb-3">
+                      <span class="input-group-text bg-light" id="">Mensaje</span>
+                      <textarea type="text" class="form-control" id="mensaje" placeholder="Mensaje" aria-label="asunto" aria-describedby="mensaje"></textarea>
+                  </div>
+              </div>
 
-  <div class="d-flex justify-content-center">
-    <button type="button" class="btn btn-outline-success w-50" id="enviarTarea">Enviar Tarea</button>
-  </div>
-</div>
-        </div>
+              <div class="mb-3">
+                  <div class="input-group mb-3">
+                      <span class="input-group-text bg-light" id="porcentaje2">Porcentaje de la tarea</span>
+                      <input type="number" class="form-control" id="porcentaje" placeholder="Porcentaje %" aria-label="asunto" aria-describedby="asunto">
+                  </div>
+              </div>
+
+              <div class="d-flex justify-content-center">
+                  <button type="button" class="btn btn-outline-success w-50" id="enviarTarea">Enviar Tarea</button>
+              </div>
+          </div>
+      </div>
+
 
       </div>
       <div class="modal-footer">

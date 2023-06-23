@@ -89,7 +89,7 @@ function get(id) {
 function info(id) {
     const modal = document.querySelector("#modal-info");
     const body = document.querySelector("#body-info");
-  
+
     const parametrosURL = new URLSearchParams();
     parametrosURL.append("op", "info");
     parametrosURL.append("idproyecto", id);

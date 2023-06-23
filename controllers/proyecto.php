@@ -2,6 +2,7 @@
     session_start();
     require_once '../models/Proyecto.php';
 
+
     if (isset($_POST['op'])) {
 
         $proyecto = new Proyecto();
@@ -65,17 +66,64 @@
             $idproyecto = $_POST['idproyecto'];
             $datos = $proyecto->get($idproyecto);
             $porcentaje = $datos['porcentaje'];
-            if ($porcentaje == "0.00") {
-                $porcentaje = "0";
+            if ($porcentaje) {
+                $porcentaje = rtrim($porcentaje, "0");
+                $porcentaje = rtrim($porcentaje, ".");
+            } elseif ($porcentaje == null) {
+                $porcentaje = 0;
             }
 
-            $input = "
+            $inputs = "
                 <form>
                     <div class='row mb-2 mt-2'>
                         <div class='col-md-3'>
                             <div class='form-floating mb-3'>
-                                <textarea name='descripcion' class='form-control'>{$datos['descripcion']}</textarea>
+                                <input name='tipoproyecto' readonly class='form-control' value='{$datos['tipoproyecto']}'>
+                                <label for='tipoproyecto' class='form-label'>Tipo de Proyecto</label>
+                            </div>
+                        </div>
+                        <div class='col-md-3'>
+                            <div class='form-floating mb-3'>
+                                <input name='empresa' readonly class='form-control' value='{$datos['nombre']}'>
+                                <label for='empresa' class='form-label'>Empresa </label>
+                            </div>
+                        </div>
+                        <div class='col-md-3'>
+                            <div class='form-floating mb-3'>
+                                <input name='titulo' readonly class='form-control' value='{$datos['titulo']}'>
+                                <label for='titulo' class='form-label'>Titulo del proyecto</label>
+                            </div>
+                        </div>
+                        <div class='col-md-3'>
+                            <div class='form-floating mb-3'>
+                                <input name='porcentaje' readonly class='form-control' value='{$porcentaje}%'>
+                                <label for='porcentaje' class='form-label'>Porcentaje</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='row mb-2'>
+                        <div class='col-md-3'>
+                            <div class='form-floating mb-3'>
+                                <textarea name='descripcion' readonly class='form-control'>{$datos['descripcion']}</textarea>
                                 <label for='descripcion' class='form-label'>Descripción</label>
+                            </div>
+                        </div>
+                        <div class='col-md-3'>
+                            <div class='form-floating mb-3'>
+                                <input name='fechainicio' readonly class='form-control' value='{$datos['fechainicio']}'>
+                                <label for='fechainicio' class='form-label'>Fecha de inicio</label>
+                            </div>
+                        </div>
+                        <div class='col-md-3'>
+                            <div class='form-floating mb-3'>
+                                <input name='fechafin' readonly class='form-control' value='{$datos['fechafin']}'>
+                                <label for='fechafin' class='form-label'>Fecha de cierre</label>
+                            </div>
+                        </div>
+                        <div class='col-md-3'>
+                            <div class='form-floating mb-3'>
+                                <input name='precio' readonly class='form-control' value='{$datos['precio']}'>
+                                <label for='precio' class='form-label'>Precio</label>
                             </div>
                         </div>
                     </div>
@@ -120,7 +168,7 @@
                 </div>
             ";
 
-            echo($input);
+            echo($inputs);
             echo($tabla);
         }
 

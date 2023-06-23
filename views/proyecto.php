@@ -225,7 +225,7 @@
   </div>
 
 
-<!-- Modal -->
+<!-- Modal para editar-->
 <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
@@ -332,7 +332,7 @@
   </div>
 </div>
 
-<!-- Modal Fase -->
+<!-- !Modal para crear una Fase -->
 <div class="modal fade" id="modalFase" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
@@ -416,7 +416,7 @@
   </div>
 </div>
 
-<!-- Modal Info -->
+<!-- Modal para más información -->
 <div class="modal fade" id="modal-info" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">

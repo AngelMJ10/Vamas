@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
           usuario.focus();
           }else{
               alert(`Bienvenido ${datos.usuario}`);
-              window.location.href = './views/';
+              window.location.href = 'views/index.php';
           }
       })
       .catch(error => {

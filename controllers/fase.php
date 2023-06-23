@@ -48,62 +48,67 @@
         if ($_POST['op'] == 'getPhase') {
             $idproyecto = $_POST['idproyecto'];
             $datos = $fase->getPhase($idproyecto);
-            $contador = 1; // Variable contador inicializada en 1
-            echo "
-                <form>
-                    <div class='row mb-2 mt-2'>
-                        <div class='col-md-4'>
-                            <div class='form-floating mb-3'>
-                                <input type='text' readonly class='form-control' value='{$datos[0]['titulo']}' placeholder='Nombre del proyecto' id='name-phase' name='project'>
-                                <label for='project' class='form-label'>Nombre del Proyecto</label>
-                            </div>
-                        </div>
-                        <div class='col-md-4'>
-                            <div class='form-floating mb-3'>
-                                <textarea class='form-control' name='descripcion' readonly placeholder='Descripcion del proyecto'>{$datos[0]['descripcion']}</textarea>
-                                <label for='descripcion' class='form-label'>Descripción</label>
-                            </div>
-                        </div>
-                        <div class='col-md-4'>
-                            <div class='form-floating mb-3'>
-                                <input type='date' class='form-control' readonly placeholder='Inicio de la fase' value='{$datos[0]['InicioProyecto']}' name='fechaini'>
-                                <label for='fechaini' class='form-label'>Fecha de Inicio</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class='row mb-2 mt-2'>
-                        <div class='col-md-4'>
-                            <div class='form-floating mb-3'>
-                                <input type='date' class='form-control' readonly placeholder='Fin de la Fase' value='{$datos[0]['FinProyecto']}' name='fechafin'>
-                                <label for='fechafin' class='form-label'>Fecha de Inicio</label>
-                            </div>
-                        </div>
-                        <div class='col-md-4'>
-                            <div class='form-floating mb-3'>
-                                <input type='number' class='form-control' readonly value='{$datos[0]['precio']}' placeholder='Precio del proyecto' name='precio'>
-                                <label for='precio' class='form-label'></label>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            ";
-            echo "
-                <div class='table-responsive mt-3'>
-                    <table class='table table-hover'> 
-        
-                        <thead>
-                            <th>#</th>
-                            <th>Nombre de la Fase</th>
-                            <th>Inicio de la Fase</th>
-                            <th>Fin de la Fase</th>
-                            <th>Usuario Responsable</th>
-                            <th>Comentario</th>
-                            <th>Porcentaje</th>
-                            <th>Estado</th>
-                        </thead>
+            $contador = 1;
 
-                        <tbody>    
-            ";
+            function vista($datos){
+                $inputs= "
+                    <form>
+                        <div class='row mb-2 mt-2'>
+                            <div class='col-md-4'>
+                                <div class='form-floating mb-3'>
+                                    <input type='text' readonly class='form-control' value='{$datos[0]['titulo']}' placeholder='Nombre del proyecto' id='name-phase' name='project'>
+                                    <label for='project' class='form-label'>Nombre del Proyecto</label>
+                                </div>
+                            </div>
+                            <div class='col-md-4'>
+                                <div class='form-floating mb-3'>
+                                    <textarea class='form-control' name='descripcion' readonly placeholder='Descripcion del proyecto'>{$datos[0]['descripcion']}</textarea>
+                                    <label for='descripcion' class='form-label'>Descripción</label>
+                                </div>
+                            </div>
+                            <div class='col-md-4'>
+                                <div class='form-floating mb-3'>
+                                    <input type='date' class='form-control' readonly placeholder='Inicio de la fase' value='{$datos[0]['InicioProyecto']}' name='fechaini'>
+                                    <label for='fechaini' class='form-label'>Fecha de Inicio</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='row mb-2 mt-2'>
+                            <div class='col-md-4'>
+                                <div class='form-floating mb-3'>
+                                    <input type='date' class='form-control' readonly placeholder='Fin de la Fase' value='{$datos[0]['FinProyecto']}' name='fechafin'>
+                                    <label for='fechafin' class='form-label'>Fecha de Inicio</label>
+                                </div>
+                            </div>
+                            <div class='col-md-4'>
+                                <div class='form-floating mb-3'>
+                                    <input type='number' class='form-control' readonly value='{$datos[0]['precio']}' placeholder='Precio del proyecto' name='precio'>
+                                    <label for='precio' class='form-label'></label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                ";
+                $inicioT=  "
+                    <div class='table-responsive mt-3'>
+                        <table class='table table-hover'> 
+                            <thead>
+                                <th>#</th>
+                                <th>Nombre de la Fase</th>
+                                <th>Inicio de la Fase</th>
+                                <th>Fin de la Fase</th>
+                                <th>Usuario Responsable</th>
+                                <th>Comentario</th>
+                                <th>Porcentaje</th>
+                                <th>Estado</th>
+                            </thead>
+
+                            <tbody>    
+                ";
+                echo $inputs;
+                echo $inicioT;
+            }
+            vista($datos);
             
             foreach ($datos as $registro) {
                 $estado = $registro['estado'] == 1 ? 'Activo' : $registro['estado'];
@@ -111,8 +116,10 @@
                 if ($porcentaje) {
                     $porcentaje = rtrim($porcentaje, "0");
                     $porcentaje = rtrim($porcentaje, ".");
+                } elseif ($porcentaje == null) {
+                    $porcentaje = 0;
                 }
-                echo "                 
+                $tbody= "                 
                     <tr class='mb-2'>
                         <td class='p-3' data-label='#'>{$contador}</td>
                         <td class='p-3' data-label='Nombre de la Fase'>{$registro['nombrefase']}</td>
@@ -124,13 +131,16 @@
                         <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
                     </tr>
                 ";
+                echo $tbody;
                 
                 $contador++;
             }
-            echo " 
+
+            echo "  
                     </tbody>
-                </table>
-            </div>";
+                    </table>
+                </div>
+            ";
         }
 
         if ($_POST['op'] == 'registerPhase') {

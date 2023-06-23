@@ -68,6 +68,18 @@
             }
         }
 
+        public function verEvidencias($data = []){
+            try {
+                $query = "CALL ver_evidencia(?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array($data['idtarea']));
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
         public function obtenerID($idtarea){
             try {
                 $query = "CALL obtener_ids(?)";

@@ -46,6 +46,8 @@ VALUES(1,'AngelMJ','SENATI','A'),(2,'MarksPC','SENATI','S'),
 
 UPDATE colaboradores SET
 	clave = '$2y$10$WY.iP85bEYxBMkVBG0jKO.9Q97kEbofLVwJPUT1OAmsDzLXQ8Pcka';
+UPDATE colaboradores SET
+	correo = 'angelitomasna200410@gmail.com' WHERE idcolaboradores = 1;
 
 SELECT * FROM colaboradores WHERE usuario = 'AngelMJ' AND estado = 1;
 
@@ -186,6 +188,8 @@ CREATE TABLE tareas
 	porcentaje_tarea	DECIMAL(5,2)	NULL DEFAULT 0,
 	porcentaje		DECIMAL(5,2)	NOT NULL,
 	evidencia		JSON		NULL DEFAULT'[]',
+	fecha_inicio_tarea	DATE 		NOT NULL,
+	fecha_fin_tarea		DATE 		NOT NULL,
 	fecha_create		DATETIME	NOT NULL DEFAULT NOW(),
 	fecha_update		DATETIME	NULL,
 	estado			CHAR(1)		NOT NULL DEFAULT '1',
@@ -193,20 +197,24 @@ CREATE TABLE tareas
 	CONSTRAINT fk_idcolaboradores_tar FOREIGN KEY (idcolaboradores) REFERENCES colaboradores (idcolaboradores)
 )ENGINE = INNODB;
 
+INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,fecha_inicio_tarea,fecha_fin_tarea)
+VALUES(1,4,'Programador Front-end','Hacer el boceto y presentar su avance',10,'2023-06-22','2023-06-24');
 
-INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje)
-VALUES(1,4,'Programador Front-end','Hacer el boceto y presentar su avance',10);
+INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,fecha_inicio_tarea,fecha_fin_tarea)
+VALUES('1','3','Programador Front-end','Hacer el boceto y presentar su avance',20,'2023-06-22','2023-06-25');
 
-INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje)
-VALUES('1','5','Programador Front-end','Hacer el boceto y presentar su avance',20);
+INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,fecha_inicio_tarea,fecha_fin_tarea)
+VALUES('1','4','Programador Front-end','Hacer el boceto y presentar su avance',60,'2023-06-22','2023-06-26');
 
-INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje)
-VALUES('1','4','Programador Front-end','Hacer el boceto y presentar su avance',60);
+INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,fecha_inicio_tarea,fecha_fin_tarea)
+VALUES('3','4','Analista de datos','Hacer un modelo de base de datos',60,'2023-06-22','2023-06-27');
 
-INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje)
-VALUES('3','4','Analista de datos','Hacer un modelo de base de datos',60);
+INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,fecha_inicio_tarea,fecha_fin_tarea)
+VALUES('2','3','Implementación de la vista','Implementar la vista al sistemas',60,'2023-06-22','2023-06-28');
 
 SELECT * FROM tareas;
+TRUNCATE TABLE tareas;
+SELECT * FROM colaboradores;
 SELECT * FROM fases;
 
 SELECT tar.porcentaje_tarea * tar.porcentaje /100 FROM tareas tar;
