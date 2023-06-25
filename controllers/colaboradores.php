@@ -2,7 +2,7 @@
     session_start();    //Encabezado script PHP
 
    //La sesión contendrá datos del login en formato de arreglo
-    $_SESSION["login"] = [];    
+
     
     require_once '../models/Colaboradores.php';
     require_once '../models/Mailclave.php';
@@ -11,24 +11,31 @@
         
         $colaborador = new Colaborador();
 
-        if ($_POST['op'] == 'login'){
-          //Buscamos al usuario a través de su nombre
+        if ($_POST['op'] == 'login') {
+          // Verificar si la sesión ya está iniciada
+          if (isset($_SESSION['login']) && $_SESSION['login']) {
+            echo json_encode($_SESSION['login']);
+            return;
+          }
+        
+          // Buscar al usuario a través de su nombre
           $datoObtenido = $colaborador->login($_POST['usuario']);
-          //Arreglo que contiene datos de login
+        
+          // Arreglo que contiene datos de login
           $resultado = [
-            "status"        => false,
+            "status" => false,
             "idcolaboradores" => "",
-            "usuario"       => "",
-            "nivelacceso"   => "",
-            "correo"        => "", 
-            "mensaje"       => ""
+            "usuario" => "",
+            "nivelacceso" => "",
+            "correo" => "",
+            "mensaje" => ""
           ];
-          
-          if ($datoObtenido){
-            //Encontramos el registro
+        
+          if ($datoObtenido) {
+            // Encontramos el registro
             $claveEncriptada = $datoObtenido['clave'];
-            if (password_verify($_POST['clave'], $claveEncriptada)){
-              //Clave correcta
+            if (password_verify($_POST['clave'], $claveEncriptada)) {
+              // Clave correcta
               $resultado["status"] = true;
               $resultado["usuario"] = $datoObtenido["usuario"];
               $resultado["nivelacceso"] = $datoObtenido["nivelacceso"];
@@ -39,20 +46,19 @@
               $_SESSION['usuario'] = $datoObtenido['usuario'];
               $_SESSION['nivelacceso'] = $datoObtenido['nivelacceso'];
               $_SESSION['correo'] = $datoObtenido['correo'];
-            }else{
-              //Clave incorrecta
+            } else {
+              // Clave incorrecta
               $resultado["mensaje"] = "Contraseña incorrecta";
             }
-          }else{
-            //Usuario no encontrado
+          } else {
+            // Usuario no encontrado
             $resultado["mensaje"] = "No se encuentra el usuario";
           }
-      
-          //Actualizando la información en la variable de sesión
+        
+          // Actualizando la información en la variable de sesión
           $_SESSION["login"] = $resultado;
-          
-          //Enviando información de la sesión a la vista
-          
+        
+          // Enviando información de la sesión a la vista
           echo json_encode($resultado);
         }
 
@@ -145,7 +151,32 @@
         }
 
         // Listar colaboradores
-        
+        if ($_POST['op'] == 'listarTcolaboradores') {
+          $datos = $colaborador->listar_t_Colaborador();
+          $contador = 1;
+          foreach ($datos as $datos) {
+            $tbody = "
+              <tr class='mb-2' ondblclick='obtenerInfo({$datos['idcolaboradores']})'>
+                <td class='p-3' data-label='#'>{$contador}</td>
+                <td class='p-3' data-label='Usuario'>{$datos['usuario']}</td>
+                <td class='p-3' data-label='Correo'>{$datos['correo']}</td>
+                <td class='p-3' data-label='Nivel'>{$datos['nivelacceso']}</td>
+                <td class='p-3' data-label='Apellidos'>{$datos['apellidos']}</td>
+                <td class='p-3' data-label='Nombres'>{$datos['nombres']}</td>
+                <td class='p-3' data-label='Habilidades'>{$datos['Habilidades']}</td>
+                <td class='p-3' data-label='Tareas asig.'>{$datos['Tareas']}</td>
+              </tr>
+            ";
+            $contador++;
+            echo $tbody;
+          }
+        }
+
+        if ($_POST['op'] == 'infoColaboradores') {
+          $idcolaboradores = ["idcolaboradores" => $_POST['idcolaboradores']];
+          $datos = $colaborador->obtener_info_Colaborador($idcolaboradores);
+          echo json_encode($datos);
+        }
 
     }
 

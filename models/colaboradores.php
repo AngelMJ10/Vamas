@@ -152,6 +152,35 @@
             }
         }
 
+        // CRUD DE USUARIO
+
+        public function listar_t_Colaborador(){
+            try {
+                $query = "CALL listar_colaboradores()";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute();
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
+        public function obtener_info_Colaborador($data = []){
+            try {
+                $query = "CALL obtener_info_colaborador(?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array(
+                    (
+                        $data['idcolaboradores']
+                    )));
+                $datos = $consulta->fetch(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
     }
 
 ?>

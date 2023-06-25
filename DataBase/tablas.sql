@@ -83,7 +83,7 @@ CREATE TABLE habilidades
 )ENGINE = INNODB;
 
 INSERT INTO habilidades(idcolaboradores,habilidad)
-VALUES('1','Análisis de datos'),('2','Front-end framework React'),('1','Análisis de datos');
+VALUES('1','Front-end Básico'),('2','Front-end framework React'),('1','Análisis de datos');
 SELECT * FROM habilidades;
 
 ----------------------------------------------------------

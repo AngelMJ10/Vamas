@@ -87,7 +87,7 @@ function listar(){
 
     fetch('../controllers/empresa.php',{
         method: 'POST',
-        body: parametrosURL
+        body: parametrosURL 
     })
     .then(respuesta => {
         if(respuesta.ok){

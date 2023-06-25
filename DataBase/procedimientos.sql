@@ -46,6 +46,50 @@ END $$
 
 CALL listar_habilidades();
 
+-----------------------------------------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE listar_colaboradores()
+BEGIN
+	SELECT col.idcolaboradores,col.usuario,col.correo,col.nivelacceso,
+	per.apellidos,per.nombres,
+	COUNT(hab.idhabilidades) AS Habilidades,
+	COUNT(tar.idcolaboradores) AS Tareas
+	FROM colaboradores col
+	INNER JOIN personas per ON col.idpersona = per.idpersona
+	LEFT JOIN habilidades hab ON col.idcolaboradores = hab.idcolaboradores
+	LEFT JOIN tareas tar ON col.idcolaboradores = tar.idcolaboradores
+	WHERE col.estado = '1'
+	GROUP BY col.idcolaboradores;
+END $$
+
+CALL listar_colaboradores()
+
+-------------------------------------------------------------------
+
+SELECT * FROM habilidades;
+-------------------------------------------
+DELIMITER $$ 
+CREATE PROCEDURE obtener_info_colaborador(IN _idcolaboradores SMALLINT)
+BEGIN
+	SELECT col.idcolaboradores, col.usuario, col.correo, col.nivelacceso,
+	per.apellidos, per.nombres, GROUP_CONCAT(hab.habilidad SEPARATOR ', ') AS habilidades,
+	COUNT(tar.idcolaboradores) AS Tareas,
+	 IF(col.nivelacceso = 'S', COUNT(fas.idfase),0) AS Fases
+	FROM colaboradores col
+	INNER JOIN personas per ON col.idpersona = per.idpersona
+	LEFT JOIN habilidades hab ON col.idcolaboradores = hab.idcolaboradores
+	LEFT JOIN fases fas ON col.idcolaboradores = fas.idresponsable
+	LEFT JOIN tareas tar ON col.idcolaboradores = tar.idcolaboradores
+	WHERE col.idcolaboradores = _idcolaboradores AND col.estado = '1'
+	GROUP BY col.idcolaboradores;
+END $$
+DROP PROCEDURE obtener_info_colaborador
+SELECT * FROM habilidades
+
+CALL obtener_info_colaborador(5)
+
+---------------------------------------------------
 
 -- Listar Proyecto
 

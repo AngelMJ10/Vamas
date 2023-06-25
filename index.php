@@ -6,9 +6,8 @@ if (isset($_SESSION['login'])){
   }
 }
 ?>
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -38,10 +37,9 @@ if (isset($_SESSION['login'])){
 
                 <div class="form-group text-right mb-3">
                     <button class="btn btn-outline-info me-3" id="acceder" type="button">Acceder</button>
-                    <a class="btn  btn-outline-dark" id="registrar" href="new-user.php">Registrarse</a>
+                    <a class="btn  btn-outline-dark" id="registrar" href="registrar.php">Registrarse</a>
                 </div>
                 <a href="contraseña.php">Olvidé mi contraseña</a>
-                <a class="btn  btn-outline-dark" id="registrar" href="registrar.php">Registrarse</a>
                 <!-- Fin del formulario -->
             </div>
             <div class="col-md-3"></div>
