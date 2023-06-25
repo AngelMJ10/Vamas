@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const parametros = new URLSearchParams();
       parametros.append("op", "login")
       parametros.append("usuario", usuario.value)
-      parametros.append("clave", textPassword.value);
+      parametros.append("clave", textPassword.value)
 
       fetch(`./controllers/colaboradores.php`, {
       method: 'POST',
@@ -34,4 +34,4 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   botonIniciarSesion.addEventListener("click", validarDatos);
-});
+  });

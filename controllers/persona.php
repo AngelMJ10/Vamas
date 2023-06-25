@@ -16,6 +16,26 @@
             $datos = $persona->getDatos($idpersona);
             echo json_encode($datos);
         }
+
+        if ($_POST['op'] == 'registrarPersona') {
+            $datos = [
+                "apellidos" => $_POST['apellidos'],
+                "nombres" => $_POST['nombres'],
+                "tipodocumento" => $_POST['tipodocumento'],
+                "nrodocumento" => $_POST['nrodocumento'],
+                "telefono" => $_POST['telefono'],
+                "direccion" => $_POST['direccion'],
+                "fechanac" => $_POST['fechanac']
+                
+            ];
+            $persona->registrarPersona($datos);
+        }
+
+        if ($_POST['op'] == 'getID') {
+            $nrodocumento = $_POST['nrodocumento'];
+            $datos = $persona->getID($nrodocumento);
+            echo json_encode($datos);
+        }
     }
 
 ?>

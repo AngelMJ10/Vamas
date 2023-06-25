@@ -1,5 +1,35 @@
 USE vamas2;
 -- P.A
+SELECT * FROM colaboradores;
+
+--------------------------  Registro de usuario y personas ----------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE registrarColaboradores(
+	IN _idpersona SMALLINT,
+	IN _usuario VARCHAR(20),
+	IN _correo VARCHAR(20),
+	IN _clave VARCHAR(200)
+)
+BEGIN
+	INSERT INTO colaboradores(idpersona,usuario,correo,clave,nivelacceso)
+	VALUES(_idpersona,_usuario,_correo,_clave,'C');
+END $$
+
+CALL registrarColaboradores('6','FerMJ','1342364@senati.pe','SENATI');
+
+-----------------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE obtener_idpersona(IN _nrodocumento CHAR(8))
+BEGIN
+	SELECT idpersona 
+	FROM personas
+	WHERE nrodocumento = _nrodocumento;
+END $$
+
+CALL obtener_idpersona(72854857);
+
 
 -- Listar Habilidades
 
@@ -35,6 +65,7 @@ END $$
 
 CALL listar_proyecto();
 
+---------------------------------------
 
 -- Obtener info del proyecto con su ID
 
@@ -55,7 +86,115 @@ END $$
 
 CALL obtener_proyecto(1);
 
+SELECT * FROM personas
+----------------------------------------- RESTAURAR CONTRASEÑA -----------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE buscar(IN _usuario VARCHAR(20))
+BEGIN
+	SELECT  col.idcolaboradores,col.correo,col.usuario,col.clave,per.nombres,per.apellidos,per.nrodocumento
+	FROM colaboradores col
+	INNER JOIN personas per ON col.idpersona = per.idpersona
+	WHERE usuario = _usuario;
+END $$
+
+DROP PROCEDURE buscar
+CALL buscar('AngelMJ')
+
+----------------------------
+
+DELIMITER $$
+CREATE PROCEDURE recuperar_clave
+(
+	IN _idcolaboradores		INT,
+	IN _correo			VARCHAR(200),
+	IN _clavegenerada		CHAR(4)
+)
+BEGIN
+	UPDATE recuperarClave SET estado = '0' WHERE idcolaboradores = _idcolaboradores;
+	INSERT INTO recuperarClave (idcolaboradores,correo,clavegenerada)
+	VALUES(_idcolaboradores , _correo, _clavegenerada);
+END $$
+
+CALL recuperar_clave(1,'1342364@senati.pe','1234');
+
 --------------------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE spu_colaborador_validartiempo
+(
+	IN _idcolaboradores		INT
+)
+BEGIN
+	IF ((SELECT COUNT(*) FROM recuperarclave WHERE idcolaboradores = _idcolaboradores) = 0) THEN
+		SELECT 'GENERAR' AS 'status';
+		ELSE
+		-- Buscamos el ultimo estado del usuario NO IMPORTA SI es 0 o 1
+		IF ((SELECT estado FROM recuperarclave WHERE idcolaboradores = _idcolaboradores ORDER BY 1 DESC LIMIT 1) = 0) THEN
+			SELECT 'GENERAR' AS 'status';
+		ELSE
+			-- En esta seccion, el ultimo registro es '1', No sabemos si esta dentro de los 15 min permitidos
+		IF
+		(
+				(
+				SELECT COUNT(*) FROM recuperarclave
+				WHERE idcolaboradores = _idcolaboradores AND estado = '1' AND NOW() NOT BETWEEN fecharegeneracion AND DATE_ADD(fecharegeneracion, INTERVAL 15 MINUTE)
+				ORDER BY fecharegeneracion DESC LIMIT 1
+				) = 1
+		) THEN
+				-- El usuario tiene estado 1, pero esta fuera de los 15 minutos
+				SELECT 'GENERAR' AS 'status';
+			ELSE
+				SELECT 'DENEGAR' AS 'status';
+			END IF;
+		END IF;
+	END IF;
+END $$
+
+CALL spu_colaborador_validartiempo(1);
+SELECT * FROM recuperarclave;
+
+-----------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE spu_colaborador_validarclave
+(
+	IN _idcolaboradores	  		INT,
+	IN _clavegenerada		CHAR(4)
+)
+BEGIN 
+	IF 
+	(
+		(
+		SELECT clavegenerada FROM recuperarClave 
+		WHERE idcolaboradores = _idcolaboradores 
+		AND estado = '1' 
+		LIMIT 1
+		) = _clavegenerada
+	)
+	THEN 
+		SELECT 'PERMITIDO' AS 'status';
+	ELSE
+		SELECT 'DENEGADO' AS 'status';
+	END IF;
+END $$
+CALL spu_colaborador_validarclave(1,1234);
+
+-------------------------------------
+DELIMITER $$
+CREATE PROCEDURE spu_colaboradores_actualizarclave
+(
+	IN _idcolaboradores		INT,
+	IN _clave			VARCHAR(100)
+)
+BEGIN
+	UPDATE colaboradores SET clave = _clave WHERE idcolaboradores = _idcolaboradores;
+	UPDATE recuperarclave SET estado = '0' WHERE idcolaboradores = _idcolaboradores;
+END $$
+
+CALL spu_usuarios_actualizarclave(?,?);
+
+-------------------------------------
 
 -- Listar Fases
 
@@ -195,7 +334,7 @@ BEGIN
 	WHERE idtarea = _idtarea AND estado = 1;
 END $$
 
-CALL ver_evidencia(3);
+CALL ver_evidencia(1);
 
 -----------------------------------------------
 

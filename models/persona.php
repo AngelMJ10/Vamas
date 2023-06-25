@@ -31,6 +31,35 @@
             }
         }
 
+        public function getID($nrodcumento){
+            try {
+                $consulta = $this->conexion->prepare("call obtener_idpersona(?)");
+                $consulta->execute(array($nrodcumento));
+                $datos = $consulta->fetch(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+        
+        public function registrarPersona($datos){
+            try {
+                $consulta = $this->conexion->prepare("INSERT INTO personas(apellidos,nombres,tipodocumento,nrodocumento,telefono,direccion,fechanac) VALUES(?,?,?,?,?,?,?)");
+                $consulta->execute(array(
+                    $datos['apellidos'],
+                    $datos['nombres'],
+                    $datos['tipodocumento'],
+                    $datos['nrodocumento'],
+                    $datos['telefono'],
+                    $datos['direccion'],
+                    $datos['fechanac']
+                ));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }         
+
+        }
+
     }
 
 ?>

@@ -20,20 +20,18 @@
             } 
         }
 
-        public function registarColaborador($datos){
+        public function registrarColaborador($datos=[]){
             try {
-                $consulta = $this->conexion->prepare("INSERT INTO colaboradores(idpersona,usuario,clave,nivelacceso) VALUES(?,?,?,?)");
+                $consulta = $this->conexion->prepare("CALL registrarColaboradores(?,?,?,?)");
                 $consulta->execute(array(
                     $datos['idpersona'],
                     $datos['usuario'],
-                    $datos['clave'],
-                    $datos['nivelacceso']
+                    $datos['correo'],
+                    $datos['clave']
                 ));
             } catch (Exception $e) {
                 die($e->getMessage());
             }
-            
-
         }
 
         public function listarHabilidades(){
@@ -77,6 +75,79 @@
                 $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
                 return $datos;
             } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
+        public function searchUser($usuario = ''){
+            try{
+              $query = "CALL buscar(?)";
+              $consulta = $this->conexion->prepare($query);
+              $consulta->execute(array($usuario));
+        
+              return $consulta->fetch(PDO::FETCH_ASSOC);
+            }
+            catch(Exception $e){
+              die($e->getMessage());
+            }
+        }
+  
+        public function restoure($data = []){
+            try{
+                $query = "CALL recuperar_clave(?,?,?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array(
+                $data['idcolaboradores'],
+                $data['correo'],
+                $data['clavegenerada']
+                ));
+            }
+            catch(Exception $e){
+                die($e->getMessage());
+            }
+        }
+
+        public function validarClave($data = []){
+            try{
+                $query = "CALL spu_colaborador_validarclave(?,?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array(
+                $data['idcolaboradores'],
+                $data['clavegenerada']
+                ));
+                return $consulta->fetch(PDO::FETCH_ASSOC);
+            }
+            catch(Exception $e){
+                die($e->getMessage());
+            }
+        }
+
+        public function validarTiempo($data = []){
+            try{
+                $query = "CALL spu_colaborador_validartiempo(?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array(
+                $data['idcolaboradores']
+                ));
+                return $consulta->fetch(PDO::FETCH_ASSOC);
+            }
+            catch(Exception $e){
+                die($e->getMessage());
+            }
+        }
+  
+        public function actualizarClave($data = []){
+            $resultado = ["status" => false];
+            try{
+                $query = "CALL spu_colaboradores_actualizarclave(?,?)";
+                $consulta = $this->conexion->prepare($query);
+                $resultado["status"] =$consulta->execute(array(
+                $data['idcolaboradores'],
+                $data['clave']
+                ));
+                return $resultado;
+            }
+            catch(Exception $e){
                 die($e->getMessage());
             }
         }

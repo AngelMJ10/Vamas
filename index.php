@@ -1,13 +1,10 @@
 <?php
-
- session_start();
-
-//¡CUIDADO!
-//Si el usuario YA inició sesión, NO debe visualizar este view
-if (isset($_SESSION['login']) && $_SESSION['login'] == true){
-    header("location:views/");
+session_start();
+if (isset($_SESSION['login'])){
+  if (isset($_SESSION['login']['status']) && $_SESSION['login']['status']) {
+    header('Location:./views/');
   }
-
+}
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +40,8 @@ if (isset($_SESSION['login']) && $_SESSION['login'] == true){
                     <button class="btn btn-outline-info me-3" id="acceder" type="button">Acceder</button>
                     <a class="btn  btn-outline-dark" id="registrar" href="new-user.php">Registrarse</a>
                 </div>
-                <a href="restaurar-user.php">Olvidé mi contraseña</a>
+                <a href="contraseña.php">Olvidé mi contraseña</a>
+                <a class="btn  btn-outline-dark" id="registrar" href="registrar.php">Registrarse</a>
                 <!-- Fin del formulario -->
             </div>
             <div class="col-md-3"></div>

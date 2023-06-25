@@ -71,7 +71,7 @@
                         $porcentajeTarea = rtrim($porcentajeTarea, ".");
                     }
                     $tbodyC= "
-                        <tr>
+                        <tr ondblclick='obtenerInfo({$registro['idtarea']})'>
                             <td class='p-3' data-label='#'>{$contador}</td>
                             <td class='p-3' data-label='Titulo del Proyecto'>{$registro['titulo']}</td>
                             <td class='p-3' data-label='Fase'>{$registro['nombrefase']}</td>
@@ -82,7 +82,7 @@
                             <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>{$estado}</td>
                             <td data-label='Acciones'>
                                 <div class='btn-group' role='group'>
-                                    <button type='button'title='Clic, para editar la tarea.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
+                                    <button type='button' title='Clic, para editar la tarea.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
                                     <button type='button' onclick='openModal({$registro['idtarea']})' data-id='{$registro['idtarea']}' class='btn btn-outline-primary btn-sm' title='Clic, para enviar el trabajo'><i class='fas fa-paper-plane'></i></button>
                                     <button type='button' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
                                 </div>
@@ -267,22 +267,30 @@
             $data = ["idtarea" => $_POST['idtarea']];
             $evidencias = $tarea->verEvidencias($data);
         
-            foreach ($evidencias as $evidencia) {
-                $evidenciaArray = json_decode($evidencia['evidencia'], true);
+            if (empty($evidencias) || $evidencias[0]['evidencia'] == '[]') {
+                echo "
+                    <tr>
+                        <td colspan='9' class='text-center'>No se han enviado avances.</td>
+                    </tr>
+                ";
+            } else {
+                foreach ($evidencias as $evidencia) {
+                    $evidenciaArray = json_decode($evidencia['evidencia'], true);
         
-                foreach ($evidenciaArray as $item) {
-                    $tbody = "
-                        <tr>
-                            <td>{$item['mensaje']}</td>
-                            <td><a href='{$item['documento']}' target='_blank'>Enlace al documento</a></td>
-                            <td>{$item['fecha']}</td>
-                            <td>{$item['porcentaje']}%</td>
-                        </tr>
-                        ";    
-                    echo $tbody;
+                    foreach ($evidenciaArray as $item) {
+                        $tbody = "
+                            <tr>
+                                <td>{$item['mensaje']}</td>
+                                <td><a href='{$item['documento']}' target='_blank'>Enlace al documento</a></td>
+                                <td>{$item['fecha']}</td>
+                                <td>{$item['porcentaje']}%</td>
+                            </tr>
+                        ";
+                        echo $tbody;
+                    }
                 }
             }
-        }   
+        }
         
         if ($_POST['op'] == 'obtenerID') {
             $idtarea  = $_POST['idtarea'];
