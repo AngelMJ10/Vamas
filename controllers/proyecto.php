@@ -21,7 +21,7 @@
                     $porcentaje = 0;
                 }
                 echo "
-                    <tr class='mb-2'>
+                    <tr class='mb-2' onclick='info({$registro['idproyecto']})'>
                         <td class='p-3' data-label='#'>{$registro['idproyecto']}</td>
                         <td class='p-3' data-label='Titulo'>{$registro['titulo']}</td>
                         <td class='p-3' data-label='Fecha de Inicio'>{$registro['fechainicio']}</td>
@@ -32,9 +32,8 @@
                         <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
                         <td data-label='Acciones'>
                             <div class='btn-group' role='group'>
-                                <button type='button' onclick='get({$registro['idproyecto']})' data-id='{$registro['idproyecto']}' title='Clic, para editar el proyecto.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
-                                <button type='button' onclick='addPhase({$registro['idproyecto']})' data-id='{$registro['idproyecto']}' class='btn btn-outline-success btn-sm' title='Clic, para agregar una fase.'><i class='fas fa-arrow-alt-circle-down'></i></button>
-                                <button type='button' onclick='info({$registro['idproyecto']})' data-id='{$registro['idproyecto']}' class='btn btn-outline-primary btn-sm' title='Clic, para ver más información'><i class='fa-sharp fa-solid fa-circle-info'></i></button>
+                                <button type='button' onclick='get({$registro['idproyecto']})'  title='Clic, para editar el proyecto.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
+                                <button type='button' onclick='addPhase({$registro['idproyecto']})' class='btn btn-outline-success btn-sm' title='Clic, para agregar una fase.'><i class='fas fa-arrow-alt-circle-down'></i></button>
                                 <button type='button' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
                             </div>
                         </td>
@@ -54,6 +53,16 @@
             $idusuariore = $_SESSION['idcolaboradores'];
             $proyecto->registrar($idtipoproyecto, $idempresa, $titulo, $descripcion, $fechainicio, $fechafin, $precio,$idusuariore);
             echo $idusuariore;
+        }
+
+        if ($_POST['op'] == 'editar') {
+            $data = [
+                "idproyecto" => $_POST['idproyecto'] , "idtipoproyecto" => $_POST['idtipoproyecto'] , "idempresa" => $_POST['idempresa'],
+                "titulo" => $_POST['titulo'], "descripcion" => $_POST['descripcion'], "fechainicio" => $_POST['fechainicio'],
+                "fechafin" => $_POST['fechafin'], "precio" => $_POST['precio'], "idusuariore" => $_POST['idusuariore']    
+            ];
+            $proyecto->actualizar_proyecto($data);
+            echo "Proyecto creado";
         }
 
         if ($_POST['op'] == 'get') {
@@ -129,47 +138,192 @@
                     </div>
                 </form>
             ";
-            
-            $body= "
-                <tr class='mb-2'>
-                    <td class='p-3' data-label='#'>{$datos['idproyecto']}</td>
-                    <td class='p-3' data-label='Tipo de Empresa'>{$datos['tipoproyecto']}</td>
-                    <td class='p-3' data-label='Empresa'>{$datos['nombre']}</td>
-                    <td class='p-3' data-label='Titulo'>{$datos['titulo']}</td>
-                    <td class='p-3' data-label='Fecha de Inicio'>{$datos['fechainicio']}</td>
-                    <td class='p-3' data-label='Fecha de Fin'>{$datos['fechafin']}</td>
-                    <td class='p-3' data-label='Porcentaje'>{$porcentaje}%</td>
-                    <td class='p-3' data-label='Precio'>{$datos['precio']}%</td>
-                    <td class='p-3' data-label='N° Fases'>{$datos['Fases']}</td>
-                </tr>
-            ";
 
-            $tabla = "
-                <div class='table-responsive mt-3' id='tabla-info'>
-                    <table class='table table-hover'> 
-        
-                        <thead>
-                            <th>#</th>
-                            <th>Tipo de Proyecto</th>
-                            <th>Empresa</th>
-                            <th>Titulo</th>
-                            <th>Fecha de Inicio</th>
-                            <th>Fecha de Fin</th>
-                            <th>Porcentaje</th>
-                            <th>N° Fases</th>
-                            <th>Estado</th>
-                        </thead>
-        
-                        <tbody>
-                        {$body}
-                        </tbody>
-                    
+            echo($inputs);
+        }
+
+        if ($_POST['op'] == 'getPhase') {
+            require_once '../models/Fase.php';
+            $fase = new Fase();
+            $idproyecto = $_POST['idproyecto'];
+            $datos = $fase->getPhase($idproyecto);
+            $contador = 1;
+
+            function vista($datos){
+                $inicioT=  "
+                    <div class='table-responsive mt-3'>
+                        <table class='table table-hover'> 
+                            <thead>
+                                <th>#</th>
+                                <th>Nombre de la Fase</th>
+                                <th>Inicio de la Fase</th>
+                                <th>Fin de la Fase</th>
+                                <th>Usuario Responsable</th>
+                                <th>Comentario</th>
+                                <th>Porcentaje</th>
+                                <th>Estado</th>
+                            </thead>
+                            <tbody>    
+                ";
+                echo $inicioT;
+            }
+            vista($datos);
+            
+            foreach ($datos as $registro) {
+                $estado = $registro['estado'] == 1 ? 'Activo' : $registro['estado'];
+                $porcentaje = $registro['porcentaje_fase'];
+                if ($porcentaje) {
+                    $porcentaje = rtrim($porcentaje, "0");
+                    $porcentaje = rtrim($porcentaje, ".");
+                } elseif ($porcentaje == null) {
+                    $porcentaje = 0;
+                }
+                $tbody= "                 
+                    <tr class='mb-2' ondblclick='modalInfoFase({$registro['idfase']})'>
+                        <td class='p-3' data-label='#'>{$contador}</td>
+                        <td class='p-3' data-label='Nombre de la Fase'>{$registro['nombrefase']}</td>
+                        <td class='p-3' data-label='Inicio de la fase'>{$registro['fechainicio']}</td>
+                        <td class='p-3' data-label='Fin de la fase'>{$registro['fechafin']}</td>
+                        <td class='p-3' data-label='Usuario Responsable'>{$registro['usuario']}</td>
+                        <td class='p-3' data-label='Comentario'>{$registro['comentario']}</td>
+                        <td class='p-3' data-label='Porcentaje'>{$porcentaje}%</td>
+                        <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
+                    </tr>
+                ";
+                echo $tbody;
+                
+                $contador++;
+            }
+
+            echo "  
+                    </tbody>
                     </table>
                 </div>
             ";
+        }
 
-            echo($inputs);
-            echo($tabla);
+        if ($_POST['op'] == 'infoFase') {
+            require_once '../models/Fase.php';
+            $fase = new Fase();
+            $ifase = $_POST['idfase'];
+            $datos = $fase->infoFases($ifase);
+            $contador = 1;
+
+            function vista($datos){
+                $inputs= "
+                    <form>
+                        <div class='row mb-2 mt-2'>
+                            <div class='col-md-4'>
+                                <div class='form-floating mb-3'>
+                                    <input type='text' readonly class='form-control' value='{$datos[0]['nombrefase']}' placeholder='Nombre del proyecto' id='name-phase' name='project'>
+                                    <label for='project' class='form-label'>Nombre del Proyecto</label>
+                                </div>
+                            </div>
+                            <div class='col-md-4'>
+                                <div class='form-floating mb-3'>
+                                    <textarea class='form-control' name='descripcion' readonly placeholder='Descripcion del proyecto'>{$datos[0]['descripcion']}</textarea>
+                                    <label for='descripcion' class='form-label'>Descripción</label>
+                                </div>
+                            </div>
+                            <div class='col-md-4'>
+                                <div class='form-floating mb-3'>
+                                    <input type='date' class='form-control' readonly placeholder='Inicio de la fase' value='{$datos[0]['fechainicio']}' name='fechaini'>
+                                    <label for='fechaini' class='form-label'>Fecha de Inicio</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='row mb-2 mt-2'>
+                            <div class='col-md-4'>
+                                <div class='form-floating mb-3'>
+                                    <input type='date' class='form-control' readonly placeholder='Fin de la Fase' value='{$datos[0]['fechafin']}' name='fechafin'>
+                                    <label for='fechafin' class='form-label'>Fecha de Inicio</label>
+                                </div>
+                            </div>
+                            <div class='col-md-4'>
+                                <div class='form-floating mb-3'>
+                                    <input type='text' class='form-control' readonly value='{$datos[0]['usuario']}' placeholder='Usuario' name='precio'>
+                                    <label for='precio' class='form-label'>Usuario Responsable</label>
+                                </div>
+                            </div>
+                            <div class='col-md-4'>
+                                <div class='form-floating mb-3'>
+                                    <textarea type='text' class='form-control' readonly value='{$datos[0]['comentario']}' placeholder='Comentario' name='precio'>{$datos[0]['comentario']}</textarea>
+                                    <label for='precio' class='form-label'>Comentario</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                ";
+                echo $inputs;
+            }
+            vista($datos);
+        }
+
+        if ($_POST['op'] == 'tabla-fase') {
+            require_once '../models/Fase.php';
+            $fase = new Fase();
+            $idfase = $_POST['idfase'];
+            $datos = $fase->tablaFases($idfase);
+            $contador = 1;
+
+            function vista($datos){
+                $inicioT=  "
+                    <div class='table-responsive mt-3'>
+                        <table class='table table-hover'> 
+                            <thead>
+                                <th>#</th>
+                                <th>Nombre de la tarea</th>
+                                <th>Inicio de la Tarea</th>
+                                <th>Fin de la Tarea</th>
+                                <th>Usuario Asignado</th>
+                                <th>Porcentaje</th>
+                                <th>P. Proyecto</th>
+                                <th>Roles</th>
+                                <th>Estado</th>
+                            </thead>
+                            <tbody>    
+                ";
+                echo $inicioT;
+            }
+            vista($datos);
+            
+            foreach ($datos as $registro) {
+                
+                $estado = $registro['estado'] == 1 ? 'Activo' : $registro['estado'];
+                $porcentaje = $registro['porcentaje'];
+                $porcentaje_tarea = $registro['porcentaje_tarea'];
+                if ($porcentaje) {
+                    $porcentaje = rtrim($porcentaje, "0");
+                    $porcentaje = rtrim($porcentaje, ".");
+                    $porcentaje_tarea = rtrim($porcentaje_tarea, "0");
+                    $porcentaje_tarea = rtrim($porcentaje_tarea, ".");
+                } elseif ($porcentaje == null) {
+                    $porcentaje = 0;
+                    $porcentaje_tarea = 0;
+                }
+                $tbody= "                 
+                    <tr class='mb-2' ondblclick='modalInfoTarea({$registro['idtarea']})'>
+                        <td class='p-3' data-label='#'>{$contador}</td>
+                        <td class='p-3' data-label='Nombre de la tarea'>{$registro['tarea']}</td>
+                        <td class='p-3' data-label='Inicio de la tarea'>{$registro['fecha_inicio_tarea']}</td>
+                        <td class='p-3' data-label='Fin de la tarea'>{$registro['fecha_fin_tarea']}</td>
+                        <td class='p-3' data-label='Usuario Responsable'>{$registro['usuario_tarea']}</td>
+                        <td class='p-3' data-label='Porcentaje'>{$porcentaje}%</td>
+                        <td class='p-3' data-label='Porcentaje en el trabajo'>{$porcentaje_tarea}%</td>
+                        <td class='p-3' data-label='Porcentaje en el trabajo'>{$registro['roles']}</td>
+                        <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
+                    </tr>
+                ";
+                echo $tbody;
+                
+                $contador++;
+            }
+
+            echo "  
+                    </tbody>
+                    </table>
+                </div>
+            ";
         }
 
         if ($_POST['op'] == 'listartipoproyecto') {

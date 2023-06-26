@@ -29,6 +29,26 @@
             }
         }
 
+        public function actualizar_proyecto($data = []){
+            try {
+                $query = "CALL editar_proyecto(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array(
+                    $data['idproyecto'],
+                    $data['idtipoproyecto'],
+                    $data['idempresa'],
+                    $data['titulo'],
+                    $data['descripcion'],
+                    $data['fechainicio'],
+                    $data['fechafin'],
+                    $data['precio'],
+                    $data['idusuariore']
+                ));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
         public function get($idproyecto){
             try {
                 $consulta = $this->conexion->prepare("CALL obtener_proyecto(?)");

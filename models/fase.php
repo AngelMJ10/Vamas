@@ -20,10 +20,10 @@
             }
         }
 
-        public function registerPhase($idproyecto, $idresponsable, $nombrefase, $fechainicio, $fechafin, $comentario){
+        public function registerPhase($idproyecto, $idresponsable, $nombrefase, $fechainicio, $fechafin,$porcentaje, $comentario){
             try {
-                $consulta = $this->conexion->prepare("INSERT INTO fases(idproyecto,idresponsable,nombrefase,fechainicio,fechafin,comentario) values(?,?,?,?,?,?)");
-                $consulta->execute(array($idproyecto, $idresponsable, $nombrefase, $fechainicio, $fechafin, $comentario));
+                $consulta = $this->conexion->prepare("INSERT INTO fases(idproyecto,idresponsable,nombrefase,fechainicio,fechafin,porcentaje,comentario) values(?,?,?,?,?,?,?)");
+                $consulta->execute(array($idproyecto, $idresponsable, $nombrefase, $fechainicio, $fechafin,$porcentaje, $comentario));
             } catch (Exception $e) {
                 die($e->getMessage());
             }
@@ -33,6 +33,30 @@
             try {
                 $consulta = $this->conexion->prepare("Call listar_fase_proyecto(?)");
                 $consulta->execute(array($idproyecto));
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
+        public function infoFases($ifase){
+            try {
+                $query = "CALL obtener_fase(?);";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array($ifase));
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
+        public function tablaFases($ifase){
+            try {
+                $query = "CALL obtener_tareas_fase(?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array($ifase));
                 $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
                 return $datos;
             } catch (Exception $e) {

@@ -15,7 +15,7 @@ function obtenerInfo(id){
     const parametros = new URLSearchParams();
     parametros.append("op", "infoColaboradores");
     parametros.append("idcolaboradores", id);
-    fetch('../controllers/colaboradores.php', {
+    fetch('../controllers/persona.php', {
         method: 'POST',
         body: parametros
     })
@@ -41,7 +41,7 @@ function obtenerInfo(id){
 function listar(){
     const parametros = new URLSearchParams();
     parametros.append("op", "listarTcolaboradores");
-    fetch('../controllers/colaboradores.php', {
+    fetch('../controllers/persona.php', {
         method: 'POST',
         body: parametros
     })

@@ -279,7 +279,6 @@
   </div>
 </div>
 
-<script src="js/colaboradores.js"></script>
-    
+<script src="js/colaboradores.js"></script>    
 </body>
 </html>

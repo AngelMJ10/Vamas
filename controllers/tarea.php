@@ -291,10 +291,117 @@
                 }
             }
         }
+
+        if ($_POST['op'] == 'verEvidenciasT') {
+            $data = ["idtarea" => $_POST['idtarea']];
+            $evidencias = $tarea->verEvidencias($data);
+            $inicioT="
+                <table class='table table-hover'>
+                <thead>
+                <th>Mensaje</th>
+                <th>Documento</th>
+                <th>Fecha</th>
+                <th>Porcentaje</th>
+                </thead>
+                <tbody>
+            ";
+            echo $inicioT;
+        
+            if (empty($evidencias) || $evidencias[0]['evidencia'] == '[]') {
+                echo "
+                    <tr>
+                        <td colspan='9' class='text-center'>No se han enviado avances.</td>
+                    </tr>
+                ";
+            } else {
+                foreach ($evidencias as $evidencia) {
+                    $evidenciaArray = json_decode($evidencia['evidencia'], true);
+        
+                    foreach ($evidenciaArray as $item) {
+                        $tbody = "
+                            <tr>
+                                <td>{$item['mensaje']}</td>
+                                <td><a href='{$item['documento']}' target='_blank'>Enlace al documento</a></td>
+                                <td>{$item['fecha']}</td>
+                                <td>{$item['porcentaje']}%</td>
+                            </tr>
+                        ";
+                        echo $tbody;
+                    }
+                }
+            }
+            echo "</tbody>
+            </table>";
+        }
         
         if ($_POST['op'] == 'obtenerID') {
             $idtarea  = $_POST['idtarea'];
             echo json_encode($tarea->obtenerID($idtarea));
+        }
+
+        if ($_POST['op'] == 'obtenerTarea') {
+            $idtarea = $_POST['idtarea'];
+            $datos = $tarea->getWork($idtarea);
+            function vista($datos){
+                $porcentaje = $datos['porcentaje'];
+                $porcentaje_tarea = $datos['porcentaje_tarea'];
+                // If para poder quitar ".00" de los porcentajes y en caso del que porcentaje sea NULL,
+                // Se muestre como "0" 
+                if ($porcentaje) {
+                    $porcentaje = rtrim($porcentaje, "0");
+                    $porcentaje = rtrim($porcentaje, ".");
+                    $porcentaje_tarea = rtrim($porcentaje_tarea, "0");
+                    $porcentaje_tarea = rtrim($porcentaje_tarea, ".");
+                } elseif ($porcentaje == null){
+                    $porcentaje = 0;
+                }
+                $inputs= "
+                    <form>
+                        <div class='row mb-2 mt-2'>
+                            <div class='col-md-4'>
+                                <div class='form-floating mb-3'>
+                                    <input type='text' readonly class='form-control' value='{$datos['tarea']}' placeholder='Tarea encargada' id='name-phase' name='project'>
+                                    <label for='project' class='form-label'>Tarea encargada</label>
+                                </div>
+                            </div>
+                            <div class='col-md-4'>
+                                <div class='form-floating mb-3'>
+                                    <input class='form-control' name='descripcion' value='{$datos['usuario_tarea']}' readonly placeholder='Usuario asignado'>
+                                    <label for='descripcion' class='form-label'>Usuario asignado</label>
+                                </div>
+                            </div>
+                            <div class='col-md-4'>
+                                <div class='form-floating mb-3'>
+                                    <input type='date' class='form-control' readonly placeholder='Inicio de la fase' value='{$datos['fecha_inicio_tarea']}' name='fechaini'>
+                                    <label for='fechaini' class='form-label'>Fecha de Inicio</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='row mb-2 mt-2'>
+                            <div class='col-md-4'>
+                                <div class='form-floating mb-3'>
+                                    <input type='date' class='form-control' readonly placeholder='Fin de la Fase' value='{$datos['fecha_fin_tarea']}' name='fechafin'>
+                                    <label for='fechafin' class='form-label'>Fecha de Inicio</label>
+                                </div>
+                            </div>
+                            <div class='col-md-4'>
+                                <div class='form-floating mb-3'>
+                                    <input type='number' class='form-control' readonly value='{$porcentaje_tarea}' placeholder='Porcentaje de avance' name='precio'>
+                                    <label for='precio' class='form-label'>Porcentaje de avance</label>
+                                </div>
+                            </div>
+                            <div class='col-md-4'>
+                                <div class='form-floating mb-3'>
+                                    <input type='number' class='form-control' readonly value='{$porcentaje}%' placeholder='Porcentaje en la fase' name='precio'>
+                                    <label for='precio' class='form-label'>Porcentaje en la fase</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                ";
+                echo $inputs;
+            }
+            vista($datos);
         }
         
     }

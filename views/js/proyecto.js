@@ -4,6 +4,7 @@ function createPhase(idproyecto){
     const fechainicio = document.querySelector("#fecha-inicio-phase");
     const fechafin = document.querySelector("#fecha-fin-phase");
     const comentario = document.querySelector("#comentario");
+    const porcentaje = document.querySelector("#porcentaje");
 
     const confirmacion = confirm("¿Estás seguro de los datos ingresados para la fase?");
 
@@ -15,6 +16,7 @@ function createPhase(idproyecto){
         parametrosURL.append("nombrefase", namephase.value);
         parametrosURL.append("fechainicio", fechainicio.value);
         parametrosURL.append("fechafin", fechafin.value);
+        parametrosURL.append("porcentaje", porcentaje.value);
         parametrosURL.append("comentario", comentario.value);
         
 
@@ -31,6 +33,134 @@ function createPhase(idproyecto){
             }
         })
     }
+}
+
+function modalInfoFase(id) {
+    const inputs = document.querySelector("#inputs-fase");
+    const modalInfoFase = document.querySelector("#modal-info-fase");
+    const parametros = new URLSearchParams();
+    parametros.append("op" ,"infoFase");
+    parametros.append("idfase" , id);
+    fetch('../controllers/proyecto.php', {
+        method: 'POST',
+        body: parametros
+      })
+      .then(respuesta => {
+        if (respuesta.ok) {
+          return respuesta.text();
+        } else {
+          throw new Error('Error en la solicitud');
+        }
+      })
+      .then(datos => {
+        inputs.innerHTML = datos;
+        const bootstrapModal = new bootstrap.Modal(modalInfoFase);
+        bootstrapModal.show();
+        tabla_Fase(id);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+}
+
+function tabla_Fase(id) {
+    const tabla = document.querySelector("#tabla-info-fase");
+    const parametros = new URLSearchParams();
+    parametros.append("op" ,"tabla-fase");
+    parametros.append("idfase" , id);
+    fetch('../controllers/proyecto.php', {
+        method: 'POST',
+        body: parametros
+      })
+      .then(respuesta => {
+        if (respuesta.ok) {
+          return respuesta.text();
+        } else {
+          throw new Error('Error en la solicitud');
+        }
+      })
+      .then(datos => {
+        tabla.innerHTML = datos;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+}
+
+function modalInfoTarea(id) {
+  const inputs = document.querySelector("#inputs-tarea");
+  const modalInfoTarea = document.querySelector("#modal-info-tarea");
+  const parametros = new URLSearchParams();
+  parametros.append("op" ,"obtenerTarea");
+  parametros.append("idtarea" , id);
+  fetch('../controllers/tarea.php', {
+      method: 'POST',
+      body: parametros
+    })
+    .then(respuesta => {
+      if (respuesta.ok) {
+        return respuesta.text();
+      } else {
+        throw new Error('Error en la solicitud');
+      }
+    })
+    .then(datos => {
+      inputs.innerHTML = datos;
+      const bootstrapModal = new bootstrap.Modal(modalInfoTarea);
+      bootstrapModal.show();
+      verEvidenciasTarear(id)
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
+function verEvidenciasTarear(id) {
+  const tabla_Tareas = document.querySelector("#tabla-info-tarea");
+  const parametros = new URLSearchParams();
+  parametros.append("op", "verEvidenciasT");
+  parametros.append("idtarea", id);
+  fetch('../controllers/tarea.php', {
+    method: 'POST',
+    body: parametros
+  })
+  .then(respuesta => {
+    if (respuesta.ok) {
+      return respuesta.text();
+    } else {
+      throw new Error('Error en la solicitud');
+    }
+  })
+  .then(datos => {
+    tabla_Tareas.innerHTML = datos;
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+}
+
+function getPhase(id) {
+    const tabla_fases = document.querySelector("#tabla-fase");
+    const parametros = new URLSearchParams();
+    parametros.append("op" ,"getPhase");
+    parametros.append("idproyecto" , id);
+    fetch('../controllers/proyecto.php', {
+        method: 'POST',
+        body: parametros
+      })
+      .then(respuesta => {
+        if (respuesta.ok) {
+          return respuesta.text();
+        } else {
+          throw new Error('Error en la solicitud');
+        }
+      })
+      .then(datos => {
+        tabla_fases.innerHTML = datos;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
 }
 
 function get(id) {
@@ -88,7 +218,7 @@ function get(id) {
 
 function info(id) {
     const modal = document.querySelector("#modal-info");
-    const body = document.querySelector("#body-info");
+    const body = document.querySelector("#inputs");
 
     const parametrosURL = new URLSearchParams();
     parametrosURL.append("op", "info");
@@ -109,6 +239,7 @@ function info(id) {
         body.innerHTML = datos;
         const bootstrapModal = new bootstrap.Modal(modal);
         bootstrapModal.show();
+        getPhase(id);
     })
     .catch(error => {
       console.error('Error:', error);

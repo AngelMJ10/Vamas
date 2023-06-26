@@ -36,6 +36,39 @@
             $datos = $persona->getID($nrodocumento);
             echo json_encode($datos);
         }
+
+         // Listar colaboradores
+          if ($_POST['op'] == 'listarTcolaboradores') {
+            require_once '../models/Colaboradores.php';
+            $colaborador = new Colaborador();
+            $datos = $colaborador->listar_t_Colaborador();
+            $contador = 1;
+            foreach ($datos as $datos) {
+              $tbody = "
+                <tr class='mb-2' ondblclick='obtenerInfo({$datos['idcolaboradores']})'>
+                  <td class='p-3' data-label='#'>{$contador}</td>
+                  <td class='p-3' data-label='Usuario'>{$datos['usuario']}</td>
+                  <td class='p-3' data-label='Correo'>{$datos['correo']}</td>
+                  <td class='p-3' data-label='Nivel'>{$datos['nivelacceso']}</td>
+                  <td class='p-3' data-label='Apellidos'>{$datos['apellidos']}</td>
+                  <td class='p-3' data-label='Nombres'>{$datos['nombres']}</td>
+                  <td class='p-3' data-label='Habilidades'>{$datos['Habilidades']}</td>
+                  <td class='p-3' data-label='Tareas asig.'>{$datos['Tareas']}</td>
+                </tr>
+              ";
+              $contador++;
+              echo $tbody;
+            }
+          }
+  
+          if ($_POST['op'] == 'infoColaboradores') {
+            require_once '../models/Colaboradores.php';
+            $colaborador = new Colaborador();
+            $idcolaboradores = ["idcolaboradores" => $_POST['idcolaboradores']];
+            $datos = $colaborador->obtener_info_Colaborador($idcolaboradores);
+            echo json_encode($datos);
+          }
+
     }
 
 ?>

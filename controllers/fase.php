@@ -149,8 +149,9 @@
             $nombrefase = $_POST['nombrefase'];
             $fechainicio = $_POST['fechainicio'];
             $fechafin = $_POST['fechafin'];
+            $porcentaje = $_POST['porcentaje'];
             $comentario = $_POST['comentario'];
-            $fase->registerPhase($idproyecto, $idresponsable, $nombrefase, $fechainicio, $fechafin ,$comentario);
+            $fase->registerPhase($idproyecto, $idresponsable, $nombrefase, $fechainicio, $fechafin, $porcentaje ,$comentario);
         }
 
         if ($_POST['op'] == 'obtenerPorcentajeF') {

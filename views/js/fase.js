@@ -110,6 +110,7 @@ function createPhase(){
     const respnsible = document.querySelector("#responsible-phase");
     const fechainicio = document.querySelector("#fecha-inicio-phase");
     const fechafin = document.querySelector("#fecha-fin-phase");
+    const porcentaje = document.querySelector("#porcentaje");
     const comentario = document.querySelector("#comentario");
 
     const confirmacion = confirm("¿Estás seguro de los datos ingresados para la fase?");
@@ -122,6 +123,7 @@ function createPhase(){
         parametrosURL.append("nombrefase", namephase.value);
         parametrosURL.append("fechainicio", fechainicio.value);
         parametrosURL.append("fechafin", fechafin.value);
+        parametrosURL.append("porcentaje", porcentaje.value);
         parametrosURL.append("comentario", comentario.value);
         
 

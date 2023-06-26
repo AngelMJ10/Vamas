@@ -373,6 +373,7 @@
           </div>
 
           <div class="row mb-3">
+
             <div class="col-md-3">
               <div class="form-floating mb-3">
                 <select name="responsible" id="responsible-phase" class="form-control form-control-sm">
@@ -397,11 +398,20 @@
 
             <div class="col-md-3">
               <div class="form-floating">
+                <input name="porcentaje" type='number' class="form-control" placeholder="Porcentaje" id="porcentaje">
+                <label form="porcentaje" class="form-label">Porcentaje</label>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-3">
+              <div class="form-floating">
                 <textarea name="comentario" class="form-control" placeholder="Comentario" id="comentario"></textarea>
                 <label form="comentario" class="form-label">Comentario</label>
               </div>
             </div>
-          
           </div>
 
           <button type="button" id="create-phase"  class="btn btn-outline-primary">Agregar</button>
@@ -416,7 +426,7 @@
   </div>
 </div>
 
-<!-- Modal para más información -->
+<!-- Modal para más información del proyecto -->
 <div class="modal fade" id="modal-info" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
@@ -425,7 +435,15 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="body-info">
-      
+        <div class="mb-5" id="inputs">
+
+        </div>
+
+        <div id="tabla-fase">
+
+        </div>
+
+      </div>
         <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>
@@ -433,6 +451,56 @@
     </div>
   </div>
 </div>
+
+<!-- Modal para más información de la fase -->
+<div class="modal fade" id="modal-info-fase" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header text-light" style='background-color: #005478;'>
+        <h1 class="modal-title fs-5" id="modalEditarLabel">Información de la fase</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="body-info">
+        <div class="mb-5" id="inputs-fase">
+        </div>
+
+        <div id="tabla-info-fase">
+        </div>
+
+      </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para más información de las tareas -->
+<div class="modal fade" id="modal-info-tarea" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header text-light" style='background-color: #005478;'>
+        <h1 class="modal-title fs-5" id="modalEditarLabel">Información de la Tarea</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="body-info">
+        <div class="mb-5" id="inputs-tarea">
+        </div>
+
+        <div class="table-responsive" id="tabla-info-tarea">
+          
+        </div>
+
+      </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script src="js/proyecto.js"></script>
     

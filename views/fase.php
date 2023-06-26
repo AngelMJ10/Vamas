@@ -192,7 +192,7 @@
   </div>
 
 
-<!-- Modal -->
+<!-- Modal-->
 <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">

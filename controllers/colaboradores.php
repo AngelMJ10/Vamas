@@ -3,7 +3,8 @@
 
    //La sesión contendrá datos del login en formato de arreglo
 
-    
+    //La sesión contendrá datos del login en formato de arreglo
+    $_SESSION["login"] = [];
     require_once '../models/Colaboradores.php';
     require_once '../models/Mailclave.php';
 
@@ -12,11 +13,6 @@
         $colaborador = new Colaborador();
 
         if ($_POST['op'] == 'login') {
-          // Verificar si la sesión ya está iniciada
-          if (isset($_SESSION['login']) && $_SESSION['login']) {
-            echo json_encode($_SESSION['login']);
-            return;
-          }
         
           // Buscar al usuario a través de su nombre
           $datoObtenido = $colaborador->login($_POST['usuario']);
@@ -37,10 +33,12 @@
             if (password_verify($_POST['clave'], $claveEncriptada)) {
               // Clave correcta
               $resultado["status"] = true;
+              $resultado['idcolaboradores'] = $datoObtenido['idcolaboradores'];
               $resultado["usuario"] = $datoObtenido["usuario"];
               $resultado["nivelacceso"] = $datoObtenido["nivelacceso"];
               $resultado["idcolaboradores"] = $datoObtenido["idcolaboradores"];
               $resultado["correo"] = $datoObtenido["correo"];
+              
               $_SESSION['login'] = true;
               $_SESSION['idcolaboradores'] = $datoObtenido['idcolaboradores'];
               $_SESSION['usuario'] = $datoObtenido['usuario'];

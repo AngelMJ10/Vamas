@@ -30,6 +30,7 @@ END $$
 
 CALL obtener_idpersona(72854857);
 
+-------------------------------------------------
 
 -- Listar Habilidades
 
@@ -65,10 +66,8 @@ END $$
 
 CALL listar_colaboradores()
 
--------------------------------------------------------------------
-
-SELECT * FROM habilidades;
 -------------------------------------------
+
 DELIMITER $$ 
 CREATE PROCEDURE obtener_info_colaborador(IN _idcolaboradores SMALLINT)
 BEGIN
@@ -84,10 +83,10 @@ BEGIN
 	WHERE col.idcolaboradores = _idcolaboradores AND col.estado = '1'
 	GROUP BY col.idcolaboradores;
 END $$
-DROP PROCEDURE obtener_info_colaborador
+
 SELECT * FROM habilidades
 
-CALL obtener_info_colaborador(5)
+CALL obtener_info_colaborador(2)
 
 ---------------------------------------------------
 
@@ -106,8 +105,6 @@ BEGIN
     WHERE pro.estado = '1'
     GROUP BY pro.idproyecto;
 END $$
-
-CALL listar_proyecto();
 
 ---------------------------------------
 
@@ -131,6 +128,7 @@ END $$
 CALL obtener_proyecto(1);
 
 SELECT * FROM personas
+
 ----------------------------------------- RESTAURAR CONTRASEÑA -----------------------------------
 
 DELIMITER $$
@@ -222,9 +220,11 @@ BEGIN
 		SELECT 'DENEGADO' AS 'status';
 	END IF;
 END $$
+
 CALL spu_colaborador_validarclave(1,1234);
 
 -------------------------------------
+
 DELIMITER $$
 CREATE PROCEDURE spu_colaboradores_actualizarclave
 (
@@ -256,7 +256,6 @@ BEGIN
     ORDER BY pro.idproyecto, fas.fechainicio, fas.fechafin; -- Ordenar por el idproyecto ascendente
 END $$
 
-DROP PROCEDURE listar_fase;
 CALL listar_fase();
 
 ------------------------------------------------------------
@@ -277,8 +276,27 @@ SELECT fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyec
     ORDER BY pro.idproyecto, fas.fechainicio;
 END $$
 
-DROP PROCEDURE listar_fase_proyecto;
-CALL listar_fase_proyecto(2);
+
+CALL listar_fase_proyecto(1);
+
+--------------------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE obtener_fase(IN _idfase SMALLINT)
+BEGIN
+SELECT fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyecto', pro.fechafin AS 'FinProyecto', 
+		pro.precio, emp.nombre AS 'empresa', col.usuario, fas.nombrefase, fas.fechainicio, 
+		fas.fechafin, fas.comentario,fas.estado,fas.porcentaje_fase
+    FROM fases fas
+    INNER JOIN proyecto pro ON pro.idproyecto = fas.idproyecto
+    INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
+    INNER JOIN colaboradores col ON col.idcolaboradores = fas.idresponsable
+    WHERE fas.estado = 1 AND fas.idfase = _idfase
+    ORDER BY pro.idproyecto, fas.fechainicio;
+END $$
+
+
+CALL obtener_fase(1);
 
 ---------------------------------------------
 -- Listar tarea con info del proyecto y fase
@@ -313,12 +331,32 @@ BEGIN
         ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
     END IF;
 END $$
-DROP PROCEDURE listar_tarea_colaboradores;
+
 
 CALL listar_tarea_colaboradores(5);
 
 --------------------------------------
 -- Obtener info de la tarea
+
+DELIMITER $$
+CREATE PROCEDURE obtener_tareas_fase(IN _idfase SMALLINT)
+BEGIN
+	 SELECT fas.idfase, tar.idtarea, fas.nombrefase,tar.tarea, fas.fechainicio, fas.fechafin,
+		fas.comentario, col_tarea.usuario AS 'usuario_tarea',
+		 tar.roles, tar.fecha_inicio_tarea, tar.fecha_fin_tarea, tar.porcentaje_tarea, tar.porcentaje, tar.estado
+        FROM tareas tar
+        INNER JOIN fases fas ON tar.idfase = fas.idfase
+        INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
+        INNER JOIN colaboradores col_tarea ON tar.idcolaboradores = col_tarea.idcolaboradores
+        INNER JOIN colaboradores col_fase ON fas.idresponsable = col_fase.idcolaboradores
+        WHERE fas.idfase = _idfase AND tar.estado = 1
+        ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
+END $$
+
+DROP PROCEDURE obtener_tareas_fase
+CALL obtener_tareas_fase(1);
+
+---------------------------------------------
 
 DELIMITER $$
 CREATE PROCEDURE obtener_tarea(IN _idtarea SMALLINT)
@@ -336,6 +374,25 @@ BEGIN
 END $$
 
 CALL obtener_tarea(1);
+SELECT * FROM tareas;
+
+
+---------------------------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE obtener_tarea(IN _idtarea SMALLINT)
+BEGIN
+	 SELECT pro.idproyecto, fas.idfase, tar.idtarea, pro.titulo, fas.nombrefase,tar.tarea, fas.fechainicio, fas.fechafin,
+		fas.comentario,col_fase.usuario AS 'usuario_fase', col_tarea.usuario AS 'usuario_tarea',
+		 tar.roles, tar.fecha_inicio_tarea, tar.fecha_fin_tarea, tar.porcentaje_tarea, tar.porcentaje, tar.estado
+        FROM tareas tar
+        INNER JOIN fases fas ON tar.idfase = fas.idfase
+        INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
+        INNER JOIN colaboradores col_tarea ON tar.idcolaboradores = col_tarea.idcolaboradores
+        INNER JOIN colaboradores col_fase ON fas.idresponsable = col_fase.idcolaboradores
+        WHERE tar.idtarea = _idtarea AND tar.estado = 1
+        ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
+END $$
 
 -----------------------------------------------------
 
@@ -363,7 +420,6 @@ BEGIN
 	WHERE idtarea = t_idtarea;
 END $$
 
-DROP PROCEDURE enviar_evidencia;
 CALL enviar_evidencia('a', 'a', 'a', 'a', 70,3);
                 
 SELECT * FROM tareas;
@@ -454,3 +510,58 @@ WHERE tar.idtarea = _idtarea;
 END $$
 
 CALL obtener_ids(5);
+
+
+--------------------------------
+-- Editar Proyecto
+
+DELIMITER $$
+CREATE PROCEDURE editar_proyecto
+(
+    IN p_idproyecto         SMALLINT,
+    IN p_idtipoproyecto     SMALLINT,
+    IN p_idempresa          SMALLINT,
+    IN p_titulo             VARCHAR(60),
+    IN p_descripcion        VARCHAR(200),
+    IN p_fechainicio        DATE,
+    IN p_fechafin           DATE,
+    IN p_precio             DECIMAL(6,2),
+    IN p_idusuariore        SMALLINT
+)
+BEGIN
+    UPDATE proyecto SET idtipoproyecto = p_idtipoproyecto, idempresa = p_idempresa,
+                            titulo = p_titulo, descripcion = p_descripcion, fechainicio = p_fechainicio,
+                             fechafin = p_fechafin,
+                            precio = p_precio, idusuariore = p_idusuariore
+    WHERE idproyecto = p_idproyecto;
+
+END $$
+
+
+DROP PROCEDURE editar_proyecto
+
+CALL editar_proyecto(1, 1, 1, 'Página web sobre test', 'Prueba 2', '2023-05-29', '2023-05-29', 150, 1);
+
+SELECT * FROM proyecto;
+SELECT * FROM tareas;
+SELECT * FROM fases;
+------------------------------------------------------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE crear_tarea
+(
+	IN _idfase 					SMALLINT,
+	IN _idcolaboradores		SMALLINT,
+	IN _roles					VARCHAR(40),
+	IN _tarea					VARCHAR(200),
+	IN _porcentaje				DECIMAL(5,2),
+	IN _fecha_inicio_tarea	DATE,
+	IN _fecha_fin_tarea		DATE
+)
+BEGIN
+	INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,fecha_inicio_tarea,fecha_fin_tarea)
+	VALUES(_idfase, _idcolaboradores, _roles, _tarea, _porcentaje, _fecha_inicio_tarea, _fecha_fin_tarea);
+
+END $$
+
+CALL crear_tarea(3,2,'Analista de Datos', 'Diseña un modelo en erwind de base de datos' , 50,'2023-06-26','2023-06-27');
