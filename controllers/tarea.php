@@ -135,6 +135,19 @@
             $cierre = "</tbody>";
         }
 
+        if ($_POST['op'] == 'registrarTarea') {
+            $datos = [
+                "idfase"                => $_POST['idfase'],
+                "idcolaboradores"       => $_POST['idcolaboradores'],
+                "roles"                 => $_POST['roles'],
+                "tarea"                 => $_POST['tarea'],
+                "porcentaje"            => $_POST['porcentaje'],
+                "fecha_inicio_tarea"    => $_POST['fecha_inicio_tarea'],
+                "fecha_fin_tarea"       => $_POST['fecha_fin_tarea']
+            ];
+            $tarea->registrarTarea($datos);
+        }
+
         if ($_POST['op'] == 'getWork') {
             $idtarea  = $_POST['idtarea'];
             echo json_encode($tarea->getWork($idtarea));

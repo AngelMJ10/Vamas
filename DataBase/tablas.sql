@@ -169,7 +169,7 @@ CREATE TABLE fases
 	fechainicio				DATE		NOT NULL,
 	fechafin					DATE		NOT NULL,
 	comentario				VARCHAR(200)	NOT NULL,
-	porcentaje_fase		DECIMAL(5,2)	NULL DEFAULT'0',
+	porcentaje_fase		DECIMAL(5,2)	NULL DEFAULT 0,
 	porcentaje				DECIMAL(5,2)	NOT NULL,
 	fecha_create		DATETIME	NOT NULL DEFAULT NOW(),
 	fecha_update		DATETIME	NULL,

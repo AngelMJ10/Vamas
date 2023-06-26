@@ -34,6 +34,7 @@ function createPhase(idproyecto){
         })
     }
 }
+let idfase = 0;
 
 function modalInfoFase(id) {
     const inputs = document.querySelector("#inputs-fase");
@@ -57,6 +58,7 @@ function modalInfoFase(id) {
         const bootstrapModal = new bootstrap.Modal(modalInfoFase);
         bootstrapModal.show();
         tabla_Fase(id);
+        idfase = id;
       })
       .catch(error => {
         console.error('Error:', error);
@@ -86,6 +88,74 @@ function tabla_Fase(id) {
         console.error('Error:', error);
       });
 }
+
+// Agregar Tarea
+function openModalAgregarTarea(){
+  const modalAgregarT = document.querySelector("#modal-agregar-t");
+  const bootstrapModal = new bootstrap.Modal(modalAgregarT);
+  bootstrapModal.show();
+}
+
+function listarColaboradores_A(){
+  const responsable = document.querySelector("#asignar-empleado");
+  const parametrosURL = new URLSearchParams();
+  parametrosURL.append("op", "listarColaborador_A");
+
+  fetch('../controllers/proyecto.php',{
+      method: 'POST',
+      body: parametrosURL
+  })
+  .then(respuesta => {
+      if(respuesta.ok){
+          return respuesta.text();
+      } else{
+          throw new Error('Error en la solicitud');
+      }
+  })
+  .then(datos =>{
+    responsable.innerHTML = datos;
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
+}
+
+function agregarTarea(){
+  const idcolaboradores = document.querySelector("#asignar-empleado");
+  const roles = document.querySelector("#rol-empleado");
+  const tarea = document.querySelector("#tarea-agregar");
+  const porcentaje = document.querySelector("#agregar-porcentaje");
+  const fecha_inicio_tarea = document.querySelector("#fecha-inicio-tarea");
+  const fecha_fin_tarea = document.querySelector("#fecha-fin-tarea");
+
+  const parametros = new URLSearchParams();
+  parametros.append("op", "registrarTarea");
+  parametros.append("idfase", idfase);
+  parametros.append("idcolaboradores", idcolaboradores.value);
+  parametros.append("roles", roles.value);
+  parametros.append("tarea", tarea.value);
+  parametros.append("porcentaje", porcentaje.value);
+  parametros.append("fecha_inicio_tarea", fecha_inicio_tarea.value);
+  parametros.append("fecha_fin_tarea", fecha_fin_tarea.value);
+
+  fetch('../controllers/tarea.php', {
+    method: 'POST',
+    body: parametros
+  })
+    .then(respuesta => {
+      if(respuesta.ok){
+        alert('Tarea registrada correctamente');
+        location.reload();
+      } else{
+          alert('Error en la solicitud');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
+}
+// Fin agregar Tarea
 
 function modalInfoTarea(id) {
   const inputs = document.querySelector("#inputs-tarea");
@@ -436,9 +506,16 @@ function registrar(){
 }
 
 listarColaboradores();
+listarColaboradores_A();
 listartipoproyecto();
 listarempresa();
 listar();
+
+const btnAgregarT = document.querySelector("#agregar-tarea");
+btnAgregarT.addEventListener("click", openModalAgregarTarea);
+
+const btnRegistrarTarea = document.querySelector("#registrar-tarea");
+btnRegistrarTarea.addEventListener("click", agregarTarea);
 
 const btnRegistrar = document.querySelector("#registrar-datos");
 btnRegistrar.addEventListener("click", registrar);

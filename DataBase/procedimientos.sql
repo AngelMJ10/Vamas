@@ -267,7 +267,7 @@ CREATE PROCEDURE listar_fase_proyecto(IN _idproyecto SMALLINT)
 BEGIN
 SELECT fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyecto', pro.fechafin AS 'FinProyecto', 
 		pro.precio, emp.nombre AS 'empresa', col.usuario, fas.nombrefase, fas.fechainicio, 
-		fas.fechafin, fas.comentario,fas.estado,fas.porcentaje_fase
+		fas.fechafin, fas.comentario,fas.estado,fas.porcentaje_fase,fas.porcentaje
     FROM fases fas
     INNER JOIN proyecto pro ON pro.idproyecto = fas.idproyecto
     INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
@@ -354,7 +354,7 @@ BEGIN
 END $$
 
 DROP PROCEDURE obtener_tareas_fase
-CALL obtener_tareas_fase(1);
+CALL obtener_tareas_fase(3);
 
 ---------------------------------------------
 
@@ -565,3 +565,7 @@ BEGIN
 END $$
 
 CALL crear_tarea(3,2,'Analista de Datos', 'Diseña un modelo en erwind de base de datos' , 50,'2023-06-26','2023-06-27');
+
+
+SELECT * FROM colaboradores WHERE estado = 1 AND (nivelacceso = 'S' OR nivelacceso = 'C');
+

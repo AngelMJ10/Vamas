@@ -16,15 +16,6 @@
 </head>
 <body>
 <link rel="stylesheet" href="./css/style.css">
-<style>
-    body {
-    background-image: url("../img/logos\ vamas_Mesa\ de\ trabajo\ 1\ copia\ 2.png");
-    background-repeat: no-repeat;
-    background-size: 50%;
-    background-position: center ;
-    opacity: 0.9;
-  }
-</style>
 
   <div class="capa text-center">
     <h1>PROYECTOS</h1>
@@ -332,6 +323,32 @@
   </div>
 </div>
 
+<!-- Modal para más información del proyecto -->
+<div class="modal fade" id="modal-info" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header text-light" style='background-color: #005478;'>
+        <h1 class="modal-title fs-5" id="modalEditarLabel">Información del Proyecto</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="body-info">
+        <div class="mb-5" id="inputs">
+
+        </div>
+
+        <div id="tabla-fase">
+
+        </div>
+
+      </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- !Modal para crear una Fase -->
 <div class="modal fade" id="modalFase" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
@@ -426,32 +443,6 @@
   </div>
 </div>
 
-<!-- Modal para más información del proyecto -->
-<div class="modal fade" id="modal-info" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
-  <div class="modal-dialog modal-fullscreen">
-    <div class="modal-content">
-      <div class="modal-header text-light" style='background-color: #005478;'>
-        <h1 class="modal-title fs-5" id="modalEditarLabel">Información del Proyecto</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" id="body-info">
-        <div class="mb-5" id="inputs">
-
-        </div>
-
-        <div id="tabla-fase">
-
-        </div>
-
-      </div>
-        <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- Modal para más información de la fase -->
 <div class="modal fade" id="modal-info-fase" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
@@ -466,6 +457,10 @@
 
         <div id="tabla-info-fase">
         </div>
+        <div class="btn-group">
+          <button class="btn btn-outline-success" id="editar-fase">Editar Fase</button>
+          <button class="btn btn-outline-primary" id="agregar-tarea">Agregar nueva tarea +</button>
+        </div>
 
       </div>
         <div class="modal-footer">
@@ -476,7 +471,7 @@
   </div>
 </div>
 
-<!-- Modal para más información de las tareas -->
+<!-- Modal para más información de la fase -->
 <div class="modal fade" id="modal-info-tarea" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
@@ -488,9 +483,78 @@
         <div class="mb-5" id="inputs-tarea">
         </div>
 
-        <div class="table-responsive" id="tabla-info-tarea">
-          
+        <div id="tabla-info-tarea">
         </div>
+        <div class="btn-group">
+          <button class="btn btn-outline-success" id="editar-fase">Editar Fase</button>
+          <button class="btn btn-outline-primary" id="agregar-tarea">Agregar nueva tarea +</button>
+        </div>
+
+      </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para más información de la fase -->
+<div class="modal fade" id="modal-agregar-t" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header text-light" style='background-color: #005478;'>
+        <h1 class="modal-title fs-5" id="modalEditarLabel">Agregar Tarea</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form action="">
+              <div class="row mb-3">
+                <div class="col-md-6 form-floating mb-3">
+                    <select name="tipoProyecto" id="asignar-empleado" class="form-control form-control-sm">
+                      <label for="tipoProyecto">Seleccione el empleado:</label>
+                      <option value="">Seleccione el empleado</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 form-floating">
+                    <select name="tipoProyecto" id="rol-empleado" class="form-control form-control-sm">
+                      <label for="tipoProyecto">Seleccione el Rol:</label>
+                      <option value="">Seleccione el rol</option>
+                      <option value="Analista de Datos">Analista de Datos</option>
+                      <option value="Front-End Framework React">Front-End Framework React</option>
+                      <option value="Front-End Framework Angular">Front-End Framework Angular</option>
+                      <option value="Back-End Básico">Back-End Básico</option>
+                    </select>
+                </div>
+
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6 form-floating">
+                  <input type="text" name="tarea" class="form-control" id="tarea-agregar"  placeholder="Tarea">
+                  <label for="tarea" class="form-label">Tarea</label>
+                </div>
+              
+                <div class="col-md-6 form-floating">
+                  <input type="number" class="form-control" name="porcentaje" id="agregar-porcentaje"  placeholder="Porcentaje">
+                  <label for="porcentaje" class="form-label">Porcentaje</label>
+                </div>
+
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6 form-floating">
+                  <input type="date" class="form-control" name="fecha-ini" id="fecha-inicio-tarea"  placeholder="Fecha Inicio">
+                  <label for="fecha-ini" class="form-label">Fecha de inicio</label>
+                </div>
+              
+                <div class="col-md-6 form-floating">
+                  <input type="date" name="fecha-fin" class="form-control" id="fecha-fin-tarea"  placeholder="Fecha Fin">
+                  <label for="fecha-fin" class="form-label">Fecha de Fin</label>
+                </div>
+
+              </div>
+              <button class="btn btn-outline-primary" id="registrar-tarea">Registrar</button>
+          </form>
 
       </div>
         <div class="modal-footer">

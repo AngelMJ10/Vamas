@@ -21,6 +21,24 @@
             }
         }
 
+        public function registrarTarea($data = []){
+            try {
+                $query = "CALL crear_tarea(?,?,?,?,?,?,?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array(
+                $data["idfase"],
+                $data["idcolaboradores"],
+                $data["roles"],
+                $data["tarea"],
+                $data["porcentaje"],
+                $data["fecha_inicio_tarea"],
+                $data["fecha_fin_tarea"]
+                ));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
         public function getWork($idtarea){
             try {
                 $query ="CALL obtener_tarea(?)";

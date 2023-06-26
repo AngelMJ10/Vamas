@@ -67,6 +67,17 @@
             }
         }
 
+        public function listarColaborador_A(){
+            try {
+                $consulta = $this->conexion->prepare("SELECT * FROM colaboradores WHERE estado = 1 AND (nivelacceso = 'S' OR nivelacceso = 'C')");
+                $consulta->execute();
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
         public function listarCorreo(){
             try {
                 $query = "SELECT idcolaboradores,usuario,correo FROM colaboradores WHERE nivelacceso IN ('A','S')";

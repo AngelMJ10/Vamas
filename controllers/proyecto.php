@@ -21,7 +21,7 @@
                     $porcentaje = 0;
                 }
                 echo "
-                    <tr class='mb-2' onclick='info({$registro['idproyecto']})'>
+                    <tr class='mb-2' ondblclick='info({$registro['idproyecto']})'>
                         <td class='p-3' data-label='#'>{$registro['idproyecto']}</td>
                         <td class='p-3' data-label='Titulo'>{$registro['titulo']}</td>
                         <td class='p-3' data-label='Fecha de Inicio'>{$registro['fechainicio']}</td>
@@ -160,7 +160,8 @@
                                 <th>Fin de la Fase</th>
                                 <th>Usuario Responsable</th>
                                 <th>Comentario</th>
-                                <th>Porcentaje</th>
+                                <th>Avance</th>
+                                <th>Porcentaje P.</th>
                                 <th>Estado</th>
                             </thead>
                             <tbody>    
@@ -171,11 +172,15 @@
             
             foreach ($datos as $registro) {
                 $estado = $registro['estado'] == 1 ? 'Activo' : $registro['estado'];
-                $porcentaje = $registro['porcentaje_fase'];
+                $porcentaje = $registro['porcentaje'];
+                $porcentaje_fase = $registro['porcentaje_fase'];
                 if ($porcentaje) {
                     $porcentaje = rtrim($porcentaje, "0");
                     $porcentaje = rtrim($porcentaje, ".");
+                    $porcentaje_fase = rtrim($porcentaje_fase, "0");
+                    $porcentaje_fase = rtrim($porcentaje_fase, ".");
                 } elseif ($porcentaje == null) {
+                    $porcentaje = 0;
                     $porcentaje = 0;
                 }
                 $tbody= "                 
@@ -186,6 +191,7 @@
                         <td class='p-3' data-label='Fin de la fase'>{$registro['fechafin']}</td>
                         <td class='p-3' data-label='Usuario Responsable'>{$registro['usuario']}</td>
                         <td class='p-3' data-label='Comentario'>{$registro['comentario']}</td>
+                        <td class='p-3' data-label='Porcentaje de avance'>{$porcentaje_fase}%</td>
                         <td class='p-3' data-label='Porcentaje'>{$porcentaje}%</td>
                         <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
                     </tr>
@@ -276,8 +282,8 @@
                                 <th>Inicio de la Tarea</th>
                                 <th>Fin de la Tarea</th>
                                 <th>Usuario Asignado</th>
-                                <th>Porcentaje</th>
-                                <th>P. Proyecto</th>
+                                <th>Avance</th>
+                                <th>P. Fase</th>
                                 <th>Roles</th>
                                 <th>Estado</th>
                             </thead>
@@ -308,9 +314,9 @@
                         <td class='p-3' data-label='Inicio de la tarea'>{$registro['fecha_inicio_tarea']}</td>
                         <td class='p-3' data-label='Fin de la tarea'>{$registro['fecha_fin_tarea']}</td>
                         <td class='p-3' data-label='Usuario Responsable'>{$registro['usuario_tarea']}</td>
-                        <td class='p-3' data-label='Porcentaje'>{$porcentaje}%</td>
-                        <td class='p-3' data-label='Porcentaje en el trabajo'>{$porcentaje_tarea}%</td>
-                        <td class='p-3' data-label='Porcentaje en el trabajo'>{$registro['roles']}</td>
+                        <td class='p-3' data-label='Porcentaje de avance'>{$porcentaje_tarea}%</td>
+                        <td class='p-3' data-label='Porcentaje en la Fase'>{$porcentaje}%</td>
+                        <td class='p-3' data-label='Rol'>{$registro['roles']}</td>
                         <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
                     </tr>
                 ";
@@ -357,6 +363,17 @@
             $colaborador = new Colaborador();
             $datos = $colaborador->listarColaborador();
             $etiqueta = "<option value='0'>Seleccione el usuario responsable</option>";
+            echo $etiqueta;
+            foreach ($datos as $registro) {
+                echo "<option value='{$registro['idcolaboradores']}'>{$registro['usuario']}</option>";
+            }
+        }
+
+        if ($_POST['op'] == 'listarColaborador_A') {
+            require_once '../models/Colaboradores.php';
+            $colaborador = new Colaborador();
+            $datos = $colaborador->listarColaborador_A();
+            $etiqueta = "<option value='0'>Seleccione el usuario a elegir</option>";
             echo $etiqueta;
             foreach ($datos as $registro) {
                 echo "<option value='{$registro['idcolaboradores']}'>{$registro['usuario']}</option>";
