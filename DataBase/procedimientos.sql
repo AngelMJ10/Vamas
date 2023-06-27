@@ -361,9 +361,11 @@ CALL obtener_tareas_fase(3);
 DELIMITER $$
 CREATE PROCEDURE obtener_tarea(IN _idtarea SMALLINT)
 BEGIN
-	 SELECT pro.idproyecto, fas.idfase, tar.idtarea, pro.titulo, fas.nombrefase,tar.tarea, fas.fechainicio, fas.fechafin,
-		fas.comentario,col_fase.usuario AS 'usuario_fase', col_tarea.usuario AS 'usuario_tarea',
-		 tar.roles, tar.fecha_inicio_tarea, tar.fecha_fin_tarea, tar.porcentaje_tarea, tar.porcentaje, tar.estado
+	 SELECT pro.idproyecto, fas.idfase, tar.idtarea, pro.titulo, fas.nombrefase,tar.tarea, fas.fechainicio,
+				fas.fechafin,fas.comentario,col_fase.idcolaboradores AS 'idcolaboradores_f',col_fase.usuario AS 'usuario_fase',
+				col_tarea.idcolaboradores AS 'idcolaboradores_t',col_tarea.usuario AS 'usuario_tarea',
+				tar.roles, tar.fecha_inicio_tarea, tar.fecha_fin_tarea, tar.porcentaje_tarea,
+				tar.porcentaje, tar.estado
         FROM tareas tar
         INNER JOIN fases fas ON tar.idfase = fas.idfase
         INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
@@ -570,8 +572,32 @@ END $$
 
 CALL editar_fase(1,3,'Creacion del boceto','2023-06-26','2023-06-27','Prueba de edicion',25);
 
+----------------------------------------------------------------------------------------
 
+DELIMITER $$
+CREATE PROCEDURE editarTarea
+(
+	IN t_idtarea 					SMALLINT,
+	IN t_idcolaboradores			SMALLINT,
+	IN t_roles						VARCHAR(40),
+	IN t_tarea						VARCHAR(200),
+	IN t_porcentaje			DECIMAL(5,2),
+	IN t_fecha_inicio_tarea		DATE,
+	IN t_fecha_fin_tarea			DATE
+)
+BEGIN
+	UPDATE tareas
+	SET idcolaboradores = t_idcolaboradores,
+		roles = t_roles,
+		tarea = t_tarea,
+		porcentaje = t_porcentaje,
+		fecha_inicio_tarea = t_fecha_inicio_tarea,
+		fecha_fin_tarea = t_fecha_fin_tarea
+	WHERE idtarea = t_idtarea;
+END $$
 
+CALL editarTarea(24,4,'Analista','Prueva V4',25,'2023-06-26','2023-06-29');
+SELECT * FROM tareas
 ------------------------------------------------------------------------
 
 DELIMITER $$
@@ -595,4 +621,19 @@ CALL crear_tarea(3,2,'Analista de Datos', 'Diseña un modelo en erwind de base d
 
 
 SELECT * FROM colaboradores WHERE estado = 1 AND (nivelacceso = 'S' OR nivelacceso = 'C');
+
+---------------------------------------------------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE listar_habilidades_by_Col(IN _idcolaboradores SMALLINT)
+BEGIN
+	SELECT hab.idhabilidades,col.idcolaboradores,per.apellidos,per.nombres,col.usuario,col.nivelacceso,hab.habilidad
+	FROM habilidades hab
+	INNER JOIN colaboradores col ON hab.idcolaboradores = col.idcolaboradores
+	INNER JOIN personas per ON col.idpersona = per.idpersona
+	WHERE col.idcolaboradores = _idcolaboradores AND hab.estado = 1
+	ORDER BY hab.habilidad;
+END $$
+
+CALL listar_habilidades_by_Col(3);
 

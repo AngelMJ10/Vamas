@@ -33,7 +33,7 @@ CREATE TABLE colaboradores
 	idpersona		SMALLINT 	NOT NULL,
 	usuario			VARCHAR(20)	NOT NULL,
 	clave			VARCHAR(200)	NOT NULL,
-	corre			VARCHAR(100)	NULL,
+	correo			VARCHAR(100)	NULL,
 	nivelacceso		CHAR(1)		NOT NULL DEFAULT 'C',
 	fecha_create		DATETIME 	NOT NULL DEFAULT NOW(),
 	fecha_update		DATETIME	NULL,
@@ -83,9 +83,9 @@ CREATE TABLE habilidades
 )ENGINE = INNODB;
 
 INSERT INTO habilidades(idcolaboradores,habilidad)
-VALUES('1','Front-end Básico'),('2','Front-end framework React'),('1','Análisis de datos');
+VALUES('3','Front-end Básico'),('3','Front-end framework React'),('2','Análisis de datos');
 SELECT * FROM habilidades;
-
+SELECT * FROM colaboradores;
 ----------------------------------------------------------
 
 CREATE TABLE empresas
@@ -205,7 +205,7 @@ CREATE TABLE tareas
 	tarea						VARCHAR(200)	NOT NULL,
 	porcentaje_tarea		DECIMAL(5,2)	NULL DEFAULT 0,
 	porcentaje				DECIMAL(5,2)	NOT NULL,
-	evidencia				JSON		NULL DEFAULT'[]',
+	evidencia				JSON		NULL DEFAULT '[]',
 	fecha_inicio_tarea	DATE 		NOT NULL,
 	fecha_fin_tarea		DATE 		NOT NULL,
 	fecha_create			DATETIME	NOT NULL DEFAULT NOW(),

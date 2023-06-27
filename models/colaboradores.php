@@ -192,6 +192,21 @@
             }
         }
 
+        public function listar_Habilidades($data = []){
+            try {
+                $query = "CALL listar_habilidades_by_Col (?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array(
+                    (
+                        $data['idcolaboradores']
+                    )));
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
     }
 
 ?>

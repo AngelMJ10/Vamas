@@ -16,35 +16,55 @@ if (isset($_SESSION['login'])){
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <title>Inicio de Sesion</title>
 </head>
-<body>
+<style>
+
     
-    <div class="container">
-        <form action="" autocomplete="off">
-        <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
-                <!-- Formulario de inicio de sesión -->
-                <h3 class="mt-3">Inicio de sesión</h3>
-                <div class="form-group mb-4">
-                    <label for="email">Escriba su correo</label>
-                    <input type="email" class="form-control" id="email" placeholder="micorreo@gmail.com">
+    .gradient-box {
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(to bottom, #005478, #ced4da);
+    }
+    .logo{
+        width: 100%;
+        height: 100%;
+        position: center;
+    }
+</style>
+<body class="gradient-box">
+    <br>
+    <br>
+    
+    
+    <div class="container col-xl-10 col-xxl-8 px-4 py-5 mt-5">
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-center g-lg-5 py-5">
+                <div class="col-lg-7 text-center text-lg-start">
+                    <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3 text-center align-items-center">Inicio de Sesión</h1>
+                    <p class="col-lg-12 fs-4 text-center">Por favor complete los siguientes datos para Iniciar Sesión:</p>
+                    <img src="./img/logos vamas_Mesa de trabajo 1 copia 2.png" class="logo ml-5" alt="">
                 </div>
-
-                <div class="form-group mb-4">
-                    <label for="clave">Contraseña</label>
-                    <input type="password" class="form-control" id="clave">
+                <div class="col-md-10 mx-auto col-lg-5">
+                    <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary" autocomplete="off">       
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="email" placeholder="vamas@gmail.com">
+                        <label class="text-center" for="email">Escriba su Correo</label>
+                    </div>  
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="clave" placeholder="***">
+                        <label class="text-center" for="clave">Escriba su Contraseña</label>
+                    </div>        
+                    <button class="w-100 btn btn-lg btn-primary mt-2" id="acceder" type="button">Iniciar Sesión</button>
+                    <h6 class="text-center mt-3">O</h6>
+                    <a class="w-100 btn btn-lg btn-warning" id="registrar" href="../Vamas/registrar.php" type="button">Registrarme</a>
+                    
+                    <hr class="my-4">
+                    <h6 class="text-body-secondary text-center">Permisos reservados Vamas 2023</h6>
+                    </form>
                 </div>
-
-                <div class="form-group text-right mb-3">
-                    <button class="btn btn-outline-info me-3" id="acceder" type="button">Acceder</button>
-                    <a class="btn  btn-outline-dark" id="registrar" href="registrar.php">Registrarse</a>
                 </div>
-                <a href="contraseña.php">Olvidé mi contraseña</a>
-                <!-- Fin del formulario -->
             </div>
-            <div class="col-md-3"></div>
-        </div> <!-- Fin row -->
-        </form>
+        </div>
     </div>
 
    <script src="login.js">

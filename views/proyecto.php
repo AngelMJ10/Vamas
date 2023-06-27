@@ -579,7 +579,7 @@
   </div>
 </div>
 
-<!-- Modal para más información de la tarea en el modal de la fase -->
+<!-- Modal Info de la tarea y evidencias -->
 <div class="modal fade" id="modal-info-tarea" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
@@ -594,9 +594,11 @@
         <div id="tabla-info-tarea">
         </div>
         <div class="btn-group">
+          <button class="btn btn-outline-success" id="quitar-readonly">Editar Tarea</button>
           <button class="btn btn-outline-danger" id="generar-reporteT">Ver Reporte</button>
+          <button class="btn btn-outline-primary d-none" id="guardar-C-Tarea">Guardar Cambios</button>
+          <button class="btn btn-outline-danger d-none" id="cancelar-E-Tarea">Cancelar Edicion</button>
         </div>
-
       </div>
         <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -606,7 +608,7 @@
   </div>
 </div>
 
-<!-- Modal para más información de la fase -->
+<!-- Modal agregar Tarea -->
 <div class="modal fade" id="modal-agregar-t" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
@@ -622,16 +624,13 @@
                       <label for="tipoProyecto">Seleccione el empleado:</label>
                       <option value="">Seleccione el empleado</option>
                     </select>
+                    <button type="button" class="btn btn-sm btn-outline-primary" id="btn-habilidades">Habilidades</button>
                 </div>
 
                 <div class="col-md-6 form-floating">
                     <select name="tipoProyecto" id="rol-empleado" class="form-control form-control-sm">
                       <label for="tipoProyecto">Seleccione el Rol:</label>
                       <option value="">Seleccione el rol</option>
-                      <option value="Analista de Datos">Analista de Datos</option>
-                      <option value="Front-End Framework React">Front-End Framework React</option>
-                      <option value="Front-End Framework Angular">Front-End Framework Angular</option>
-                      <option value="Back-End Básico">Back-End Básico</option>
                     </select>
                 </div>
 

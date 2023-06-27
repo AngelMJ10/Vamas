@@ -135,6 +135,19 @@
             $cierre = "</tbody>";
         }
 
+        if ($_POST['op'] == 'listar_Habilidades') {
+            require_once '../models/Colaboradores.php';
+            $colaboradores = new Colaborador();
+            $datos = [
+                "idcolaboradores"                => $_POST['idcolaboradores']
+            ];
+            echo ($etiqueta = "<option value='0'>Seleccione las habilidades</option>");
+            $datas_H = $colaboradores->listar_Habilidades($datos);
+            foreach ($datas_H as $registro) {
+                echo "<option value='{$registro['habilidad']}'>{$registro['habilidad']}</option>";
+            }
+        }
+
         if ($_POST['op'] == 'registrarTarea') {
             $datos = [
                 "idfase"                => $_POST['idfase'],
@@ -146,6 +159,19 @@
                 "fecha_fin_tarea"       => $_POST['fecha_fin_tarea']
             ];
             $tarea->registrarTarea($datos);
+        }
+
+        if ($_POST['op'] == 'editarTarea') {
+            $datos = [
+                "idtarea"                => $_POST['idtarea'],
+                "idcolaboradores"       => $_POST['idcolaboradores'],
+                "roles"                 => $_POST['roles'],
+                "tarea"                 => $_POST['tarea'],
+                "porcentaje"            => $_POST['porcentaje'],
+                "fecha_inicio_tarea"    => $_POST['fecha_inicio_tarea'],
+                "fecha_fin_tarea"       => $_POST['fecha_fin_tarea']
+            ];
+            $tarea->editarTarea($datos);
         }
 
         if ($_POST['op'] == 'getWork') {
@@ -371,43 +397,53 @@
                 $inputs= "
                     <form>
                         <div class='row mb-2 mt-2'>
-                            <div class='col-md-4'>
+                            <div class='col-md-3'>
                                 <div class='form-floating mb-3'>
-                                    <input type='text' readonly class='form-control' value='{$datos['tarea']}' placeholder='Tarea encargada' id='name-phase' name='project'>
-                                    <label for='project' class='form-label'>Tarea encargada</label>
+                                    <input type='text' id='nombre-tarea' readonly class='form-control' value='{$datos['tarea']}' placeholder='Tarea encargada' name='tarea'>
+                                    <label for='tarea' class='form-label'>Tarea encargada</label>
                                 </div>
                             </div>
-                            <div class='col-md-4'>
+                            <div class='col-md-3'>
                                 <div class='form-floating mb-3'>
-                                    <input class='form-control' name='descripcion' value='{$datos['usuario_tarea']}' readonly placeholder='Usuario asignado'>
-                                    <label for='descripcion' class='form-label'>Usuario asignado</label>
-                                </div>
+                                    <select name='tipoproyecto' id='usuario-tarea' class='form-control' readonly>
+                                        <option value='{$datos['idcolaboradores_t']}'>{$datos['usuario_tarea']}</option>
+                                    </select>
+                                <label for='usu-tarea' class='form-label'>Usuario asignado</label>
                             </div>
-                            <div class='col-md-4'>
+                        
+                            </div>
+                            <div class='col-md-3'>
                                 <div class='form-floating mb-3'>
-                                    <input type='date' class='form-control' readonly placeholder='Inicio de la fase' value='{$datos['fecha_inicio_tarea']}' name='fechaini'>
+                                    <input type='date' class='form-control' id='fecha-inicio-tarea' readonly placeholder='Inicio de la fase' value='{$datos['fecha_inicio_tarea']}' name='fechaini'>
                                     <label for='fechaini' class='form-label'>Fecha de Inicio</label>
                                 </div>
                             </div>
-                        </div>
-                        <div class='row mb-2 mt-2'>
-                            <div class='col-md-4'>
+                            <div class='col-md-3'>
                                 <div class='form-floating mb-3'>
-                                    <input type='date' class='form-control' readonly placeholder='Fin de la Fase' value='{$datos['fecha_fin_tarea']}' name='fechafin'>
+                                    <input type='date' class='form-control' id='fecha-fin-tarea' readonly placeholder='Fin de la Fase' value='{$datos['fecha_fin_tarea']}' name='fechafin'>
                                     <label for='fechafin' class='form-label'>Fecha de Inicio</label>
                                 </div>
                             </div>
-                            <div class='col-md-4'>
+                        </div>
+                        <div class='row mb-2 mt-2'>                       
+                            <div class='col-md-3'>
                                 <div class='form-floating mb-3'>
-                                    <input type='number' class='form-control' readonly value='{$porcentaje_tarea}' placeholder='Porcentaje de avance' name='precio'>
-                                    <label for='precio' class='form-label'>Porcentaje de avance</label>
+                                    <input type='number' class='form-control' readonly value='{$porcentaje_tarea}' placeholder='Porcentaje de avance' name='porcentaje-t'>
+                                    <label for='porcentaje-t' class='form-label'>Porcentaje de avance %</label>
                                 </div>
                             </div>
-                            <div class='col-md-4'>
+                            <div class='col-md-3'>
                                 <div class='form-floating mb-3'>
-                                    <input type='number' class='form-control' readonly value='{$porcentaje}%' placeholder='Porcentaje en la fase' name='precio'>
-                                    <label for='precio' class='form-label'>Porcentaje en la fase</label>
+                                    <input type='number' id='porcentaje-tarea' class='form-control' readonly value='{$porcentaje}' placeholder='Porcentaje en la fase' name='porcentaje'>
+                                    <label for='porcentaje' class='form-label'>Porcentaje en la fase %</label>
                                 </div>
+                            </div>
+                            <div class='col-md-3'>
+                                <div class='form-floating mb-3'>
+                                    <select name='tipoproyecto' id='rol-tarea' class='form-control' readonly>
+                                        <option value='{$datos['roles']}'>{$datos['roles']}</option>
+                                    </select>
+                                <label for='usu-tarea' class='form-label'>Rol</label>
                             </div>
                         </div>
                     </form>

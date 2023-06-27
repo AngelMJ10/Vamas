@@ -76,6 +76,7 @@
             echo json_encode($datos);
         }
 
+        // Info Proyecto
         if ($_POST['op'] == 'info') {
             $idproyecto = $_POST['idproyecto'];
             $datos = $proyecto->get($idproyecto);

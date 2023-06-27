@@ -1,6 +1,7 @@
 // ?Variables 
 let idfase = 0;
 let idproyecto = 0;
+let idtarea = 0;
 
 // Agregar fase 
 
@@ -174,6 +175,7 @@ function openModalAgregarTarea(){
 
 function listarColaboradores_A(){
   const responsable = document.querySelector("#asignar-empleado");
+  const responsableTarea = document.querySelector("#usuario-tarea");
   const parametrosURL = new URLSearchParams();
   parametrosURL.append("op", "listarColaborador_A");
 
@@ -190,6 +192,7 @@ function listarColaboradores_A(){
   })
   .then(datos =>{
     responsable.innerHTML = datos;
+    responsableTarea.innerHTML = datos;
   })
   .catch(error => {
       console.error('Error:', error);
@@ -231,7 +234,127 @@ function agregarTarea(){
     });
 
 }
+
+function listarHabilidades() {
+  const empleadoSelect = document.querySelector("#asignar-empleado");
+  const rolSelect = document.querySelector("#rol-empleado");
+  
+  const parametros = new URLSearchParams();
+  parametros.append("op", "listar_Habilidades");
+  parametros.append("idcolaboradores", empleadoSelect.value);
+
+  fetch('../controllers/tarea.php', {
+    method: 'POST',
+    body: parametros
+  })
+    .then(respuesta => {
+      if (respuesta.ok) {
+        return respuesta.text();
+      } else {
+        throw new Error('Error en la solicitud');
+      }
+    })
+    .then(datos => {
+      rolSelect.innerHTML = datos;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
 // Fin agregar Tarea
+
+// Editar Tarea
+  function quitarRead() {
+    const nombreTarea = document.getElementById('nombre-tarea');
+    const usuarioTarea = document.getElementById('usuario-tarea');
+    const fechaIniTarea = document.getElementById('fecha-inicio-tarea');
+    const fechaFinTarea = document.getElementById('fecha-fin-tarea');
+    const porcentajeTarea = document.getElementById('porcentaje-tarea');
+
+    const btnGuardarEdicion = document.querySelector("#guardar-C-Tarea");
+    const btnCancelarEdicion = document.querySelector("#cancelar-E-Tarea");
+
+    const btnEditarT = document.querySelector("#quitar-readonly");
+    const btnRtarea = document.querySelector("#generar-reporteT");
+
+    nombreTarea.readOnly = false;
+    usuarioTarea.readOnly = false;
+    fechaIniTarea.readOnly = false;
+    fechaFinTarea.readOnly = false;
+    porcentajeTarea.readOnly = false;
+
+    btnGuardarEdicion.classList.remove("d-none");
+    btnCancelarEdicion.classList.remove("d-none");
+
+    btnEditarT.classList.add("d-none");
+    btnRtarea.classList.add("d-none");
+    listarColaboradores_A();
+  }
+
+  function addRead() {
+    const nombreTarea = document.getElementById('nombre-tarea');
+    const usuarioTarea = document.getElementById('usuario-tarea');
+    const fechaIniTarea = document.getElementById('fecha-inicio-tarea');
+    const fechaFinTarea = document.getElementById('fecha-fin-tarea');
+    const porcentajeTarea = document.getElementById('porcentaje-tarea');
+
+    const btnGuardarEdicion = document.querySelector("#guardar-C-Tarea");
+    const btnCancelarEdicion = document.querySelector("#cancelar-E-Tarea");
+
+    const btnEditarT = document.querySelector("#quitar-readonly");
+    const btnRtarea = document.querySelector("#generar-reporteT");
+
+    nombreTarea.readOnly = true;
+    usuarioTarea.readOnly = true;
+    fechaIniTarea.readOnly = true;
+    fechaFinTarea.readOnly = true;
+    porcentajeTarea.readOnly = true;
+
+    btnGuardarEdicion.classList.add("d-none");
+    btnCancelarEdicion.classList.add("d-none");
+
+    btnEditarT.classList.remove("d-none");
+    btnRtarea.classList.remove("d-none");
+    modalInfoTarea(idtarea);
+  }
+
+  function editarTarea(){
+    const nombreTarea = document.getElementById('nombre-tarea');
+    const usuarioTarea = document.getElementById('usuario-tarea');
+    const rolTarea = document.getElementById('rol-tarea');
+    const fechaIniTarea = document.getElementById('fecha-inicio-tarea');
+    const fechaFinTarea = document.getElementById('fecha-fin-tarea');
+    const porcentajeTarea = document.getElementById('porcentaje-tarea');
+  
+    const parametros = new URLSearchParams();
+    parametros.append("op", "editarTarea");
+    parametros.append("idtarea", idtarea);
+    parametros.append("idcolaboradores", usuarioTarea.value);
+    parametros.append("roles", rolTarea.value);
+    parametros.append("tarea", nombreTarea.value);
+    parametros.append("porcentaje", porcentajeTarea.value);
+    parametros.append("fecha_inicio_tarea", fechaIniTarea.value);
+    parametros.append("fecha_fin_tarea", fechaFinTarea.value);
+  
+    fetch('../controllers/tarea.php', {
+      method: 'POST',
+      body: parametros
+    })
+      .then(respuesta => {
+        if(respuesta.ok){
+          alert('Tarea Editada correctamente');
+          location.reload();
+        } else{
+            alert('Error en la solicitud');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  
+  }
+
 
 // Editar Fase
 
@@ -438,7 +561,7 @@ function editarProyecto(){
 
 // Fin editar Proyecto
 
-
+// Modal de Tareas
 function modalInfoTarea(id) {
   const inputs = document.querySelector("#inputs-tarea");
   const modalInfoTarea = document.querySelector("#modal-info-tarea");
@@ -461,6 +584,7 @@ function modalInfoTarea(id) {
       const bootstrapModal = new bootstrap.Modal(modalInfoTarea);
       bootstrapModal.show();
       verEvidenciasTarear(id)
+      idtarea = id;
     })
     .catch(error => {
       console.error('Error:', error);
@@ -809,9 +933,19 @@ listar();
   const btnAgregarT = document.querySelector("#agregar-tarea");
   btnAgregarT.addEventListener("click", openModalAgregarTarea);
 
+  const btnBuscar = document.querySelector("#btn-habilidades");
+  btnBuscar.addEventListener("click", listarHabilidades);
+
   // Para registrar tareas en el miniModal
   const btnRegistrarTarea = document.querySelector("#registrar-tarea");
   btnRegistrarTarea.addEventListener("click", agregarTarea);
+
+  // Para quitar o agregar la clase d-none
+  const btnEditarT = document.querySelector("#quitar-readonly");
+  btnEditarT.addEventListener("click",quitarRead);
+
+  const btnAddRead = document.querySelector("#cancelar-E-Tarea");
+  btnAddRead.addEventListener("click",addRead);
 
 // *Para fases
   // Para quitar el readOnly de los inputs
@@ -825,6 +959,10 @@ listar();
   // Para editar los datos de la fase
   const btnGuardarFase = document.querySelector("#guardar-fase");
   btnGuardarFase.addEventListener("click", editarFase);
+
+  // Para editar una tarea 
+  const btnEditarTarea = document.querySelector("#guardar-C-Tarea");
+  btnEditarTarea.addEventListener("click", editarTarea);
 
 // * Para los proyecto
   // Para quitar el readOnly de los inputs de proyecto
