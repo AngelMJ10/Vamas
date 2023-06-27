@@ -31,7 +31,7 @@
 
         public function actualizar_proyecto($data = []){
             try {
-                $query = "CALL editar_proyecto(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $query = "CALL editar_proyecto(?, ?, ?, ?, ?, ?, ?, ?)";
                 $consulta = $this->conexion->prepare($query);
                 $consulta->execute(array(
                     $data['idproyecto'],
@@ -41,8 +41,7 @@
                     $data['descripcion'],
                     $data['fechainicio'],
                     $data['fechafin'],
-                    $data['precio'],
-                    $data['idusuariore']
+                    $data['precio']
                 ));
             } catch (Exception $e) {
                 die($e->getMessage());

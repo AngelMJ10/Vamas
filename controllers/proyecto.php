@@ -57,9 +57,14 @@
 
         if ($_POST['op'] == 'editar') {
             $data = [
-                "idproyecto" => $_POST['idproyecto'] , "idtipoproyecto" => $_POST['idtipoproyecto'] , "idempresa" => $_POST['idempresa'],
-                "titulo" => $_POST['titulo'], "descripcion" => $_POST['descripcion'], "fechainicio" => $_POST['fechainicio'],
-                "fechafin" => $_POST['fechafin'], "precio" => $_POST['precio'], "idusuariore" => $_POST['idusuariore']    
+                "idproyecto" => $_POST['idproyecto'] ,
+                "idtipoproyecto" => $_POST['idtipoproyecto'],
+                "idempresa" => $_POST['idempresa'],
+                "titulo" => $_POST['titulo'],
+                "descripcion" => $_POST['descripcion'],
+                "fechainicio" => $_POST['fechainicio'],
+                "fechafin" => $_POST['fechafin'],
+                "precio" => $_POST['precio']
             ];
             $proyecto->actualizar_proyecto($data);
             echo "Proyecto creado";
@@ -87,25 +92,29 @@
                     <div class='row mb-2 mt-2'>
                         <div class='col-md-3'>
                             <div class='form-floating mb-3'>
-                                <input name='tipoproyecto' readonly class='form-control' value='{$datos['tipoproyecto']}'>
+                                <select name='tipoproyecto' id='tipo_proyecto' class='form-control' readonly>
+                                    <option value='{$datos['idtipoproyecto']}' selected>{$datos['tipoproyecto']}</option>
+                                </select>
                                 <label for='tipoproyecto' class='form-label'>Tipo de Proyecto</label>
                             </div>
                         </div>
                         <div class='col-md-3'>
                             <div class='form-floating mb-3'>
-                                <input name='empresa' readonly class='form-control' value='{$datos['nombre']}'>
-                                <label for='empresa' class='form-label'>Empresa </label>
+                                <select name='empresa' id='id_empresa' class='form-control' readonly>
+                                    <option value='{$datos['idempresa']}' selected>{$datos['nombre']}</option>
+                                </select>
+                                <label for='empresa' class='form-label'>Empresa</label>
                             </div>
                         </div>
                         <div class='col-md-3'>
                             <div class='form-floating mb-3'>
-                                <input name='titulo' readonly class='form-control' value='{$datos['titulo']}'>
+                                <input type='text' name='titulo' id='titulo_proyecto' readonly class='form-control' value='{$datos['titulo']}'>
                                 <label for='titulo' class='form-label'>Titulo del proyecto</label>
                             </div>
                         </div>
                         <div class='col-md-3'>
                             <div class='form-floating mb-3'>
-                                <input name='porcentaje' readonly class='form-control' value='{$porcentaje}%'>
+                                <input type='number' name='porcentaje' id='porcentaje_proyecto' readonly class='form-control' value='{$porcentaje}'>
                                 <label for='porcentaje' class='form-label'>Porcentaje</label>
                             </div>
                         </div>
@@ -113,30 +122,31 @@
                     <div class='row mb-2'>
                         <div class='col-md-3'>
                             <div class='form-floating mb-3'>
-                                <textarea name='descripcion' readonly class='form-control'>{$datos['descripcion']}</textarea>
+                                <textarea name='descripcion' id='descripcion_proyecto' readonly class='form-control'>{$datos['descripcion']}</textarea>
                                 <label for='descripcion' class='form-label'>Descripción</label>
                             </div>
                         </div>
                         <div class='col-md-3'>
                             <div class='form-floating mb-3'>
-                                <input name='fechainicio' readonly class='form-control' value='{$datos['fechainicio']}'>
+                                <input type='date' name='fechainicio' id='fechainicio_proyecto' readonly class='form-control' value='{$datos['fechainicio']}'>
                                 <label for='fechainicio' class='form-label'>Fecha de inicio</label>
                             </div>
                         </div>
                         <div class='col-md-3'>
                             <div class='form-floating mb-3'>
-                                <input name='fechafin' readonly class='form-control' value='{$datos['fechafin']}'>
+                                <input type='date' name='fechafin' id='fechafin_proyecto' readonly class='form-control' value='{$datos['fechafin']}'>
                                 <label for='fechafin' class='form-label'>Fecha de cierre</label>
                             </div>
                         </div>
                         <div class='col-md-3'>
                             <div class='form-floating mb-3'>
-                                <input name='precio' readonly class='form-control' value='{$datos['precio']}'>
+                                <input type='number' name='precio' id='precio_proyecto' readonly class='form-control' value='{$datos['precio']}'>
                                 <label for='precio' class='form-label'>Precio</label>
                             </div>
                         </div>
                     </div>
                 </form>
+        
             ";
 
             echo($inputs);
@@ -216,45 +226,56 @@
             $contador = 1;
 
             function vista($datos){
+                $porcentaje = $datos[0]['porcentaje'];
+                // If para poder quitar ".00" de los porcentajes y en caso del que porcentaje sea NULL,
+                // Se muestre como "0" 
+                if ($porcentaje) {
+                    $porcentaje = rtrim($porcentaje, "0");
+                    $porcentaje = rtrim($porcentaje, ".");
+                } elseif ($porcentaje == null) {
+                    $porcentaje = 0;
+                }
                 $inputs= "
                     <form>
                         <div class='row mb-2 mt-2'>
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>
-                                    <input type='text' readonly class='form-control' value='{$datos[0]['nombrefase']}' placeholder='Nombre del proyecto' id='name-phase' name='project'>
-                                    <label for='project' class='form-label'>Nombre del Proyecto</label>
+                                <input type='text' class='form-control' value='{$datos[0]['nombrefase']}' placeholder='Nombre del proyecto' id='nombre-Fase' name='project' readonly>
+                                <label for='project' class='form-label'>Nombre de la Fase</label>
                                 </div>
                             </div>
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>
-                                    <textarea class='form-control' name='descripcion' readonly placeholder='Descripcion del proyecto'>{$datos[0]['descripcion']}</textarea>
-                                    <label for='descripcion' class='form-label'>Descripción</label>
+                                    <textarea class='form-control' name='descripcion' id='comentario-fase' placeholder='Comentario dela Fase' readonly>{$datos[0]['comentario']}</textarea>
+                                    <label for='descripcion' class='form-label'>Comentario dela Fase</label>
                                 </div>
                             </div>
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>
-                                    <input type='date' class='form-control' readonly placeholder='Inicio de la fase' value='{$datos[0]['fechainicio']}' name='fechaini'>
-                                    <label for='fechaini' class='form-label'>Fecha de Inicio</label>
+                                <input type='date' class='form-control' id='fechainicio-fase' placeholder='Inicio de la fase' value='{$datos[0]['fechainicio']}' name='fechaini' readonly>
+                                <label for='fechaini' class='form-label'>Fecha de Inicio</label>
                                 </div>
                             </div>
                         </div>
                         <div class='row mb-2 mt-2'>
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>
-                                    <input type='date' class='form-control' readonly placeholder='Fin de la Fase' value='{$datos[0]['fechafin']}' name='fechafin'>
-                                    <label for='fechafin' class='form-label'>Fecha de Inicio</label>
+                                <input type='date' class='form-control' id='fechafin-fase' placeholder='Fin de la Fase' value='{$datos[0]['fechafin']}' name='fechafin' readonly>
+                                <label for='fechafin' class='form-label'>Fecha de Inicio</label>
                                 </div>
                             </div>
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>
-                                    <input type='text' class='form-control' readonly value='{$datos[0]['usuario']}' placeholder='Usuario' name='precio'>
-                                    <label for='precio' class='form-label'>Usuario Responsable</label>
+                                    <select class='form-control' id='usuariore-fase' name='precio'>
+                                        <option value='{$datos[0]['idresponsable']}'>{$datos[0]['usuario']}</option>
+                                    </select>
+                                    <label for='usuariore' class='form-label'>Usuario Responsable</label>
                                 </div>
                             </div>
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>
-                                    <textarea type='text' class='form-control' readonly value='{$datos[0]['comentario']}' placeholder='Comentario' name='precio'>{$datos[0]['comentario']}</textarea>
-                                    <label for='precio' class='form-label'>Comentario</label>
+                                    <input type='number' class='form-control' value='{$porcentaje}' id='porcentaje-fase' readonly placeholder='Porcentaje' name='porcentaje'>
+                                    <label for='porcentaje' class='form-label'>Porcentaje %</label>
                                 </div>
                             </div>
                         </div>

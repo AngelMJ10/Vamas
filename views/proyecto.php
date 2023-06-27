@@ -340,6 +340,13 @@
 
         </div>
 
+        <div class="btn-group">
+          <button class="btn btn-outline-info" id="editar-proyecto">Editar Proyecto</button>
+          <button class="btn btn-outline-warning d-none" id="guardar-proyecto">Guardar Edición</button>
+          <button class="btn btn-outline-danger d-none" id="cancelar-edicion-proyecto">Cancelar Edición</button>
+          <button class="btn btn-outline-primary" id="agregar-fase">Agregar nueva fase</button>
+        </div>
+
       </div>
         <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -459,7 +466,9 @@
         </div>
         <div class="btn-group">
           <button class="btn btn-outline-success" id="editar-fase">Editar Fase</button>
-          <button class="btn btn-outline-primary" id="agregar-tarea">Agregar nueva tarea +</button>
+          <button class="btn btn-outline-warning d-none" id="guardar-fase">Guardar Edición</button>
+          <button class="btn btn-outline-danger d-none" id="cancelar-edicion">Cancelar Edición</button>
+          <button class="btn btn-outline-primary" id="agregar-tarea">Agregar nueva tarea</button>
         </div>
 
       </div>
@@ -471,7 +480,7 @@
   </div>
 </div>
 
-<!-- Modal para más información de la fase -->
+<!-- Modal para más información de la tarea en el modal de la fase -->
 <div class="modal fade" id="modal-info-tarea" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">

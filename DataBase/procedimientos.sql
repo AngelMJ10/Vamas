@@ -86,7 +86,7 @@ END $$
 
 SELECT * FROM habilidades
 
-CALL obtener_info_colaborador(2)
+CALL obtener_info_colaborador(1)
 
 ---------------------------------------------------
 
@@ -276,7 +276,7 @@ SELECT fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyec
     ORDER BY pro.idproyecto, fas.fechainicio;
 END $$
 
-
+DROP PROCEDURE listar_fase_proyecto
 CALL listar_fase_proyecto(1);
 
 --------------------------------------------
@@ -285,8 +285,8 @@ DELIMITER $$
 CREATE PROCEDURE obtener_fase(IN _idfase SMALLINT)
 BEGIN
 SELECT fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyecto', pro.fechafin AS 'FinProyecto', 
-		pro.precio, emp.nombre AS 'empresa', col.usuario, fas.nombrefase, fas.fechainicio, 
-		fas.fechafin, fas.comentario,fas.estado,fas.porcentaje_fase
+		pro.precio, emp.nombre AS 'empresa',fas.idresponsable, col.usuario, fas.nombrefase, fas.fechainicio, 
+		fas.fechafin, fas.comentario,fas.estado,fas.porcentaje,fas.porcentaje_fase
     FROM fases fas
     INNER JOIN proyecto pro ON pro.idproyecto = fas.idproyecto
     INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
@@ -295,7 +295,7 @@ SELECT fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyec
     ORDER BY pro.idproyecto, fas.fechainicio;
 END $$
 
-
+DROP PROCEDURE obtener_fase
 CALL obtener_fase(1);
 
 ---------------------------------------------
@@ -525,14 +525,13 @@ CREATE PROCEDURE editar_proyecto
     IN p_descripcion        VARCHAR(200),
     IN p_fechainicio        DATE,
     IN p_fechafin           DATE,
-    IN p_precio             DECIMAL(6,2),
-    IN p_idusuariore        SMALLINT
+    IN p_precio             DECIMAL(6,2)
 )
 BEGIN
     UPDATE proyecto SET idtipoproyecto = p_idtipoproyecto, idempresa = p_idempresa,
                             titulo = p_titulo, descripcion = p_descripcion, fechainicio = p_fechainicio,
                              fechafin = p_fechafin,
-                            precio = p_precio, idusuariore = p_idusuariore
+                            precio = p_precio
     WHERE idproyecto = p_idproyecto;
 
 END $$
@@ -540,12 +539,40 @@ END $$
 
 DROP PROCEDURE editar_proyecto
 
-CALL editar_proyecto(1, 1, 1, 'Página web sobre test', 'Prueba 2', '2023-05-29', '2023-05-29', 150, 1);
+CALL editar_proyecto(1, 1, 1, 'Página web sobre test', 'Prueba 2', '2023-05-29', '2023-05-29', 150);
 
 SELECT * FROM proyecto;
 SELECT * FROM tareas;
 SELECT * FROM fases;
 ------------------------------------------------------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE editar_fase
+(
+    IN p_idfase           SMALLINT,
+    IN p_idresponsable    SMALLINT,
+    IN p_nombrefase       VARCHAR(40),
+    IN p_fechainicio      DATE,
+    IN p_fechafin         DATE,
+    IN p_comentario       VARCHAR(200),
+    IN p_porcentaje       DECIMAL(5,2)
+)
+BEGIN
+    UPDATE fases
+    SET idresponsable = p_idresponsable,
+        nombrefase = p_nombrefase,
+        fechainicio = p_fechainicio,
+        fechafin = p_fechafin,
+        comentario = p_comentario,
+        porcentaje = p_porcentaje
+    WHERE idfase = p_idfase;
+END $$
+
+CALL editar_fase(1,3,'Creacion del boceto','2023-06-26','2023-06-27','Prueba de edicion',25);
+
+
+
+------------------------------------------------------------------------
 
 DELIMITER $$
 CREATE PROCEDURE crear_tarea

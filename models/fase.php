@@ -29,6 +29,24 @@
             }
         }
 
+        public function editarFase($data = []){
+            try {
+                $query = "CALL editar_fase(?,?,?,?,?,?,?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array(
+                    $data["idfase"],
+                    $data["idresponsable"],
+                    $data["nombrefase"],
+                    $data["fechainicio"],
+                    $data["fechafin"],
+                    $data["comentario"],
+                    $data["porcentaje"]
+                ));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
         public function getPhase($idproyecto){
             try {
                 $consulta = $this->conexion->prepare("Call listar_fase_proyecto(?)");

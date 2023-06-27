@@ -154,6 +154,19 @@
             $fase->registerPhase($idproyecto, $idresponsable, $nombrefase, $fechainicio, $fechafin, $porcentaje ,$comentario);
         }
 
+        if ($_POST['op'] == 'editarFase') {
+            $data = [
+                "idfase" => $_POST['idfase'] ,
+                "idresponsable" => $_POST['idresponsable'],
+                "nombrefase" => $_POST['nombrefase'],
+                "fechainicio" => $_POST['fechainicio'],
+                "fechafin" => $_POST['fechafin'],
+                "comentario" => $_POST['comentario'],
+                "porcentaje" => $_POST['porcentaje']
+            ];
+            $fase->editarFase($data);
+        }
+
         if ($_POST['op'] == 'obtenerPorcentajeF') {
             $idfase = $_POST['idfase'];
             $fase->obtenerPorcentajeF($idfase);

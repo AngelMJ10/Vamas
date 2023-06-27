@@ -1,3 +1,7 @@
+// ?Variables 
+let idfase = 0;
+let idproyecto = 0;
+
 function createPhase(idproyecto){
     const namephase = document.querySelector("#name-phase");
     const respnsible = document.querySelector("#responsible-phase");
@@ -34,7 +38,6 @@ function createPhase(idproyecto){
         })
     }
 }
-let idfase = 0;
 
 function modalInfoFase(id) {
     const inputs = document.querySelector("#inputs-fase");
@@ -90,6 +93,8 @@ function tabla_Fase(id) {
 }
 
 // Agregar Tarea
+
+// Para abrir un miniModal de registro de tareas
 function openModalAgregarTarea(){
   const modalAgregarT = document.querySelector("#modal-agregar-t");
   const bootstrapModal = new bootstrap.Modal(modalAgregarT);
@@ -156,6 +161,187 @@ function agregarTarea(){
 
 }
 // Fin agregar Tarea
+
+// Editar Fase
+
+// Para quitar el readOnly de los inputs
+function quitarReadonly() {
+  const nombreFaseInput = document.getElementById('nombre-Fase');
+  const porcentajeFase = document.getElementById('porcentaje-fase');
+  const fechaInicioInput = document.getElementById('fechainicio-fase');
+  const fechaFinInput = document.getElementById('fechafin-fase');
+  const usuarioResponsableInput = document.getElementById('usuariore-fase');
+  const comentarioTextarea = document.getElementById('comentario-fase');
+  const btnGuardarEdicion = document.querySelector("#guardar-fase");
+  const btnCancelarEdicion = document.querySelector("#cancelar-edicion");
+
+  nombreFaseInput.readOnly = false;
+  porcentajeFase.readOnly = false;
+  fechaInicioInput.readOnly = false;
+  fechaFinInput.readOnly = false;
+  usuarioResponsableInput.readOnly = false;
+  comentarioTextarea.readOnly = false;
+  btnGuardarEdicion.classList.remove("d-none");
+  btnCancelarEdicion.classList.remove("d-none");
+  listarColaboradores();
+}
+
+function cancelarEdicion() {
+  const nombreFaseInput = document.getElementById('nombre-Fase');
+  const porcentajeFase = document.getElementById('porcentaje-fase');
+  const fechaInicioInput = document.getElementById('fechainicio-fase');
+  const fechaFinInput = document.getElementById('fechafin-fase');
+  const usuarioResponsableInput = document.getElementById('usuariore-fase');
+  const comentarioTextarea = document.getElementById('comentario-fase');
+  const btnGuardarEdicion = document.querySelector("#guardar-fase");
+  const btnCancelarEdicion = document.querySelector("#cancelar-edicion");
+
+  nombreFaseInput.readOnly = true;
+  porcentajeFase.readOnly = true;
+  fechaInicioInput.readOnly = true;
+  fechaFinInput.readOnly = true;
+  usuarioResponsableInput.readOnly = true;
+  comentarioTextarea.readOnly = true;
+  btnGuardarEdicion.classList.add("d-none");
+  btnCancelarEdicion.classList.add("d-none");
+  modalInfoFase(idfase);
+}
+
+function editarFase() {
+  const nombreFase = document.querySelector('#nombre-Fase');
+  const fechaInicioFase = document.querySelector('#fechainicio-fase');
+  const fechaFinFase = document.querySelector('#fechafin-fase');
+  const usuarioResponsableFase = document.querySelector('#usuariore-fase');
+  const comentarioFase = document.querySelector('#comentario-fase');
+  const porcentajeFase = document.querySelector('#porcentaje-fase');
+
+  const parametros = new URLSearchParams();
+  parametros.append("op", "editarFase");
+  parametros.append("idfase", idfase);
+  parametros.append("idresponsable", usuarioResponsableFase.value);
+  parametros.append("nombrefase", nombreFase.value);
+  parametros.append("fechainicio", fechaInicioFase.value);
+  parametros.append("fechafin", fechaFinFase.value);
+  parametros.append("comentario", comentarioFase.value);
+  parametros.append("porcentaje", porcentajeFase.value);
+
+  fetch('../controllers/fase.php', {
+    method: 'POST',
+    body: parametros
+  })
+    .then(respuesta => {
+      if(respuesta.ok){
+        alert('Fase Actualizada correctamente');
+        location.reload();
+      } else{
+          alert('Error en la solicitud');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
+// Fin editar Fase
+
+// Editar Proyecto
+
+function quitarReadonlyP() {
+  const tipoproyecto_p = document.querySelector('#tipo_proyecto');
+  const idempresa_p = document.querySelector('#id_empresa');
+  const titulo_proyecto = document.querySelector('#titulo_proyecto');
+  const porcentaje_p = document.querySelector('#porcentaje_proyecto');
+  const descripcion_p = document.querySelector('#descripcion_proyecto');
+  const fechainicio_p = document.querySelector('#fechainicio_proyecto');
+  const fechafin_p = document.querySelector('#fechafin_proyecto');
+  const precio_p = document.querySelector('#precio_proyecto');
+
+  const btnEditar = document.querySelector('#guardar-proyecto');
+  const btnCancelar = document.querySelector('#cancelar-edicion-proyecto');
+
+  tipoproyecto_p.readOnly = false;
+  idempresa_p.readOnly = false;
+  titulo_proyecto.readOnly = false;
+  porcentaje_p.readOnly = false;
+  descripcion_p.readOnly = false;
+  fechainicio_p.readOnly = false;
+  fechafin_p.readOnly = false;
+  precio_p.readOnly = false;
+
+  btnEditar.classList.remove("d-none");
+  btnCancelar.classList.remove("d-none");
+  listartipoproyecto();
+  listarempresa();
+}
+
+function cancelarEdicionP() {
+  const tipoproyecto_p = document.querySelector('#tipo_proyecto');
+  const idempresa_p = document.querySelector('#id_empresa');
+  const titulo_proyecto = document.querySelector('#titulo_proyecto');
+  const porcentaje_p = document.querySelector('#porcentaje_proyecto');
+  const descripcion_p = document.querySelector('#descripcion_proyecto');
+  const fechainicio_p = document.querySelector('#fechainicio_proyecto');
+  const fechafin_p = document.querySelector('#fechafin_proyecto');
+  const precio_p = document.querySelector('#precio_proyecto');
+
+  const btnEditar = document.querySelector('#guardar-proyecto');
+  const btnCancelar = document.querySelector('#cancelar-edicion-proyecto');
+
+  tipoproyecto_p.readOnly = true;
+  idempresa_p.readOnly = true;
+  titulo_proyecto.readOnly = true;
+  porcentaje_p.readOnly = true;
+  descripcion_p.readOnly = true;
+  fechainicio_p.readOnly = true;
+  fechafin_p.readOnly = true;
+  precio_p.readOnly = true;
+
+  btnEditar.classList.add("d-none");
+  btnCancelar.classList.add("d-none");
+  info(id);
+}
+
+function editarProyecto(){
+  const tipoproyecto_p = document.querySelector('#tipo_proyecto');
+  const idempresa_p = document.querySelector('#id_empresa');
+  const titulo_proyecto = document.querySelector('#titulo_proyecto');
+  const porcentaje_p = document.querySelector('#porcentaje_proyecto');
+  const descripcion_p = document.querySelector('#descripcion_proyecto');
+  const fechainicio_p = document.querySelector('#fechainicio_proyecto');
+  const fechafin_p = document.querySelector('#fechafin_proyecto');
+  const precio_p = document.querySelector('#precio_proyecto');
+  
+  const parametros = new URLSearchParams();
+  parametros.append("op", "editar");
+  parametros.append("idproyecto", idproyecto);
+  parametros.append("idtipoproyecto", tipoproyecto_p.value);
+  parametros.append("idempresa", idempresa_p.value);
+  parametros.append("titulo", titulo_proyecto.value);
+  parametros.append("porcentaje", porcentaje_p.value);
+  parametros.append("descripcion", descripcion_p.value);
+  parametros.append("fechainicio", fechainicio_p.value);
+  parametros.append("fechafin", fechafin_p.value);
+  parametros.append("precio", precio_p.value);
+
+  fetch('../controllers/proyecto.php', {
+    method: 'POST',
+    body: parametros
+  })
+    .then(respuesta => {
+      if(respuesta.ok){
+        alert('Proyecto actualizado correctamente');
+        location.reload();
+      } else{
+          alert('Error en la solicitud');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
+}
+
+// Fin editar Proyecto
 
 function modalInfoTarea(id) {
   const inputs = document.querySelector("#inputs-tarea");
@@ -310,6 +496,7 @@ function info(id) {
         const bootstrapModal = new bootstrap.Modal(modal);
         bootstrapModal.show();
         getPhase(id);
+        idproyecto = id;
     })
     .catch(error => {
       console.error('Error:', error);
@@ -386,6 +573,7 @@ function listarempresa(){
     const empresaupdate = document.querySelector("#idempresa-update");
     const empresasearch = document.querySelector("#idempresa-search");
     const empresaphase = document.querySelector("#idempresa-phase");
+    const idempresa_p = document.querySelector('#id_empresa');
 
     const parametrosURL = new URLSearchParams();
     parametrosURL.append("op", "listarempresa");
@@ -406,6 +594,7 @@ function listarempresa(){
         empresaupdate.innerHTML = datos;
         empresasearch.innerHTML = datos;
         empresaphase.innerHTML = datos;
+        idempresa_p.innerHTML = datos;
     })
     .catch(error => {
         console.error('Error:', error);
@@ -417,6 +606,7 @@ function listartipoproyecto(){
     const tipoproyectoupdate = document.querySelector("#tipoProyecto-update");
     const tipoproyectosearch = document.querySelector("#tipoProyecto-search");
     const tipoproyectophase = document.querySelector("#tipoProyecto-phase");
+    const tipoproyecto_p = document.querySelector('#tipo_proyecto');
 
     const parametrosURL = new URLSearchParams();
     parametrosURL.append("op", "listartipoproyecto");
@@ -437,6 +627,7 @@ function listartipoproyecto(){
         tipoproyectoupdate.innerHTML = datos;
         tipoproyectosearch.innerHTML = datos;
         tipoproyectophase.innerHTML = datos;
+        tipoproyecto_p.innerHTML = datos;
     })
     .catch(error => {
         console.error('Error:', error);
@@ -444,7 +635,8 @@ function listartipoproyecto(){
 }
 
 function listarColaboradores(){
-    const responsible = document.querySelector("#responsible-phase");
+    const responsable = document.querySelector("#responsible-phase");
+    const usuario = document.querySelector("#usuariore-fase");
     const parametrosURL = new URLSearchParams();
     parametrosURL.append("op", "listarColaborador");
 
@@ -460,7 +652,8 @@ function listarColaboradores(){
         }
     })
     .then(datos =>{
-        responsible.innerHTML = datos;
+      responsable.innerHTML = datos;
+      usuario.innerHTML = datos;
     })
     .catch(error => {
         console.error('Error:', error);
@@ -511,11 +704,40 @@ listartipoproyecto();
 listarempresa();
 listar();
 
-const btnAgregarT = document.querySelector("#agregar-tarea");
-btnAgregarT.addEventListener("click", openModalAgregarTarea);
+// *Para tareas
+  // Para abrir un miniModal de registro de tareas
+  const btnAgregarT = document.querySelector("#agregar-tarea");
+  btnAgregarT.addEventListener("click", openModalAgregarTarea);
 
-const btnRegistrarTarea = document.querySelector("#registrar-tarea");
-btnRegistrarTarea.addEventListener("click", agregarTarea);
+  // Para registrar tareas en el miniModal
+  const btnRegistrarTarea = document.querySelector("#registrar-tarea");
+  btnRegistrarTarea.addEventListener("click", agregarTarea);
 
-const btnRegistrar = document.querySelector("#registrar-datos");
-btnRegistrar.addEventListener("click", registrar);
+// *Para fases
+// Para quitar el readOnly de los inputs
+  const btnQuitarOnly = document.querySelector("#editar-fase");
+  btnQuitarOnly.addEventListener("click", quitarReadonly);
+
+  // Para quitar los botones y agregar la clase d-none
+  const btnCancelarEdicion = document.querySelector("#cancelar-edicion");
+  btnCancelarEdicion.addEventListener("click", cancelarEdicion);
+
+  // Para editar los datos de la fase
+  const btnGuardarFase = document.querySelector("#guardar-fase");
+  btnGuardarFase.addEventListener("click", editarFase);
+
+// * Para los proyecto
+  // Para quitar el readOnly de los inputs de proyecto
+  const btnquitarRO = document.querySelector("#editar-proyecto");
+  btnquitarRO.addEventListener("click", quitarReadonlyP);
+
+  // Para quitar el readOnly de los inputs de proyecto
+  const btnCancelarP = document.querySelector("#cancelar-edicion-proyecto");
+  btnCancelarP.addEventListener("click", cancelarEdicionP);
+
+  // Para quitar el readOnly de los inputs de proyecto
+  const btnEditarProyecto = document.querySelector("#guardar-proyecto");
+  btnEditarProyecto.addEventListener("click", editarProyecto);
+
+  const btnRegistrar = document.querySelector("#registrar-datos");
+  btnRegistrar.addEventListener("click", registrar);
