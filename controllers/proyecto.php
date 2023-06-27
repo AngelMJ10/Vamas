@@ -246,22 +246,22 @@
                             </div>
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>
-                                    <textarea class='form-control' name='descripcion' id='comentario-fase' placeholder='Comentario dela Fase' readonly>{$datos[0]['comentario']}</textarea>
-                                    <label for='descripcion' class='form-label'>Comentario dela Fase</label>
+                                    <textarea class='form-control' name='descripcion' id='comentario-Fase' placeholder='Comentario dela Fase' readonly>{$datos[0]['comentario']}</textarea>
+                                    <label for='descripcion' class='form-label'>Comentario de la Fase</label>
                                 </div>
                             </div>
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>
-                                <input type='date' class='form-control' id='fechainicio-fase' placeholder='Inicio de la fase' value='{$datos[0]['fechainicio']}' name='fechaini' readonly>
-                                <label for='fechaini' class='form-label'>Fecha de Inicio</label>
+                                    <input type='date' class='form-control' id='fechainicio-fase' placeholder='Inicio de la fase' value='{$datos[0]['fechainicio']}' name='fechaini' readonly>
+                                    <label for='fechaini' class='form-label'>Fecha de Inicio</label>
                                 </div>
                             </div>
                         </div>
                         <div class='row mb-2 mt-2'>
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>
-                                <input type='date' class='form-control' id='fechafin-fase' placeholder='Fin de la Fase' value='{$datos[0]['fechafin']}' name='fechafin' readonly>
-                                <label for='fechafin' class='form-label'>Fecha de Inicio</label>
+                                    <input type='date' class='form-control' id='fechafin-fase' placeholder='Fin de la Fase' value='{$datos[0]['fechafin']}' name='fechafin' readonly>
+                                    <label for='fechafin' class='form-label'>Fecha de Inicio</label>
                                 </div>
                             </div>
                             <div class='col-md-4'>
@@ -274,7 +274,7 @@
                             </div>
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>
-                                    <input type='number' class='form-control' value='{$porcentaje}' id='porcentaje-fase' readonly placeholder='Porcentaje' name='porcentaje'>
+                                    <input type='number' class='form-control' value='{$porcentaje}' id='porcentaje-Fase' readonly placeholder='Porcentaje' name='porcentaje'>
                                     <label for='porcentaje' class='form-label'>Porcentaje %</label>
                                 </div>
                             </div>

@@ -281,19 +281,19 @@ CALL listar_fase_proyecto(1);
 
 --------------------------------------------
 
-DELIMITER $$
-CREATE PROCEDURE obtener_fase(IN _idfase SMALLINT)
-BEGIN
-SELECT fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyecto', pro.fechafin AS 'FinProyecto', 
-		pro.precio, emp.nombre AS 'empresa',fas.idresponsable, col.usuario, fas.nombrefase, fas.fechainicio, 
-		fas.fechafin, fas.comentario,fas.estado,fas.porcentaje,fas.porcentaje_fase
-    FROM fases fas
-    INNER JOIN proyecto pro ON pro.idproyecto = fas.idproyecto
-    INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
-    INNER JOIN colaboradores col ON col.idcolaboradores = fas.idresponsable
-    WHERE fas.estado = 1 AND fas.idfase = _idfase
-    ORDER BY pro.idproyecto, fas.fechainicio;
-END $$
+	DELIMITER $$
+	CREATE PROCEDURE obtener_fase(IN _idfase SMALLINT)
+	BEGIN
+	SELECT fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyecto', pro.fechafin AS 'FinProyecto', 
+			pro.precio, emp.nombre AS 'empresa',fas.idresponsable, col.usuario, fas.nombrefase, fas.fechainicio, 
+			fas.fechafin, fas.comentario,fas.estado,fas.porcentaje,fas.porcentaje_fase
+		 FROM fases fas
+		 INNER JOIN proyecto pro ON pro.idproyecto = fas.idproyecto
+		 INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
+		 INNER JOIN colaboradores col ON col.idcolaboradores = fas.idresponsable
+		 WHERE fas.estado = 1 AND fas.idfase = _idfase
+		 ORDER BY pro.idproyecto, fas.fechainicio;
+	END $$
 
 DROP PROCEDURE obtener_fase
 CALL obtener_fase(1);

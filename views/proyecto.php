@@ -450,6 +450,105 @@
   </div>
 </div>
 
+<!-- !Modal para crear una Fase  V2-->
+<div class="modal fade" id="modalFaseV2" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header text-light" style='background-color: #005478;'>
+        <h1 class="modal-title fs-5" id="modalEditarLabel">Registrar Fase V2</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row mb-2 mt-2">
+
+            <div class="col-md-4">
+                <div class="form-floating mb-3">
+                    <input type="text" disabled class="form-control" id="titulo-fase" name="titulo" placeholder="Título">
+                    <label for="titulo" class="form-label">Titulo</label>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-floating mb-3">
+                  <input type="text" name="tipoProyecto" disabled id="tipoProyecto-fase" class="form-control form-control-sm" />
+                  <label for="tipoProyecto">Tipo de Proyecto</label>
+              </div>
+            </div>
+             
+            <div class="col-md-4">
+                <div class="form-floating mb-3">
+                  <input type="text" name="idempresa" disabled id="idempresa-fase" class="form-control form-control-sm" />
+                  <label for="idempresa">Empresa</label>
+                </div>
+            </div>
+            
+            
+          </div>
+
+          <div class="row mb-3">
+
+            <div class="col-md-4">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" placeholder="Nombre de la fase" id="name-faseV2" name="phase">
+                <label for="phase" class="form-label">Nombre de la fase</label>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-floating mb-3">
+                <select name="responsable" id="responsable-faseV2" class="form-control form-control-sm">
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-floating mb-3">
+                <input type="date" class="form-control" placeholder="Fecha de Inicio" id="fecha-inicio-faseV2" name="fechare">
+                <label form="fecha" class="form-label">Fecha de Inicio</label>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row mb-3">
+
+            <div class="col-md-4">
+              <div class="form-floating mb-3">
+                <input type="date" class="form-control" placeholder="Fecha de Fin" id="fecha-fin-faseV2" name="fechare">
+                <label form="fecha" class="form-label">Fecha de Fin</label>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input name="porcentaje" type='number' class="form-control" placeholder="Porcentaje" id="porcentaje-crear-F">
+                <label form="porcentaje" class="form-label">Porcentaje</label>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-floating">
+                <textarea name="comentario" class="form-control" placeholder="Comentario" id="comentario-faseV2"></textarea>
+                <label form="comentario" class="form-label">Comentario</label>
+              </div>
+            </div>
+
+          </div>
+
+          <button type="button" id="create-fase"  class="btn btn-outline-primary">Agregar</button>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- Modal para más información de la fase -->
 <div class="modal fade" id="modal-info-fase" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
@@ -495,8 +594,7 @@
         <div id="tabla-info-tarea">
         </div>
         <div class="btn-group">
-          <button class="btn btn-outline-success" id="editar-fase">Editar Fase</button>
-          <button class="btn btn-outline-primary" id="agregar-tarea">Agregar nueva tarea +</button>
+          <button class="btn btn-outline-danger" id="generar-reporteT">Ver Reporte</button>
         </div>
 
       </div>

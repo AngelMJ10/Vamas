@@ -2,7 +2,78 @@
 let idfase = 0;
 let idproyecto = 0;
 
-function createPhase(idproyecto){
+// Agregar fase 
+
+function abriModal(){
+  const modalFase = document.querySelector("#modalFaseV2");
+  const bootstrapModal = new bootstrap.Modal(modalFase);
+  bootstrapModal.show();
+  const tituloP = document.querySelector("#titulo-fase");
+  const tipoproyectoP = document.querySelector("#tipoProyecto-fase");
+  const empresaP = document.querySelector("#idempresa-fase");
+
+  const parametros = new URLSearchParams();
+  parametros.append("op", "get");
+  parametros.append("idproyecto", idproyecto);
+  fetch('../controllers/proyecto.php', {
+    method: 'POST',
+    body: parametros
+  })
+  .then(respuesta => {
+    if (respuesta.ok) {
+      return respuesta.json();
+    } else {
+      throw new Error('Error en la solicitud');
+    }
+  })
+  .then(datos => {
+    tituloP.value = datos.titulo;
+    tipoproyectoP.value = datos.tipoproyecto;
+    empresaP.value = datos.nombre;
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+}
+
+function agregarFase(){
+  const namephase = document.querySelector("#name-faseV2");
+  const respnsable = document.querySelector("#responsable-faseV2");
+  const fechainicio = document.querySelector("#fecha-inicio-faseV2");
+  const fechafin = document.querySelector("#fecha-fin-faseV2");
+  const comentario = document.querySelector("#comentario-faseV2");
+  const porcentaje = document.querySelector("#porcentaje-crear-F");
+
+  const confirmacion = confirm("¿Estás seguro de los datos ingresados para la nueva fase?");
+
+  if (confirmacion) {
+      const parametrosURL = new URLSearchParams();
+      parametrosURL.append("op", "registerPhase");
+      parametrosURL.append("idproyecto", idproyecto);
+      parametrosURL.append("idresponsable", respnsable.value);
+      parametrosURL.append("nombrefase", namephase.value);
+      parametrosURL.append("fechainicio", fechainicio.value);
+      parametrosURL.append("fechafin", fechafin.value);
+      parametrosURL.append("porcentaje", porcentaje.value);
+      parametrosURL.append("comentario", comentario.value);
+      
+
+      fetch('../controllers/fase.php', {
+          method: 'POST',
+          body: parametrosURL
+      })
+      .then(respuesta =>{
+          if(respuesta.ok){
+              alert('Fase registrada correctamente');
+              location.reload();
+          } else{
+              alert('Error en la solicitud');
+          }
+      })
+  }
+}
+
+function createPhase(idproyectov){
     const namephase = document.querySelector("#name-phase");
     const respnsible = document.querySelector("#responsible-phase");
     const fechainicio = document.querySelector("#fecha-inicio-phase");
@@ -15,7 +86,7 @@ function createPhase(idproyecto){
     if (confirmacion) {
         const parametrosURL = new URLSearchParams();
         parametrosURL.append("op", "registerPhase");
-        parametrosURL.append("idproyecto", idproyecto);
+        parametrosURL.append("idproyecto", idproyectov);
         parametrosURL.append("idresponsable", respnsible.value);
         parametrosURL.append("nombrefase", namephase.value);
         parametrosURL.append("fechainicio", fechainicio.value);
@@ -166,35 +237,47 @@ function agregarTarea(){
 
 // Para quitar el readOnly de los inputs
 function quitarReadonly() {
-  const nombreFaseInput = document.getElementById('nombre-Fase');
-  const porcentajeFase = document.getElementById('porcentaje-fase');
-  const fechaInicioInput = document.getElementById('fechainicio-fase');
-  const fechaFinInput = document.getElementById('fechafin-fase');
-  const usuarioResponsableInput = document.getElementById('usuariore-fase');
-  const comentarioTextarea = document.getElementById('comentario-fase');
+  const nombreFaseInput = document.querySelector('#nombre-Fase');
+  const comentarioTextarea = document.querySelector('#comentario-Fase');
+  const fechaInicioInput = document.querySelector('#fechainicio-fase');
+  const fechaFinInput = document.querySelector('#fechafin-fase');
+  const usuarioResponsableInput = document.querySelector('#usuariore-fase');
+  const porcentajeFase = document.querySelector('#porcentaje-Fase');
+  
+
   const btnGuardarEdicion = document.querySelector("#guardar-fase");
   const btnCancelarEdicion = document.querySelector("#cancelar-edicion");
 
+  const btnEditarF = document.querySelector("#editar-fase");
+  const btnAFase = document.querySelector("#agregar-tarea");
+
   nombreFaseInput.readOnly = false;
-  porcentajeFase.readOnly = false;
+  comentarioTextarea.readOnly = false;
   fechaInicioInput.readOnly = false;
   fechaFinInput.readOnly = false;
   usuarioResponsableInput.readOnly = false;
-  comentarioTextarea.readOnly = false;
+  porcentajeFase.readOnly = false;
+
   btnGuardarEdicion.classList.remove("d-none");
   btnCancelarEdicion.classList.remove("d-none");
+  btnEditarF.classList.add("d-none");
+  btnAFase.classList.add("d-none");
   listarColaboradores();
 }
 
 function cancelarEdicion() {
   const nombreFaseInput = document.getElementById('nombre-Fase');
-  const porcentajeFase = document.getElementById('porcentaje-fase');
+  const porcentajeFase = document.getElementById('porcentaje-Fase');
   const fechaInicioInput = document.getElementById('fechainicio-fase');
   const fechaFinInput = document.getElementById('fechafin-fase');
   const usuarioResponsableInput = document.getElementById('usuariore-fase');
-  const comentarioTextarea = document.getElementById('comentario-fase');
+  const comentarioTextarea = document.getElementById('comentario-Fase');
+
   const btnGuardarEdicion = document.querySelector("#guardar-fase");
   const btnCancelarEdicion = document.querySelector("#cancelar-edicion");
+
+  const btnEditarF = document.querySelector("#editar-fase");
+  const btnAFase = document.querySelector("#agregar-tarea");
 
   nombreFaseInput.readOnly = true;
   porcentajeFase.readOnly = true;
@@ -202,8 +285,12 @@ function cancelarEdicion() {
   fechaFinInput.readOnly = true;
   usuarioResponsableInput.readOnly = true;
   comentarioTextarea.readOnly = true;
+
   btnGuardarEdicion.classList.add("d-none");
   btnCancelarEdicion.classList.add("d-none");
+
+  btnEditarF.classList.remove("d-none");
+  btnAFase.classList.remove("d-none");
   modalInfoFase(idfase);
 }
 
@@ -212,8 +299,8 @@ function editarFase() {
   const fechaInicioFase = document.querySelector('#fechainicio-fase');
   const fechaFinFase = document.querySelector('#fechafin-fase');
   const usuarioResponsableFase = document.querySelector('#usuariore-fase');
-  const comentarioFase = document.querySelector('#comentario-fase');
-  const porcentajeFase = document.querySelector('#porcentaje-fase');
+  const comentarioFase = document.querySelector('#comentario-Fase');
+  const porcentajeFase = document.querySelector('#porcentaje-Fase');
 
   const parametros = new URLSearchParams();
   parametros.append("op", "editarFase");
@@ -258,6 +345,8 @@ function quitarReadonlyP() {
 
   const btnEditar = document.querySelector('#guardar-proyecto');
   const btnCancelar = document.querySelector('#cancelar-edicion-proyecto');
+  const btnabrirEdito = document.querySelector('#editar-proyecto');
+  const btnAgregaF = document.querySelector('#agregar-fase');
 
   tipoproyecto_p.readOnly = false;
   idempresa_p.readOnly = false;
@@ -270,6 +359,8 @@ function quitarReadonlyP() {
 
   btnEditar.classList.remove("d-none");
   btnCancelar.classList.remove("d-none");
+  btnabrirEdito.classList.add("d-none");
+  btnAgregaF.classList.add("d-none");
   listartipoproyecto();
   listarempresa();
 }
@@ -286,6 +377,8 @@ function cancelarEdicionP() {
 
   const btnEditar = document.querySelector('#guardar-proyecto');
   const btnCancelar = document.querySelector('#cancelar-edicion-proyecto');
+  const btnabrirEdito = document.querySelector('#editar-proyecto');
+  const btnAgregaF = document.querySelector('#agregar-fase');
 
   tipoproyecto_p.readOnly = true;
   idempresa_p.readOnly = true;
@@ -298,7 +391,9 @@ function cancelarEdicionP() {
 
   btnEditar.classList.add("d-none");
   btnCancelar.classList.add("d-none");
-  info(id);
+  btnabrirEdito.classList.remove("d-none");
+  btnAgregaF.classList.remove("d-none");
+  info(idproyecto);
 }
 
 function editarProyecto(){
@@ -342,6 +437,7 @@ function editarProyecto(){
 }
 
 // Fin editar Proyecto
+
 
 function modalInfoTarea(id) {
   const inputs = document.querySelector("#inputs-tarea");
@@ -458,6 +554,7 @@ function get(id) {
         estado.value = datos.estado;
         usuario.value = datos.usuario;
 
+
       const btnEditar = document.querySelector("#update-datos");
         btnEditar.addEventListener("click", function () {
             update(idproyecto); // Pasar el valor de idproyecto a la función update
@@ -472,6 +569,7 @@ function get(id) {
     });
 }
 
+// Aqui se abre el modal de proyecto
 function info(id) {
     const modal = document.querySelector("#modal-info");
     const body = document.querySelector("#inputs");
@@ -508,7 +606,7 @@ function addPhase(id) {
     const tipoproyecto = document.querySelector("#tipoProyecto-phase");
     const titulo = document.querySelector("#titulo-phase");
     const empresa = document.querySelector("#idempresa-phase");
-    const idproyecto = id;
+    const idproyectov = id;
   
     const parametrosURL = new URLSearchParams();
     parametrosURL.append("op", "get");
@@ -531,7 +629,7 @@ function addPhase(id) {
         empresa.value = datos.idempresa;
         const btnPhase = document.querySelector("#create-phase");
         btnPhase.addEventListener("click", function () {
-            createPhase(idproyecto); // Pasar el valor de idproyecto a la función update
+            createPhase(idproyectov); // Pasar el valor de idproyecto a la función update
         });
   
         const bootstrapModal = new bootstrap.Modal(modal);
@@ -637,6 +735,7 @@ function listartipoproyecto(){
 function listarColaboradores(){
     const responsable = document.querySelector("#responsible-phase");
     const usuario = document.querySelector("#usuariore-fase");
+    const usuarioR = document.querySelector("#responsable-faseV2");
     const parametrosURL = new URLSearchParams();
     parametrosURL.append("op", "listarColaborador");
 
@@ -653,6 +752,7 @@ function listarColaboradores(){
     })
     .then(datos =>{
       responsable.innerHTML = datos;
+      usuarioR.innerHTML = datos;
       usuario.innerHTML = datos;
     })
     .catch(error => {
@@ -714,7 +814,7 @@ listar();
   btnRegistrarTarea.addEventListener("click", agregarTarea);
 
 // *Para fases
-// Para quitar el readOnly de los inputs
+  // Para quitar el readOnly de los inputs
   const btnQuitarOnly = document.querySelector("#editar-fase");
   btnQuitarOnly.addEventListener("click", quitarReadonly);
 
@@ -738,6 +838,14 @@ listar();
   // Para quitar el readOnly de los inputs de proyecto
   const btnEditarProyecto = document.querySelector("#guardar-proyecto");
   btnEditarProyecto.addEventListener("click", editarProyecto);
+
+  // Abrir modal de registro de fase
+  const btnAbrilModal = document.querySelector("#agregar-fase");
+  btnAbrilModal.addEventListener("click", abriModal);
+
+  // Para registrar fase
+  const btnRFase = document.querySelector("#create-fase");
+  btnRFase.addEventListener("click", agregarFase);
 
   const btnRegistrar = document.querySelector("#registrar-datos");
   btnRegistrar.addEventListener("click", registrar);

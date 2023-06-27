@@ -248,14 +248,14 @@
               <div class="col-md-3">
                 <div class="form-floating mb-3">
                   <input type="text" class="form-control" readonly id="usuario-Fase" placeholder="Usuario encargado" name="usuario-fase">
-                  <label for="usuario-fase" class="form-label">Usuario Fase</label>
+                  <label for="usuario-fase" class="form-label">Supervisor de Fase</label>
                 </div>
               </div>
 
               <div class="col-md-3">
                   <div class="form-floating mb-3">
                       <input type="text" class="form-control" readonly id="usuario-tarea" placeholder="Usuario asignado" name="usuario">
-                      <label for="usuario" class="form-label">Usuario Tarea</label>
+                      <label for="usuario" class="form-label">Encargado de la tarea</label>
                   </div>
               </div>
 
