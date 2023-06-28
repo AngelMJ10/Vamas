@@ -46,7 +46,7 @@
         }
         
         if ($_POST['op'] == 'getPhase') {
-            $idfase = $_POST['idfase'];
+            $idfase = $_POST['idfase']; 
             $datos = $fase->getPhase($idfase);
             $contador = 1;
 
