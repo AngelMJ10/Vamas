@@ -275,6 +275,7 @@
           <table class="table table-hover mt-3" id="tabla-evidencias">
             <thead>
               <tr>
+                <th>Emisor</th>
                 <th>Mensaje</th>
                 <th>Documento</th>
                 <th>Fecha</th>

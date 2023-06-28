@@ -319,6 +319,7 @@
                     foreach ($evidenciaArray as $item) {
                         $tbody = "
                             <tr>
+                                <td>{$item['colaborador']}</td>
                                 <td>{$item['mensaje']}</td>
                                 <td><a href='{$item['documento']}' target='_blank'>Enlace al documento</a></td>
                                 <td>{$item['fecha']}</td>
@@ -337,6 +338,7 @@
             $inicioT="
                 <table class='table table-hover'>
                 <thead>
+                <th>Emisor</th>
                 <th>Mensaje</th>
                 <th>Documento</th>
                 <th>Fecha</th>
@@ -359,6 +361,7 @@
                     foreach ($evidenciaArray as $item) {
                         $tbody = "
                             <tr>
+                                <td>{$item['colaborador']}</td>
                                 <td>{$item['mensaje']}</td>
                                 <td><a href='{$item['documento']}' target='_blank'>Enlace al documento</a></td>
                                 <td>{$item['fecha']}</td>

@@ -535,7 +535,6 @@ BEGIN
 	WHERE idtarea = _idtarea AND estado = 1;
 END $$
 
-CALL ver_evidencia(1);
 
 -------------------------------------------- PORCENTAJES ------------------------------------------------------
 
