@@ -21,8 +21,7 @@ VALUES('Marquina Jaime','Ángel Eduardo','DNI','72745028','951531166','León de 
 	('Uribe Garcia','Cristhian Manuel','DNI','72548675','95123654','Rosedal por donde roban','2004-05-21'),
 	('Chacaliaza Pachas','Ítalo Jesús','DNI','7254789','963214587','AV. Santos Nagaro 210','2003-10-29'),
 	('Marquina Jaime','Emily Fernanda','DNI','78383886','952145879','León de Vivero Mz V LT-22','2013-12-16');
-INSERT INTO personas (apellidos,nombres,tipodocumento,nrodocumento,telefono,direccion,fechanac)
-VALUES('Marquina Jaime','Wanda','DNI','85758965','951531166','León de Vivero MZ V L-2','2004-07-10')
+	
 SELECT * FROM personas;
 
 --------------------------------------------------------------
@@ -41,9 +40,9 @@ CREATE TABLE colaboradores
 	CONSTRAINT fk_idpersona_per FOREIGN KEY (idpersona) REFERENCES personas(idpersona)		
 )ENGINE = INNODB; 
 
-INSERT INTO colaboradores(idpersona,usuario,clave,nivelacceso)
-VALUES(1,'AngelMJ','SENATI','A'),(2,'MarksPC','SENATI','S'),
-	(5,'EmyMJ','SENATI','S'),(4,'JesusPC','SENATI','C');
+INSERT INTO colaboradores(idpersona,usuario,clave,,correo,nivelacceso)
+VALUES(1,'AngelMJ','SENATI','1342364@senati.pe','A'),(2,'MarksPC','SENATI','1342364@senati.pe','S'),
+	(5,'EmyMJ','SENATI','1342364@senati.pe','S'),(4,'JesusPC','SENATI','1342364@senati.pe','C');
 
 UPDATE colaboradores SET
 	clave = '$2y$10$WY.iP85bEYxBMkVBG0jKO.9Q97kEbofLVwJPUT1OAmsDzLXQ8Pcka';
@@ -85,7 +84,7 @@ CREATE TABLE habilidades
 INSERT INTO habilidades(idcolaboradores,habilidad)
 VALUES('3','Front-end Básico'),('3','Front-end framework React'),('2','Análisis de datos');
 SELECT * FROM habilidades;
-SELECT * FROM colaboradores;
+
 ----------------------------------------------------------
 
 CREATE TABLE empresas
@@ -198,43 +197,40 @@ CALL listar_fase();
 
 CREATE TABLE tareas 
 (
-	idtarea					SMALLINT AUTO_INCREMENT PRIMARY KEY,
-	idfase					SMALLINT 	NOT NULL,
+	idtarea			SMALLINT AUTO_INCREMENT PRIMARY KEY,
+	idfase			SMALLINT 	NOT NULL,
 	idcolaboradores		SMALLINT	NOT NULL,
-	roles						VARCHAR(40)	NOT NULL,
-	tarea						VARCHAR(200)	NOT NULL,
-	porcentaje_tarea		DECIMAL(5,2)	NULL DEFAULT 0,
-	porcentaje				DECIMAL(5,2)	NOT NULL,
-	evidencia				JSON		NULL DEFAULT '[]',
+	roles			VARCHAR(40)	NOT NULL,
+	tarea			VARCHAR(200)	NOT NULL,
+	porcentaje_tarea	DECIMAL(5,2)	NULL DEFAULT 0,
+	porcentaje		DECIMAL(5,2)	NOT NULL,
+	evidencia		JSON		NOT NULL,
 	fecha_inicio_tarea	DATE 		NOT NULL,
 	fecha_fin_tarea		DATE 		NOT NULL,
-	fecha_create			DATETIME	NOT NULL DEFAULT NOW(),
-	fecha_update			DATETIME	NULL,
+	fecha_create		DATETIME	NOT NULL DEFAULT NOW(),
+	fecha_update		DATETIME	NULL,
 	estado			CHAR(1)		NOT NULL DEFAULT '1',
 	CONSTRAINT fk_idfase_tar FOREIGN KEY (idfase) REFERENCES fases (idfase),
 	CONSTRAINT fk_idcolaboradores_tar FOREIGN KEY (idcolaboradores) REFERENCES colaboradores (idcolaboradores)
 )ENGINE = INNODB;
 
-INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,fecha_inicio_tarea,fecha_fin_tarea)
-VALUES(1,4,'Programador Front-end','Hacer el boceto y presentar su avance',10,'2023-06-22','2023-06-24');
+INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,evidencia,fecha_inicio_tarea,fecha_fin_tarea)
+VALUES(1,4,'Programador Front-end','Hacer el boceto y presentar su avance',10,JSON_ARRAY(),'2023-06-22','2023-06-24');
 
-INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,fecha_inicio_tarea,fecha_fin_tarea)
-VALUES('1','3','Programador Front-end','Hacer el boceto y presentar su avance',20,'2023-06-22','2023-06-25');
+INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,evidencia,fecha_inicio_tarea,fecha_fin_tarea)
+VALUES(1,4,'Programador Front-end','Hacer el boceto y presentar su avance',10,JSON_ARRAY(),'2023-06-22','2023-06-24');
 
-INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,fecha_inicio_tarea,fecha_fin_tarea)
-VALUES('1','4','Programador Front-end','Hacer el boceto y presentar su avance',60,'2023-06-22','2023-06-26');
+INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,evidencia,fecha_inicio_tarea,fecha_fin_tarea)
+VALUES('1','3','Programador Front-end','Hacer el boceto y presentar su avance',20,JSON_ARRAY(),'2023-06-22','2023-06-25');
 
-INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,fecha_inicio_tarea,fecha_fin_tarea)
-VALUES('3','4','Analista de datos','Hacer un modelo de base de datos',60,'2023-06-22','2023-06-27');
+INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,evidencia,fecha_inicio_tarea,fecha_fin_tarea)
+VALUES('1','4','Programador Front-end','Hacer el boceto y presentar su avance',60,JSON_ARRAY(),'2023-06-22','2023-06-26');
 
-INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,fecha_inicio_tarea,fecha_fin_tarea)
-VALUES('2','3','Implementación de la vista','Implementar la vista al sistemas',60,'2023-06-22','2023-06-28');
+INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,evidencia,fecha_inicio_tarea,fecha_fin_tarea)
+VALUES('3','4','Analista de datos','Hacer un modelo de base de datos',60,JSON_ARRAY(),'2023-06-22','2023-06-27');
+
+INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,evidencia,fecha_inicio_tarea,fecha_fin_tarea)
+VALUES('2','3','Implementación de la vista','Implementar la vista al sistemas',60,JSON_ARRAY(),'2023-06-22','2023-06-28');
 
 SELECT * FROM tareas;
 TRUNCATE TABLE tareas;
-SELECT * FROM colaboradores;
-SELECT * FROM fases;
-
-SELECT tar.porcentaje_tarea * tar.porcentaje /100 FROM tareas tar;
-
-SELECT fas.porcentaje_fase * fas.porcentaje /100 FROM fases fas;

@@ -115,9 +115,9 @@ function modalInfoFase(id) {
     const inputs = document.querySelector("#inputs-fase");
     const modalInfoFase = document.querySelector("#modal-info-fase");
     const parametros = new URLSearchParams();
-    parametros.append("op" ,"infoFase");
+    parametros.append("op" ,"getPhase");
     parametros.append("idfase" , id);
-    fetch('../controllers/proyecto.php', {
+    fetch('../controllers/fase.php', {
         method: 'POST',
         body: parametros
       })
@@ -132,7 +132,6 @@ function modalInfoFase(id) {
         inputs.innerHTML = datos;
         const bootstrapModal = new bootstrap.Modal(modalInfoFase);
         bootstrapModal.show();
-        tabla_Fase(id);
         idfase = id;
       })
       .catch(error => {
@@ -140,29 +139,7 @@ function modalInfoFase(id) {
       });
 }
 
-function tabla_Fase(id) {
-    const tabla = document.querySelector("#tabla-info-fase");
-    const parametros = new URLSearchParams();
-    parametros.append("op" ,"tabla-fase");
-    parametros.append("idfase" , id);
-    fetch('../controllers/proyecto.php', {
-        method: 'POST',
-        body: parametros
-      })
-      .then(respuesta => {
-        if (respuesta.ok) {
-          return respuesta.text();
-        } else {
-          throw new Error('Error en la solicitud');
-        }
-      })
-      .then(datos => {
-        tabla.innerHTML = datos;
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-}
+
 
 // Agregar Tarea
 
@@ -204,8 +181,8 @@ function agregarTarea(){
   const roles = document.querySelector("#rol-empleado");
   const tarea = document.querySelector("#tarea-agregar");
   const porcentaje = document.querySelector("#agregar-porcentaje");
-  const fecha_inicio_tarea = document.querySelector("#fecha-inicio-tarea");
-  const fecha_fin_tarea = document.querySelector("#fecha-fin-tarea");
+  const fecha_inicio_tarea = document.querySelector("#fecha-ini-tarea");
+  const fecha_fin_tarea = document.querySelector("#fecha-f-tarea");
 
   const parametros = new URLSearchParams();
   parametros.append("op", "registrarTarea");
@@ -355,7 +332,6 @@ function listarHabilidades() {
   
   }
 
-
 // Editar Fase
 
 // Para quitar el readOnly de los inputs
@@ -460,7 +436,6 @@ function quitarReadonlyP() {
   const tipoproyecto_p = document.querySelector('#tipo_proyecto');
   const idempresa_p = document.querySelector('#id_empresa');
   const titulo_proyecto = document.querySelector('#titulo_proyecto');
-  const porcentaje_p = document.querySelector('#porcentaje_proyecto');
   const descripcion_p = document.querySelector('#descripcion_proyecto');
   const fechainicio_p = document.querySelector('#fechainicio_proyecto');
   const fechafin_p = document.querySelector('#fechafin_proyecto');
@@ -474,7 +449,6 @@ function quitarReadonlyP() {
   tipoproyecto_p.readOnly = false;
   idempresa_p.readOnly = false;
   titulo_proyecto.readOnly = false;
-  porcentaje_p.readOnly = false;
   descripcion_p.readOnly = false;
   fechainicio_p.readOnly = false;
   fechafin_p.readOnly = false;
@@ -492,7 +466,6 @@ function cancelarEdicionP() {
   const tipoproyecto_p = document.querySelector('#tipo_proyecto');
   const idempresa_p = document.querySelector('#id_empresa');
   const titulo_proyecto = document.querySelector('#titulo_proyecto');
-  const porcentaje_p = document.querySelector('#porcentaje_proyecto');
   const descripcion_p = document.querySelector('#descripcion_proyecto');
   const fechainicio_p = document.querySelector('#fechainicio_proyecto');
   const fechafin_p = document.querySelector('#fechafin_proyecto');
@@ -506,7 +479,6 @@ function cancelarEdicionP() {
   tipoproyecto_p.readOnly = true;
   idempresa_p.readOnly = true;
   titulo_proyecto.readOnly = true;
-  porcentaje_p.readOnly = true;
   descripcion_p.readOnly = true;
   fechainicio_p.readOnly = true;
   fechafin_p.readOnly = true;
@@ -523,7 +495,6 @@ function editarProyecto(){
   const tipoproyecto_p = document.querySelector('#tipo_proyecto');
   const idempresa_p = document.querySelector('#id_empresa');
   const titulo_proyecto = document.querySelector('#titulo_proyecto');
-  const porcentaje_p = document.querySelector('#porcentaje_proyecto');
   const descripcion_p = document.querySelector('#descripcion_proyecto');
   const fechainicio_p = document.querySelector('#fechainicio_proyecto');
   const fechafin_p = document.querySelector('#fechafin_proyecto');
@@ -535,7 +506,6 @@ function editarProyecto(){
   parametros.append("idtipoproyecto", tipoproyecto_p.value);
   parametros.append("idempresa", idempresa_p.value);
   parametros.append("titulo", titulo_proyecto.value);
-  parametros.append("porcentaje", porcentaje_p.value);
   parametros.append("descripcion", descripcion_p.value);
   parametros.append("fechainicio", fechainicio_p.value);
   parametros.append("fechafin", fechafin_p.value);
@@ -614,6 +584,8 @@ function verEvidenciasTarear(id) {
     console.error('Error:', error);
   });
 }
+
+// Fin de modal tareas
 
 function getPhase(id) {
     const tabla_fases = document.querySelector("#tabla-fase");
@@ -947,6 +919,10 @@ listar();
   const btnAddRead = document.querySelector("#cancelar-E-Tarea");
   btnAddRead.addEventListener("click",addRead);
 
+    // Para editar una tarea 
+    const btnEditarTarea = document.querySelector("#guardar-C-Tarea");
+    btnEditarTarea.addEventListener("click", editarTarea);
+
 // *Para fases
   // Para quitar el readOnly de los inputs
   const btnQuitarOnly = document.querySelector("#editar-fase");
@@ -960,9 +936,7 @@ listar();
   const btnGuardarFase = document.querySelector("#guardar-fase");
   btnGuardarFase.addEventListener("click", editarFase);
 
-  // Para editar una tarea 
-  const btnEditarTarea = document.querySelector("#guardar-C-Tarea");
-  btnEditarTarea.addEventListener("click", editarTarea);
+
 
 // * Para los proyecto
   // Para quitar el readOnly de los inputs de proyecto

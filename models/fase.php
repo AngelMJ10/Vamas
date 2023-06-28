@@ -47,10 +47,21 @@
             }
         }
 
-        public function getPhase($idproyecto){
+        public function getFases_by_P($idproyecto){
             try {
                 $consulta = $this->conexion->prepare("Call listar_fase_proyecto(?)");
                 $consulta->execute(array($idproyecto));
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
+        public function getPhase($idfase){
+            try {
+                $consulta = $this->conexion->prepare("Call obtener_fase(?)");
+                $consulta->execute(array($idfase));
                 $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
                 return $datos;
             } catch (Exception $e) {

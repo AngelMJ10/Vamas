@@ -649,12 +649,12 @@
               </div>
               <div class="row mb-3">
                 <div class="col-md-6 form-floating">
-                  <input type="date" class="form-control" name="fecha-ini" id="fecha-inicio-tarea"  placeholder="Fecha Inicio">
+                  <input type="date" class="form-control" name="fecha-ini" id="fecha-ini-tarea"  placeholder="Fecha Inicio">
                   <label for="fecha-ini" class="form-label">Fecha de inicio</label>
                 </div>
               
                 <div class="col-md-6 form-floating">
-                  <input type="date" name="fecha-fin" class="form-control" id="fecha-fin-tarea"  placeholder="Fecha Fin">
+                  <input type="date" name="fecha-fin" class="form-control" id="fecha-f-tarea"  placeholder="Fecha Fin">
                   <label for="fecha-fin" class="form-label">Fecha de Fin</label>
                 </div>
 

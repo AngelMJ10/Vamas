@@ -1,3 +1,5 @@
+let idfase = 0;
+
 function getPhase(id) {
     const modal = document.querySelector("#modalPhase");
     const infoPhase = document.querySelector("#info-phase");
@@ -5,7 +7,7 @@ function getPhase(id) {
   
     const parametrosURL = new URLSearchParams();
     parametrosURL.append("op", "getPhase");
-    parametrosURL.append("idproyecto", id);
+    parametrosURL.append("idfase", id);
   
     fetch('../controllers/fase.php', {
       method: 'POST',
@@ -23,6 +25,7 @@ function getPhase(id) {
   
       const bootstrapModal = new bootstrap.Modal(modal);
       bootstrapModal.show();
+      idfase = id;
     })
     .catch(error => {
       console.error('Error:', error);
@@ -80,30 +83,6 @@ function listProject(){
     });
 }
 
-function listarColaboradores(){
-    const responsible = document.querySelector("#responsible-phase");
-    const parametrosURL = new URLSearchParams();
-    parametrosURL.append("op", "listarColaborador");
-
-    fetch('../controllers/proyecto.php',{
-        method: 'POST',
-        body: parametrosURL
-    })
-    .then(respuesta => {
-        if(respuesta.ok){
-            return respuesta.text();
-        } else{
-            throw new Error('Error en la solicitud');
-        }
-    })
-    .then(datos =>{
-        responsible.innerHTML = datos;
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-}
-
 function createPhase(){
     const idproyecto = document.querySelector("#project-phase");
     const namephase = document.querySelector("#name-phase");
@@ -142,10 +121,279 @@ function createPhase(){
     }
 }
 
+
+// Agregar Tarea
+
+// Para abrir un miniModal de registro de tareas
+function openModalAgregarTarea(){
+    const modalAgregarT = document.querySelector("#modal-agregar-t");
+    const bootstrapModal = new bootstrap.Modal(modalAgregarT);
+    bootstrapModal.show();
+  }
+
+function listarColaboradores_A(){
+const responsable = document.querySelector("#asignar-empleado");
+const responsableTarea = document.querySelector("#usuario-tarea");
+const parametrosURL = new URLSearchParams();
+parametrosURL.append("op", "listarColaborador_A");
+
+fetch('../controllers/proyecto.php',{
+    method: 'POST',
+    body: parametrosURL
+})
+.then(respuesta => {
+    if(respuesta.ok){
+        return respuesta.text();
+    } else{
+        throw new Error('Error en la solicitud');
+    }
+})
+.then(datos =>{
+    responsable.innerHTML = datos;
+    responsableTarea.innerHTML = datos;
+})
+.catch(error => {
+    console.error('Error:', error);
+});
+}
+
+function agregarTarea(){
+const idcolaboradores = document.querySelector("#asignar-empleado");
+const roles = document.querySelector("#rol-empleado");
+const tarea = document.querySelector("#tarea-agregar");
+const porcentaje = document.querySelector("#agregar-porcentaje");
+const fecha_inicio_tarea = document.querySelector("#fecha-ini-tarea");
+const fecha_fin_tarea = document.querySelector("#fecha-f-tarea");
+
+const parametros = new URLSearchParams();
+parametros.append("op", "registrarTarea");
+parametros.append("idfase", idfase);
+parametros.append("idcolaboradores", idcolaboradores.value);
+parametros.append("roles", roles.value);
+parametros.append("tarea", tarea.value);
+parametros.append("porcentaje", porcentaje.value);
+parametros.append("fecha_inicio_tarea", fecha_inicio_tarea.value);
+parametros.append("fecha_fin_tarea", fecha_fin_tarea.value);
+
+fetch('../controllers/tarea.php', {
+    method: 'POST',
+    body: parametros
+})
+    .then(respuesta => {
+    if(respuesta.ok){
+        alert('Tarea registrada correctamente');
+        location.reload();
+    } else{
+        alert('Error en la solicitud');
+    }
+    })
+    .catch(error => {
+    console.error('Error:', error);
+    });
+
+}
+
+function listarHabilidades() {
+const empleadoSelect = document.querySelector("#asignar-empleado");
+const rolSelect = document.querySelector("#rol-empleado");
+
+const parametros = new URLSearchParams();
+parametros.append("op", "listar_Habilidades");
+parametros.append("idcolaboradores", empleadoSelect.value);
+
+fetch('../controllers/tarea.php', {
+    method: 'POST',
+    body: parametros
+})
+    .then(respuesta => {
+    if (respuesta.ok) {
+        return respuesta.text();
+    } else {
+        throw new Error('Error en la solicitud');
+    }
+    })
+    .then(datos => {
+    rolSelect.innerHTML = datos;
+    })
+    .catch(error => {
+    console.error('Error:', error);
+    });
+}
+
+
+// Editar Tarea
+function quitarRead() {
+    const nombreTarea = document.getElementById('nombre-tarea');
+    const usuarioTarea = document.getElementById('usuario-tarea');
+    const fechaIniTarea = document.getElementById('fecha-inicio-tarea');
+    const fechaFinTarea = document.getElementById('fecha-fin-tarea');
+    const porcentajeTarea = document.getElementById('porcentaje-tarea');
+
+    const btnGuardarEdicion = document.querySelector("#guardar-C-Tarea");
+    const btnCancelarEdicion = document.querySelector("#cancelar-E-Tarea");
+
+    const btnEditarT = document.querySelector("#quitar-readonly");
+    const btnRtarea = document.querySelector("#generar-reporteT");
+
+    nombreTarea.readOnly = false;
+    usuarioTarea.readOnly = false;
+    fechaIniTarea.readOnly = false;
+    fechaFinTarea.readOnly = false;
+    porcentajeTarea.readOnly = false;
+
+    btnGuardarEdicion.classList.remove("d-none");
+    btnCancelarEdicion.classList.remove("d-none");
+
+    btnEditarT.classList.add("d-none");
+    btnRtarea.classList.add("d-none");
+    listarColaboradores_A();
+  }
+
+function addRead() {
+    const nombreTarea = document.getElementById('nombre-tarea');
+    const usuarioTarea = document.getElementById('usuario-tarea');
+    const fechaIniTarea = document.getElementById('fecha-inicio-tarea');
+    const fechaFinTarea = document.getElementById('fecha-fin-tarea');
+    const porcentajeTarea = document.getElementById('porcentaje-tarea');
+
+    const btnGuardarEdicion = document.querySelector("#guardar-C-Tarea");
+    const btnCancelarEdicion = document.querySelector("#cancelar-E-Tarea");
+
+    const btnEditarT = document.querySelector("#quitar-readonly");
+    const btnRtarea = document.querySelector("#generar-reporteT");
+
+    nombreTarea.readOnly = true;
+    usuarioTarea.readOnly = true;
+    fechaIniTarea.readOnly = true;
+    fechaFinTarea.readOnly = true;
+    porcentajeTarea.readOnly = true;
+
+    btnGuardarEdicion.classList.add("d-none");
+    btnCancelarEdicion.classList.add("d-none");
+
+    btnEditarT.classList.remove("d-none");
+    btnRtarea.classList.remove("d-none");
+    modalInfoTarea(idtarea);
+}
+
+function editarTarea(){
+    const nombreTarea = document.getElementById('nombre-tarea');
+    const usuarioTarea = document.getElementById('usuario-tarea');
+    const rolTarea = document.getElementById('rol-tarea');
+    const fechaIniTarea = document.getElementById('fecha-inicio-tarea');
+    const fechaFinTarea = document.getElementById('fecha-fin-tarea');
+    const porcentajeTarea = document.getElementById('porcentaje-tarea');
+
+    const parametros = new URLSearchParams();
+    parametros.append("op", "editarTarea");
+    parametros.append("idtarea", idtarea);
+    parametros.append("idcolaboradores", usuarioTarea.value);
+    parametros.append("roles", rolTarea.value);
+    parametros.append("tarea", nombreTarea.value);
+    parametros.append("porcentaje", porcentajeTarea.value);
+    parametros.append("fecha_inicio_tarea", fechaIniTarea.value);
+    parametros.append("fecha_fin_tarea", fechaFinTarea.value);
+
+    fetch('../controllers/tarea.php', {
+        method: 'POST',
+        body: parametros
+    })
+        .then(respuesta => {
+        if(respuesta.ok){
+            alert('Tarea Editada correctamente');
+            location.reload();
+        } else{
+            alert('Error en la solicitud');
+        }
+        })
+        .catch(error => {
+        console.error('Error:', error);
+        });
+
+}
+
+// Modal de Tareas
+function modalInfoTarea(id) {
+    const inputs = document.querySelector("#inputs-tarea");
+    const modalInfoTarea = document.querySelector("#modal-info-tarea");
+    const parametros = new URLSearchParams();
+    parametros.append("op" ,"obtenerTarea");
+    parametros.append("idtarea" , id);
+    fetch('../controllers/tarea.php', {
+        method: 'POST',
+        body: parametros
+      })
+      .then(respuesta => {
+        if (respuesta.ok) {
+          return respuesta.text();
+        } else {
+          throw new Error('Error en la solicitud');
+        }
+      })
+      .then(datos => {
+        inputs.innerHTML = datos;
+        const bootstrapModal = new bootstrap.Modal(modalInfoTarea);
+        bootstrapModal.show();
+        verEvidenciasTarear(id)
+        idtarea = id;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+}
+
+function verEvidenciasTarear(id) {
+    const tabla_Tareas = document.querySelector("#tabla-info-tarea");
+    const parametros = new URLSearchParams();
+    parametros.append("op", "verEvidenciasT");
+    parametros.append("idtarea", id);
+    fetch('../controllers/tarea.php', {
+      method: 'POST',
+      body: parametros
+    })
+    .then(respuesta => {
+      if (respuesta.ok) {
+        return respuesta.text();
+      } else {
+        throw new Error('Error en la solicitud');
+      }
+    })
+    .then(datos => {
+      tabla_Tareas.innerHTML = datos;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+  
+// *Para tareas
+// Para abrir un miniModal de registro de tareas
+const btnAgregarT = document.querySelector("#agregar-tarea");
+btnAgregarT.addEventListener("click", openModalAgregarTarea);
+
+const btnBuscar = document.querySelector("#btn-habilidades");
+btnBuscar.addEventListener("click", listarHabilidades);
+
+// Para registrar tareas en el miniModal
+const btnRegistrarTarea = document.querySelector("#registrar-tarea");
+btnRegistrarTarea.addEventListener("click", agregarTarea);
+
+// Para quitar o agregar la clase d-none
+const btnEditarT = document.querySelector("#quitar-readonly");
+btnEditarT.addEventListener("click",quitarRead);
+
+const btnAddRead = document.querySelector("#cancelar-E-Tarea");
+btnAddRead.addEventListener("click",addRead);
+
+  // Para editar una tarea 
+  const btnEditarTarea = document.querySelector("#guardar-C-Tarea");
+  btnEditarTarea.addEventListener("click", editarTarea);
+
+
+
 const btnRegistrar = document.querySelector("#create-phase");
 btnRegistrar.addEventListener("click", createPhase);
 
-
-listarColaboradores();
+listarColaboradores_A();
 listProject();
 list();
