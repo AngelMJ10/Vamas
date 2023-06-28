@@ -1,4 +1,5 @@
 <?php
+    session_start();
     require_once '../models/Tarea.php';
     require_once '../vendor/autoload.php';
 
@@ -93,6 +94,7 @@
         echo '<a href="' . $ruta . '" target="_blank">' . $resultado->name . '</a>';
 
 
+        $e_colaborador = $_SESSION['usuario'];
         // Llamar al procedimiento almacenado enviar_evidencia
         $e_documento = $ruta;
 
@@ -100,7 +102,7 @@
         $p_porcentaje = $_POST['porcentaje'];
         $t_idtarea = $_POST['idtarea'];
         
-        $callProcedure = "CALL enviar_evidencia('$e_mensaje', '$e_documento', '$e_fecha', '$e_hora', $p_porcentaje, $t_idtarea)";
+        $callProcedure = "CALL enviar_evidencia('$e_colaborador', '$e_mensaje', '$e_documento', '$e_fecha', '$e_hora', $p_porcentaje, $t_idtarea)";
         $conn->exec($callProcedure);
         echo "El procedimiento almacenado 'enviar_evidencia' se ejecutó exitosamente.";
         $tarea = new Tarea();
@@ -109,6 +111,7 @@
             <h2>{$datosT['nombrefase']}</h2>
             <p>Avance de trabajo</p>
             <p>{$datosT['tarea']}</p>
+            <p>Enviado por el colaborado: {$e_colaborador}</p>
             <hr>
             <h4>
         ";

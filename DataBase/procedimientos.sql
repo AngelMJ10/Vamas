@@ -499,6 +499,7 @@ CALL crear_tarea(3,2,'Analista de Datos', 'Diseña un modelo en erwind de base d
 DELIMITER $$
 CREATE PROCEDURE enviar_evidencia
 (
+	IN e_colaborador VARCHAR(20),
 	IN e_mensaje VARCHAR(255),
 	IN e_documento VARCHAR(255),
 	IN e_fecha VARCHAR(20),
@@ -510,6 +511,7 @@ BEGIN
 
 	UPDATE tareas
 	SET evidencia = JSON_ARRAY_APPEND(evidencia, '$', JSON_OBJECT(
+		'colaborador', e_colaborador,
 		'mensaje', e_mensaje,
 		'documento', e_documento,
 		'fecha', e_fecha,
@@ -519,7 +521,7 @@ BEGIN
 	porcentaje_tarea = p_porcentaje
 	WHERE idtarea = t_idtarea;
 END $$
-
+DROP PROCEDURE enviar_evidencia;
 CALL enviar_evidencia('a', 'a', 'a', 'a', 70,3);
 
 -----------------------------------------------------

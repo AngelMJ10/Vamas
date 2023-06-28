@@ -29,11 +29,14 @@ if (isset($_SESSION['login'])){
         height: 100%;
         position: center;
     }
+    .form-control {
+    text-align: center;
+    }
+    
 </style>
 <body class="gradient-box">
     <br>
     <br>
-    
     
     <div class="container col-xl-10 col-xxl-8 px-4 py-5 mt-5">
         <div class="card">
@@ -48,11 +51,11 @@ if (isset($_SESSION['login'])){
                     <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary" autocomplete="off">       
                     <div class="form-floating mb-3">
                         <input type="email" class="form-control" id="email" placeholder="vamas@gmail.com">
-                        <label class="text-center" for="email">Escriba su Correo</label>
+                        <label class="text-center form-label" for="email">Escriba su Correo</label>
                     </div>  
                     <div class="form-floating mb-3">
                         <input type="password" class="form-control" id="clave" placeholder="***">
-                        <label class="text-center" for="clave">Escriba su Contraseña</label>
+                        <label class="text-center form-label" for="clave">Escriba su Contraseña</label>
                     </div>        
                     <button class="w-100 btn btn-lg btn-primary mt-2" id="acceder" type="button">Iniciar Sesión</button>
                     <h6 class="text-center mt-3">O</h6>
