@@ -89,10 +89,11 @@
 
         public function enviarTareas($data = []){
             try {
-                $query = "CALL enviar_evidencia(?,?,?,?,?,?,?)";
+                $query = "CALL enviar_evidencia(?,?,?,?,?,?,?,?)";
                 $consulta = $this->conexion->prepare($query);
                 $consulta->execute(array(
                     $data['e_colaborador'],
+                    $data['e_emisor'],
                     $data['e_mensaje'],
                     $data['e_documento'],
                     $data['e_fecha'],

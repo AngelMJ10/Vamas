@@ -500,6 +500,7 @@ DELIMITER $$
 CREATE PROCEDURE enviar_evidencia
 (
 	IN e_colaborador VARCHAR(20),
+	IN e_receptor VARCHAR(20),
 	IN e_mensaje VARCHAR(255),
 	IN e_documento VARCHAR(255),
 	IN e_fecha VARCHAR(20),
@@ -512,6 +513,7 @@ BEGIN
 	UPDATE tareas
 	SET evidencia = JSON_ARRAY_APPEND(evidencia, '$', JSON_OBJECT(
 		'colaborador', e_colaborador,
+		'receptor', e_receptor,
 		'mensaje', e_mensaje,
 		'documento', e_documento,
 		'fecha', e_fecha,
@@ -522,8 +524,8 @@ BEGIN
 	WHERE idtarea = t_idtarea;
 END $$
 DROP PROCEDURE enviar_evidencia;
-CALL enviar_evidencia('a', 'a', 'a', 'a', 70,3);
-
+CALL enviar_evidencia('a','a','a', 'a', 'a', 'a', 70,3);
+SELECT * FROM tareas;
 -----------------------------------------------------
 -- P.A para ver las evidencias de la tarea a traves de su ID
 
@@ -569,8 +571,8 @@ BEGIN
 	WHERE fas.idfase = idfase;
 END $$
 
-CALL hallar_porcentaje_fase(3);
-
+CALL hallar_porcentaje_fase(1);
+SELECT * FROM fases;
 ------------------------------------
 
 -- P.A para obtener ids de la fase y el proyecto con el ID de la tarea
