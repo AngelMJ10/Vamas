@@ -1,10 +1,7 @@
 <?php
-
     require_once 'conexion.php';
-
     class Tarea extends Conexion {
         private $conexion;
-
         public function __construct(){
             $this->conexion = parent::getConexion();
         }
@@ -20,7 +17,6 @@
                 die($e->getMessage());
             }
         }
-
         public function registrarTarea($data = []){
             try {
                 $query = "CALL crear_tarea(?,?,?,?,?,?,?)";
@@ -38,7 +34,6 @@
                 die($e->getMessage());
             }
         }
-
         public function editarTarea($data = []){
             try {
                 $query = "CALL editarTarea(?, ?, ?, ?, ?, ?, ?)";
@@ -56,7 +51,6 @@
                 die($e->getMessage());
             }
         }
-
         public function getWork($idtarea){
             try {
                 $query ="CALL obtener_tarea(?)";
@@ -68,7 +62,6 @@
                 die($e->getMessage());
             }
         }
-
         public function sendWork($mensaje,$documento, $idtarea){
             try {
                 $fecha = date('Y-m-d');
@@ -90,9 +83,11 @@
         public function enviarTareas($data = []){
             try {
                 $query = "CALL enviar_evidencia(?,?,?,?,?,?,?)";
+                $query = "CALL enviar_evidencia(?,?,?,?,?,?,?,?)";
                 $consulta = $this->conexion->prepare($query);
                 $consulta->execute(array(
                     $data['e_colaborador'],
+                    $data['e_emisor'],
                     $data['e_mensaje'],
                     $data['e_documento'],
                     $data['e_fecha'],
@@ -104,7 +99,6 @@
                 die($e->getMessage());
             }
         }
-
         public function verEvidencias($data = []){
             try {
                 $query = "CALL ver_evidencia(?)";
@@ -116,7 +110,6 @@
                 die($e->getMessage());
             }
         }
-
         public function obtenerID($idtarea){
             try {
                 $query = "CALL obtener_ids(?)";
@@ -129,5 +122,4 @@
             }
         }
     }
-
 ?>

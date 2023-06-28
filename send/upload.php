@@ -101,8 +101,9 @@
         // Llamar al procedimiento almacenado enviar_evidencia
         $p_porcentaje = $_POST['porcentaje'];
         $t_idtarea = $_POST['idtarea'];
+        $destino = $_POST['correo'];
         
-        $callProcedure = "CALL enviar_evidencia('$e_colaborador', '$e_mensaje', '$e_documento', '$e_fecha', '$e_hora', $p_porcentaje, $t_idtarea)";
+        $callProcedure = "CALL enviar_evidencia('$e_colaborador','$destino', '$e_mensaje', '$e_documento', '$e_fecha', '$e_hora', $p_porcentaje, $t_idtarea)";
         $conn->exec($callProcedure);
         echo "El procedimiento almacenado 'enviar_evidencia' se ejecutó exitosamente.";
         $tarea = new Tarea();
@@ -118,7 +119,7 @@
 
 
         // Envío de correo electrónico
-        $destino = $_POST['correo'];
+        
         $asunto = 'Avance de trabajo';
         $mensaje = $mensajeAdicional . $e_mensaje;
 

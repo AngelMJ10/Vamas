@@ -276,6 +276,7 @@
             <thead>
               <tr>
                 <th>Emisor</th>
+                <th>Receptor</th>
                 <th>Mensaje</th>
                 <th>Documento</th>
                 <th>Fecha</th>

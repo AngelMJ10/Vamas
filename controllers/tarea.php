@@ -320,6 +320,7 @@
                         $tbody = "
                             <tr>
                                 <td>{$item['colaborador']}</td>
+                                <td>{$item['receptor']}</td>
                                 <td>{$item['mensaje']}</td>
                                 <td><a href='{$item['documento']}' target='_blank'>Enlace al documento</a></td>
                                 <td>{$item['fecha']}</td>
