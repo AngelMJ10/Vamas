@@ -82,7 +82,6 @@
 
         public function enviarTareas($data = []){
             try {
-                $query = "CALL enviar_evidencia(?,?,?,?,?,?,?)";
                 $query = "CALL enviar_evidencia(?,?,?,?,?,?,?,?)";
                 $consulta = $this->conexion->prepare($query);
                 $consulta->execute(array(
