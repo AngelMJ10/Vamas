@@ -500,7 +500,7 @@ DELIMITER $$
 CREATE PROCEDURE enviar_evidencia
 (
 	IN e_colaborador VARCHAR(20),
-	IN e_receptor VARCHAR(20),
+	IN e_receptor VARCHAR(100),
 	IN e_mensaje VARCHAR(255),
 	IN e_documento VARCHAR(255),
 	IN e_fecha VARCHAR(20),
@@ -554,7 +554,7 @@ BEGIN
 	WHERE pro.idproyecto = _idproyecto;
 END $$
 
-CALL hallar_porcentaje_proyecto(1)
+CALL hallar_porcentaje_proyecto(2)
 
 -----------------------------------
 
@@ -571,7 +571,7 @@ BEGIN
 	WHERE fas.idfase = idfase;
 END $$
 
-CALL hallar_porcentaje_fase(1);
+CALL hallar_porcentaje_fase(3);
 SELECT * FROM fases;
 ------------------------------------
 

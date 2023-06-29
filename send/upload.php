@@ -112,7 +112,7 @@
             <h2>{$datosT['nombrefase']}</h2>
             <p>Avance de trabajo</p>
             <p>{$datosT['tarea']}</p>
-            <p>Enviado por el colaborado: {$e_colaborador}</p>
+            <p>Enviado por el colaborador: {$e_colaborador}</p>
             <hr>
             <h4>
         ";
