@@ -282,8 +282,7 @@
         }
 
         if ($_POST['op'] == 'obtenerPorcentajeP') {
-            $idproyecto = $_POST['idproyecto'];
-            $proyecto->obtenerPorcentajeP($idproyecto);
+            $proyecto->obtenerPorcentajeP();
         }
         
     }

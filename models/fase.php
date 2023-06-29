@@ -93,11 +93,11 @@
             }
         }
 
-        public function obtenerPorcentajeF($idfase){
+        public function obtenerPorcentajeF(){
             try {
-                $query = "CALL hallar_porcentaje_fase(?)";
+                $query = "CALL hallar_porcentaje_fase";
                 $consulta = $this->conexion->prepare($query);
-                $consulta->execute(array($idfase));
+                $consulta->execute();
 
             } catch (Exception $e) {
                 die($e->getMessage());

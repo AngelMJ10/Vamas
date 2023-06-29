@@ -169,7 +169,7 @@
   </div>
 
 
-<!-- Modal -->
+<!-- Modal info de tareas -->
 <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
@@ -179,6 +179,7 @@
       </div>
       <div class="modal-body">
         <form>
+          
           <div class="row mb-2 mt-2">
 
               <div class="col-md-3">
@@ -271,6 +272,10 @@
 
         </form>
 
+        <div class="btn-group">
+          <button type="button" id="generarpdf-tarea" class="btn btn-outline-danger">Generar Reporte</button>
+        </div>
+
         <div class="table-responsive">
           <table class="table table-hover mt-3" id="tabla-evidencias">
             <thead>
@@ -280,6 +285,7 @@
                 <th>Mensaje</th>
                 <th>Documento</th>
                 <th>Fecha</th>
+                <th>Hora</th>
                 <th>Porcentaje</th>
               </tr>
             </thead>

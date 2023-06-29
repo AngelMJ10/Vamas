@@ -191,8 +191,7 @@
         }
 
         if ($_POST['op'] == 'obtenerPorcentajeF') {
-            $idfase = $_POST['idfase'];
-            $fase->obtenerPorcentajeF($idfase);
+            $fase->obtenerPorcentajeF();
         }
     }
 

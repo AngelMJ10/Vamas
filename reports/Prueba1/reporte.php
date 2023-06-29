@@ -17,8 +17,7 @@ try {
   $tarea = new Tarea();
 
   // Paso 3: Obtener los datos (Método: list)
-  $datos = $tarea->list(4);
-  $datosE = $tarea->verEvidencias(["idtarea" => 1]);
+  $datosE = $tarea->verEvidencias(["idtarea" => $_GET['idtarea']]);
 
   // Contenido (HTML) que vamos a renderizar como PDF
   $content = "";

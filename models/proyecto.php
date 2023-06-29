@@ -92,11 +92,11 @@
             }
         }
 
-        public function obtenerPorcentajeP($idproyecto){
+        public function obtenerPorcentajeP(){
             try {
-                $query = "CALL hallar_porcentaje_proyecto(?)";
+                $query = "CALL hallar_porcentaje_proyecto";
                 $consulta = $this->conexion->prepare($query);
-                $consulta->execute(array($idproyecto));
+                $consulta->execute();
 
             } catch (Exception $e) {
                 die($e->getMessage());

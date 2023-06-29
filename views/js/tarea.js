@@ -12,6 +12,8 @@
   const rol = document.querySelector("#rol"); 
   const ComFase = document.querySelector("#comentario-fase"); 
   const tablaEvidencias = document.querySelector("#tabla-evidencias tbody"); 
+  
+  let idtareaPdf = 0;
     
   function sendWork(idtarea) {
       const documento = document.querySelector("#documento").files[0];
@@ -70,7 +72,9 @@
       .then(respuesta => {
         if (respuesta.ok) {
           alert('Trabajo enviado correctamente');
-          obtenerIDs(idtarea);
+          obtenerPorcentajeF();
+          obtenerPorcentajeP();
+          location.reload();
         } else {
           throw new Error('Error en la solicitud');
         }
@@ -82,37 +86,9 @@
     }
   }
   
-  function obtenerIDs(idtarea) {
-    const formData = new FormData();
-    formData.append("op", "obtenerID");
-    formData.append("idtarea", idtarea);
-  
-    fetch('../controllers/tarea.php', {
-      method: 'POST',
-      body: formData
-    })
-    .then(respuesta => {
-      if (respuesta.ok) {
-        return respuesta.json();
-      } else {
-        throw new Error('Error en la solicitud');
-      }
-    })
-    .then(datos => {
-      const idfase = datos.idfase;
-      const idproyecto = datos.idproyecto;
-      obtenerPorcentajeF(idfase);
-      obtenerPorcentajeP(idproyecto);
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
-  }
-  
-  function obtenerPorcentajeF(idfase) {
+  function obtenerPorcentajeF() {
     const formData = new FormData();
     formData.append("op", "obtenerPorcentajeF");
-    formData.append("idfase", idfase);
   
     fetch('../controllers/fase.php', {
       method: 'POST',
@@ -120,7 +96,6 @@
     })
     .then(respuesta => {
       if (respuesta.ok) {
-        alert('Fase actualizada correctamente');
       } else {
         throw new Error('Error en la solicitud');
       }
@@ -130,10 +105,9 @@
     });
   }
   
-  function obtenerPorcentajeP(idproyecto) {
+  function obtenerPorcentajeP() {
     const formData = new FormData();
     formData.append("op", "obtenerPorcentajeP");
-    formData.append("idproyecto", idproyecto);
   
     fetch('../controllers/proyecto.php', {
       method: 'POST',
@@ -141,8 +115,6 @@
     })
     .then(respuesta => {
       if (respuesta.ok) {
-        alert('Proyecto actualizado correctamente');
-        location.reload();
       } else {
         throw new Error('Error en la solicitud');
       }
@@ -152,10 +124,11 @@
     });
   }
   
+  // Modal para enviar la evidencias
   function openModal(id) {
     const modal = document.querySelector("#modalWork"); 
     const asunto = document.querySelector("#asunto"); 
-    const idtarea = id; 
+    idtareaPdf = id;
   
     const parametrosURL = new URLSearchParams();
     parametrosURL.append("op", "getWork");
@@ -179,7 +152,7 @@
       let idfase = datos.idfase;
       btnEnviar.addEventListener("click", function () {
         // Pasar el valor de idtarea a las siguientes funciones
-        enviarTrabajo(idtarea);
+        enviarTrabajo(idtareaPdf);
       });
   
       const bootstrapModal = new bootstrap.Modal(modal);
@@ -233,6 +206,7 @@
       });
   }  
 
+  // Modal de evidencias
   function obtenerInfo(id){
     const idtarea = id; 
   
@@ -288,12 +262,34 @@
         console.error('Error:', error);
       });
       const bootstrapModal = new bootstrap.Modal(modalTarea);
-      bootstrapModal.show();  
+      bootstrapModal.show();
+      idtareaPdf = idtarea;
     })
     .catch(error => {
       console.error('Error:', error);
     });
   }
 
+  function generarReporte(){
+      console.log(idtareaPdf);
+      const parametros = new URLSearchParams();
+      if(idtareaPdf > 0) {
+      parametros.append("idtarea", idtareaPdf);
+      window.open(`../reports/Prueba1/reporte.php?${parametros}`, '_blank');
+      }
+  }
+
+  function generarReporteV(idtarea){
+    const parametros = new URLSearchParams();
+    if(idtarea > 0) {
+    parametros.append("idtarea", idtarea);
+    window.open(`../reports/Prueba1/reporte.php?${parametros}`, '_blank');
+    }
+}
+
 listarCorreo();
+obtenerPorcentajeP
 list();
+
+const btnGenerarReporte = document.querySelector('#generarpdf-tarea');
+btnGenerarReporte.addEventListener('click',generarReporte);

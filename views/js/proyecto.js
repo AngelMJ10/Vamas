@@ -919,9 +919,9 @@ listar();
   const btnAddRead = document.querySelector("#cancelar-E-Tarea");
   btnAddRead.addEventListener("click",addRead);
 
-    // Para editar una tarea 
-    const btnEditarTarea = document.querySelector("#guardar-C-Tarea");
-    btnEditarTarea.addEventListener("click", editarTarea);
+  // Para editar una tarea 
+  const btnEditarTarea = document.querySelector("#guardar-C-Tarea");
+  btnEditarTarea.addEventListener("click", editarTarea);
 
 // *Para fases
   // Para quitar el readOnly de los inputs

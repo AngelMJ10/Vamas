@@ -1,21 +1,19 @@
 <div class="mb-3">
-  <h2 class="center text-md mb-3">Tarea Encargada</h2>
+  <h2 class="center text-md mb-3">Tarea :<?= $datosE[0]['tarea'] ?></h2>
 </div>
 <hr>
 <div>
-  <table class="table table-border mb-5">
+  <table class="table table-border mb-5 center">
     <colgroup>
-      <col style="width: 5%;">
       <col style="width: 20%;">
       <col style="width: 25%;">
-      <col style="width: 10%;">
+      <col style="width: 15%;">
       <col style="width: 15%;">
       <col style="width: 15%;">
       <col style="width: 10%;">
     </colgroup>
     <thead>
       <tr class="bg-primary text-light">
-        <th>ID</th>
         <th>Fase</th>
         <th>Tarea</th>
         <th>Usuario</th>
@@ -25,27 +23,34 @@
       </tr>
     </thead>
     <tbody>
-      <?php foreach ($datos as $registro): ?>
+      <?php foreach ($datosE as $registro): ?>
+        <?= $porcentaje = $registro['porcentaje_tarea']?>
+          <?php if($porcentaje): ?>
+          <?=  $porcentaje = rtrim($porcentaje, "0")?>
+          <?=  $porcentaje = rtrim($porcentaje, ".")?>
+          <?php endif ?>
         <tr>
-          <td><?= $registro['idtarea'] ?></td>
           <td><?= $registro['nombrefase'] ?></td>
           <td><?= $registro['tarea'] ?></td>
           <td><?= $registro['usuario_tarea'] ?></td>
           <td><?= $registro['fecha_inicio_tarea'] ?></td>
           <td><?= $registro['fecha_fin_tarea'] ?></td>
-          <td><?= $registro['porcentaje_tarea'] ?></td>
+          <td><?= $porcentaje ?>%</td>
         </tr>
       <?php endforeach?>
     </tbody>
   </table>
 
-  <table class="table table-border">
+      <h3 class="center mb-5 mt-5">Evidencias</h3>
+
+  <table class="table table-border mt-3 center">
     <colgroup>
-      <col style="width: 10%;">
       <col style="width: 15%;">
-      <col style="width: 25%;">
+      <col style="width: 15%;">
       <col style="width: 20%;">
-      <col style="width: 15%;">
+      <col style="width: 20%;">
+      <col style="width: 10%;">
+      <col style="width: 10%;">
       <col style="width: 10%;">
     </colgroup>
     <thead>
@@ -55,10 +60,11 @@
         <th>Mensaje</th>
         <th>Documento</th>
         <th>Fecha</th>
+        <th>Hora</th>
         <th>Avance</th>
       </tr>
     </thead>
-    <tbody class='center'>
+    <tbody>
     <?php foreach ($datosE as $evidencia): ?>
         <?php $evidenciaArray = json_decode($evidencia['evidencia'], true); ?>
         <?php foreach ($evidenciaArray as $item): ?>
@@ -68,6 +74,7 @@
                 <td><?= $item['mensaje'] ?></td>
                 <td><a href='<?= $item['documento'] ?>' target='_blank'>Enlace al documento</a></td>
                 <td><?= $item['fecha'] ?></td>
+                <td><?= $item['hora'] ?></td>
                 <td><?= $item['porcentaje'] ?>%</td>
             </tr>
         <?php endforeach; ?>

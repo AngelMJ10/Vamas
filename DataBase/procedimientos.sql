@@ -391,7 +391,7 @@ BEGIN
     ) THEN
         SELECT pro.idproyecto, fas.idfase, tar.idtarea, pro.titulo, fas.nombrefase,tar.tarea, fas.fechainicio, fas.fechafin,
 		fas.comentario,col_fase.usuario AS 'usuario_fase', col_tarea.usuario AS 'usuario_tarea',
-		 tar.roles, tar.fecha_inicio_tarea, tar.fecha_fin_tarea, tar.porcentaje_tarea, tar.porcentaje, tar.estado
+		 tar.roles, tar.fecha_inicio_tarea, tar.fecha_fin_tarea, tar.porcentaje_tarea, tar.evidencia,tar.porcentaje, tar.estado
         FROM tareas tar
         INNER JOIN fases fas ON tar.idfase = fas.idfase
         INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
@@ -402,7 +402,7 @@ BEGIN
     ELSE
         SELECT pro.idproyecto, fas.idfase, tar.idtarea, pro.titulo, fas.nombrefase,tar.tarea, fas.fechainicio, fas.fechafin,
 		fas.comentario, col_fase.usuario AS 'usuario_fase', col_tarea.usuario AS 'usuario_tarea', tar.roles,
-		tar.fecha_inicio_tarea, tar.fecha_fin_tarea,tar.porcentaje_tarea, tar.estado
+		tar.fecha_inicio_tarea, tar.fecha_fin_tarea,tar.porcentaje_tarea,tar.evidencia, tar.estado
         FROM tareas tar
         INNER JOIN fases fas ON tar.idfase = fas.idfase
         INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
@@ -412,7 +412,7 @@ BEGIN
         ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
     END IF;
 END $$
-
+DROP PROCEDURE listar_tarea_colaboradores
 
 CALL listar_tarea_colaboradores(1);
 
@@ -537,7 +537,7 @@ BEGIN
 	WHERE idtarea = t_idtarea;
 END $$
 DROP PROCEDURE enviar_evidencia;
-CALL enviar_evidencia('a','a','a', 'a', 'a', 'a', 70,3);
+CALL enviar_evidencia('a','a','a', 'a', 'a', 'a', 90,1);
 SELECT * FROM tareas;
 -----------------------------------------------------
 -- P.A para ver las evidencias de la tarea a traves de su ID
@@ -545,26 +545,31 @@ SELECT * FROM tareas;
 DELIMITER $$
 CREATE PROCEDURE ver_evidencia(IN _idtarea SMALLINT)
 BEGIN
-	SELECT evidencia
-	FROM tareas
-	WHERE idtarea = _idtarea AND estado = 1;
+	SELECT pro.idproyecto, fas.idfase, tar.idtarea, pro.titulo, fas.nombrefase,tar.tarea, fas.fechainicio, fas.fechafin,
+		fas.comentario,col_fase.usuario AS 'usuario_fase', col_tarea.usuario AS 'usuario_tarea',
+		 tar.roles, tar.fecha_inicio_tarea, tar.fecha_fin_tarea, tar.porcentaje_tarea, tar.evidencia,tar.porcentaje, tar.estado
+        FROM tareas tar
+        INNER JOIN fases fas ON tar.idfase = fas.idfase
+        INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
+        INNER JOIN colaboradores col_tarea ON tar.idcolaboradores = col_tarea.idcolaboradores
+        INNER JOIN colaboradores col_fase ON fas.idresponsable = col_fase.idcolaboradores
+        WHERE idtarea = _idtarea AND tar.estado = 1
+        ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
 END $$
-
-
+DROP PROCEDURE ver_evidencia(1);
 -------------------------------------------- PORCENTAJES ------------------------------------------------------
 
 -- P.A para calcular el porcentaje del proyecto
 
 DELIMITER $$
-CREATE PROCEDURE hallar_porcentaje_proyecto(IN _idproyecto SMALLINT)
+CREATE PROCEDURE hallar_porcentaje_proyecto()
 BEGIN 
 	UPDATE proyecto pro
 	SET pro.porcentaje = (
 		SELECT SUM(fas.porcentaje_fase * fas.porcentaje / 100)
 		FROM fases fas
-		WHERE fas.idproyecto = _idproyecto AND fas.estado != 0
-	)
-	WHERE pro.idproyecto = _idproyecto;
+		WHERE fas.idproyecto = pro.idproyecto AND fas.estado != 0
+	);
 END $$
 
 CALL hallar_porcentaje_proyecto(1)
@@ -574,17 +579,16 @@ CALL hallar_porcentaje_proyecto(1)
 -- P.A para calcular el porcentaje de la fase
 
 DELIMITER $$
-CREATE PROCEDURE hallar_porcentaje_fase(IN _idfase SMALLINT)
+CREATE PROCEDURE hallar_porcentaje_fase()
 BEGIN
 	UPDATE fases fas
 	SET fas.porcentaje_fase = (
 		SELECT SUM(tar.porcentaje_tarea * tar.porcentaje /100) FROM tareas tar
 		WHERE tar.idfase = fas.idfase AND tar.estado != 0
 	)
-	WHERE fas.idfase = idfase;
 END $$
 
-CALL hallar_porcentaje_fase(2);
+CALL hallar_porcentaje_fase;
 SELECT * FROM fases;
 ------------------------------------
 

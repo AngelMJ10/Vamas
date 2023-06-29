@@ -84,7 +84,7 @@
                                 <div class='btn-group' role='group'>
                                     <button type='button' title='Clic, para editar la tarea.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
                                     <button type='button' onclick='openModal({$registro['idtarea']})' data-id='{$registro['idtarea']}' class='btn btn-outline-primary btn-sm' title='Clic, para enviar el trabajo'><i class='fas fa-paper-plane'></i></button>
-                                    <button type='button' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
+                                    <button type='button' onclick='generarReporteV({$registro['idtarea']})' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -114,7 +114,7 @@
                                 <div class='btn-group' role='group'>
                                     <button type='button' title='Clic, para editar la tarea.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
                                     <button type='button' onclick='openModal({$registro['idtarea']})' data-id='{$registro['idtarea']}' class='btn btn-outline-primary btn-sm' title='Clic, para enviar el trabajo'><i class='fas fa-paper-plane'></i></button>
-                                    <button type='button' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
+                                    <button type='button' onclick='generarReporteV({$registro['idtarea']})' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -324,6 +324,7 @@
                                 <td>{$item['mensaje']}</td>
                                 <td><a href='{$item['documento']}' target='_blank'>Enlace al documento</a></td>
                                 <td>{$item['fecha']}</td>
+                                <td>{$item['hora']}</td>
                                 <td>{$item['porcentaje']}%</td>
                             </tr>
                         ";
