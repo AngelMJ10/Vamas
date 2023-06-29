@@ -73,6 +73,19 @@ END $$
 
 CALL buscar('AngelMJ')
 
+-------------------------------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE obtener_user(IN _correo VARCHAR(100))
+BEGIN
+	SELECT  col.idcolaboradores,col.correo,col.usuario,col.clave,per.nombres,per.apellidos,per.nrodocumento
+	FROM colaboradores col
+	INNER JOIN personas per ON col.idpersona = per.idpersona
+	WHERE correo = _correo;
+END $$
+
+CALL obtener_user('angelitomasna200410@gmail.com')
+
 ------------------------------------------
 -- P.A para registrar y editar un registro de la tabla recuperar_clave
 DELIMITER $$
@@ -401,7 +414,7 @@ BEGIN
 END $$
 
 
-CALL listar_tarea_colaboradores(4);
+CALL listar_tarea_colaboradores(1);
 
 -----------------------------------------------------
 -- P.A para editar una tarea
@@ -554,7 +567,7 @@ BEGIN
 	WHERE pro.idproyecto = _idproyecto;
 END $$
 
-CALL hallar_porcentaje_proyecto(2)
+CALL hallar_porcentaje_proyecto(1)
 
 -----------------------------------
 
@@ -571,7 +584,7 @@ BEGIN
 	WHERE fas.idfase = idfase;
 END $$
 
-CALL hallar_porcentaje_fase(3);
+CALL hallar_porcentaje_fase(2);
 SELECT * FROM fases;
 ------------------------------------
 

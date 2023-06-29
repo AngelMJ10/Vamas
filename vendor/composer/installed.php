@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => '6002de8fb69856ad2979dd51c7bca424ad8466ab',
         'name' => 'google/apiclient',
         'dev' => true,
     ),
@@ -83,12 +83,12 @@
             'dev_requirement' => false,
         ),
         'google/apiclient' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => '6002de8fb69856ad2979dd51c7bca424ad8466ab',
             'dev_requirement' => false,
         ),
         'google/apiclient-services' => array(
@@ -593,6 +593,15 @@
             'reference' => 'ea2f4014f163c1be4c601b9b7bd6af81ba8d701c',
             'dev_requirement' => true,
         ),
+        'spipu/html2pdf' => array(
+            'pretty_version' => 'v5.2.7',
+            'version' => '5.2.7.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../spipu/html2pdf',
+            'aliases' => array(),
+            'reference' => 'b0f477711de3052041072897510e690975aa37ce',
+            'dev_requirement' => false,
+        ),
         'squizlabs/php_codesniffer' => array(
             'pretty_version' => '3.7.2',
             'version' => '3.7.2.0',
@@ -736,6 +745,15 @@
             'aliases' => array(),
             'reference' => 'd9e72497367c23e08bf94176d2be45b00a9d232a',
             'dev_requirement' => true,
+        ),
+        'tecnickcom/tcpdf' => array(
+            'pretty_version' => '6.6.2',
+            'version' => '6.6.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../tecnickcom/tcpdf',
+            'aliases' => array(),
+            'reference' => 'e3cffc9bcbc76e89e167e9eb0bbda0cab7518459',
+            'dev_requirement' => false,
         ),
         'theseer/tokenizer' => array(
             'pretty_version' => '1.2.1',

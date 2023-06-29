@@ -43,8 +43,8 @@
                             <th>Duración</th>
                             <th>Usuario</th>
                             <th>Avance</th>
-                            <th>Estado</th>
                             <th>Porcentaje Fase</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </thead>
 
