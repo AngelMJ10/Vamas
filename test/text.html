@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <title>Test</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS v5.2.1 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+  <div class="container mt-5">
+    <select name="so" id="so" class="form-select" multiple="multiple">
+      <option value="1">Windows</option>
+      <option value="2">Linux</option>
+      <option value="3">Mac</option>
+      <option value="4">iOS</option>
+      <option value="5">Macos</option>
+    </select>
+
+    <button type="button" class="btn btn-outline-primary" id="obtener">Obtener ID</button>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Objetos
+      const btObtener = document.querySelector("#obtener");
+      
+      btObtener.addEventListener("click", () =>{
+        // Arreglo que almacenará los ID
+        let optActivos = [];
+        let strActivos = "";
+        
+        // Recorre todas las opciones y verificar cuáles fueron seleccionadas
+        for (let option of document.querySelector("#so").options) {
+          if (option.selected) {
+            optActivos.push(option.value)
+            strActivos += `${option.value},`
+          }
+        }
+        console.log(optActivos);
+        console.log(strActivos);
+      })
+
+      $("#so").select2();
+    })
+  </script>
+
+</body>
+
+</html>
