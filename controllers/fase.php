@@ -33,9 +33,9 @@
                         <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
                         <td data-label='Acciones'>
                             <div class='btn-group' role='group'>
-                                <button type='button'title='Clic, para editar el proyecto.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
+                                <button type='button' title='Clic, para editar el proyecto.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
                                 <button type='button' data-id='{$registro['idproyecto']}' class='btn btn-outline-primary btn-sm' title='Clic, para más información'><i class='fa-sharp fa-solid fa-circle-info'></i></button>
-                                <button type='button' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
+                                <button type='button' onclick='generarReporteF({$registro['idfase']})' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
                             </div>
                         </td>
                     </tr>
@@ -126,7 +126,7 @@
                 echo $inicioT;
             }
             vista($datos);
-            $dato_t = $fase->tablaFases($datos[0]['idfase']);
+            $dato_t = $fase->tablaFases(["idfase" => $datos[0]['idfase']]);
             
             foreach ($dato_t as $registro) {
                 $estado = $registro['estado'] == 1 ? 'Activo' : $registro['estado'];
@@ -192,6 +192,21 @@
 
         if ($_POST['op'] == 'obtenerPorcentajeF') {
             $fase->obtenerPorcentajeF();
+        }
+
+        if ($_POST['op'] == 'tablaFases') {
+            $data = ["idfase" => $_POST['idfase']];
+            $datos = $fase->tablaFases($data);
+            foreach ($datos as $registro) {
+                $evidencia = json_decode($datos[0]['evidencia'], true);
+                foreach ($evidencia as $evidencias) {
+                    $count = count($evidencias);
+                    
+                }
+                echo "($count)";
+            }
+            
+            
         }
     }
 

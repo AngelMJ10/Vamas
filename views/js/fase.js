@@ -365,7 +365,20 @@ function verEvidenciasTarear(id) {
       console.error('Error:', error);
     });
 }
-  
+
+function generarReporteF(idfase){
+    const parametros = new URLSearchParams();
+    if(idfase > 0) {
+    parametros.append("idfase", idfase);
+    window.open(`../reports/Fase/reporteF.php?${parametros}`, '_blank');
+    }
+}
+
+
+listarColaboradores_A();
+listProject();
+list();
+
 // *Para tareas
 // Para abrir un miniModal de registro de tareas
 const btnAgregarT = document.querySelector("#agregar-tarea");
@@ -389,11 +402,5 @@ btnAddRead.addEventListener("click",addRead);
   const btnEditarTarea = document.querySelector("#guardar-C-Tarea");
   btnEditarTarea.addEventListener("click", editarTarea);
 
-
-
 const btnRegistrar = document.querySelector("#create-phase");
 btnRegistrar.addEventListener("click", createPhase);
-
-listarColaboradores_A();
-listProject();
-list();

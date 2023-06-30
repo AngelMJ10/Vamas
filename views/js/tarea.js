@@ -288,7 +288,6 @@
 }
 
 listarCorreo();
-obtenerPorcentajeP
 list();
 
 const btnGenerarReporte = document.querySelector('#generarpdf-tarea');

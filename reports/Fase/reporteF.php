@@ -1,10 +1,9 @@
 <?php
-
-// Utilizaremos fatos del BACKEND (modelo)
+// Utilizaremos datos del BACKEND (modelo)
 // Librería obtenida mediante Composer
 require '../../vendor/autoload.php';
 
-require '../../models/Tarea.php';
+require_once '../../models/Fase.php';
 
 // Namespaces (espacios de nombres/contenedor de clase)
 use Spipu\Html2Pdf\Html2Pdf;
@@ -12,11 +11,10 @@ use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 
 try {
-  // Paso 2: Instanciar la clase
-  $tarea = new Tarea();
+  $fase = new Fase();
 
-  // Paso 3: Obtener los datos (Método: list)
-  $datosE = $tarea->verEvidencias(["idtarea" => $_GET['idtarea']]);
+  $datosE = $fase->infoFases(["idfase" => $_GET["idfase"]]);
+  $datosF = $fase->tablaFases(["idfase" => $_GET["idfase"]]);
 
   // Contenido (HTML) que vamos a renderizar como PDF
   $content = "";
@@ -24,7 +22,7 @@ try {
   ob_start(); // INICIO
 
   include '../estilos.html';
-  include 'datos.php';
+  include 'datosF.php';
 
   $content .= ob_get_clean(); // FIN
 

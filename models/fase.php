@@ -1,10 +1,7 @@
 <?php
-
     require_once 'conexion.php';
-
     class Fase extends Conexion {
         private $conexion;
-
         public function __construct(){
             $this->conexion = parent::getConexion();
         }
@@ -69,11 +66,11 @@
             }
         }
 
-        public function infoFases($ifase){
+        public function infoFases($data = []){
             try {
-                $query = "CALL obtener_fase(?);";
+                $query = "CALL obtener_fase(?)";
                 $consulta = $this->conexion->prepare($query);
-                $consulta->execute(array($ifase));
+                $consulta->execute(array($data['idfase']));
                 $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
                 return $datos;
             } catch (Exception $e) {
@@ -81,11 +78,11 @@
             }
         }
 
-        public function tablaFases($ifase){
+        public function tablaFases($data = []){
             try {
                 $query = "CALL obtener_tareas_fase(?)";
                 $consulta = $this->conexion->prepare($query);
-                $consulta->execute(array($ifase));
+                $consulta->execute(array($data['idfase']));
                 $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
                 return $datos;
             } catch (Exception $e) {
@@ -103,6 +100,6 @@
                 die($e->getMessage());
             }
         }
-    }
 
-?>  
+    }
+?>

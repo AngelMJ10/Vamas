@@ -340,7 +340,7 @@ CREATE PROCEDURE obtener_fase(IN _idfase SMALLINT)
 BEGIN
 SELECT fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyecto', pro.fechafin AS 'FinProyecto', 
 		pro.precio, emp.nombre AS 'empresa',fas.idresponsable, col.usuario, fas.nombrefase, fas.fechainicio, 
-		fas.fechafin, fas.comentario,fas.estado,fas.porcentaje,fas.porcentaje_fase
+		fas.fechafin, fas.comentario,fas.estado,fas.porcentaje,fas.porcentaje_fase,
 	 FROM fases fas
 	 INNER JOIN proyecto pro ON pro.idproyecto = fas.idproyecto
 	 INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
@@ -451,7 +451,7 @@ CREATE PROCEDURE obtener_tareas_fase(IN _idfase SMALLINT)
 BEGIN
 	 SELECT fas.idfase, tar.idtarea, fas.nombrefase,tar.tarea, fas.fechainicio, fas.fechafin,
 		fas.comentario, col_tarea.usuario AS 'usuario_tarea',
-		 tar.roles, tar.fecha_inicio_tarea, tar.fecha_fin_tarea, tar.porcentaje_tarea, tar.porcentaje, tar.estado
+		 tar.roles, tar.fecha_inicio_tarea, tar.fecha_fin_tarea, tar.porcentaje_tarea, tar.porcentaje,tar.evidencia, tar.estado
         FROM tareas tar
         INNER JOIN fases fas ON tar.idfase = fas.idfase
         INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
