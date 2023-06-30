@@ -199,7 +199,7 @@ BEGIN
 	WHERE col.estado = '1'
 	GROUP BY col.idcolaboradores;
 END $$
-
+DROP PROCEDURE listar_colaboradores
 CALL listar_colaboradores()
 
 -------------------------------------------
@@ -250,12 +250,14 @@ CALL listar_proyecto()
 DELIMITER $$
 CREATE PROCEDURE obtener_proyecto(IN _idproyecto SMALLINT)
 BEGIN
-	SELECT pro.idproyecto,tip.idtipoproyecto,tip.tipoproyecto,emp.idempresa,emp.nombre,pro.titulo,pro.descripcion,
-		pro.fechainicio,pro.fechafin,pro.precio,pro.porcentaje,pro.estado,col.usuario,
-	COUNT(fas.idfase) AS Fases
+	SELECT pro.idproyecto, tip.idtipoproyecto, tip.tipoproyecto, emp.idempresa, emp.nombre, pro.titulo, pro.descripcion,
+		pro.fechainicio, pro.fechafin, pro.precio, pro.porcentaje, pro.estado, col.usuario,
+		COUNT(fas.idfase) AS Fases,
+		(SELECT COUNT(*) FROM tareas tar WHERE tar.idfase IN 
+		(SELECT fas.idfase FROM fases fas WHERE fas.idproyecto = pro.idproyecto)) AS Tareas
 	FROM proyecto pro
 	INNER JOIN tiposproyecto tip ON pro.idtipoproyecto = tip.idtipoproyecto
-	INNER JOIN empresas emp	ON pro.idempresa = emp.idempresa
+	INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
 	LEFT JOIN fases fas ON pro.idproyecto = fas.idproyecto
 	INNER JOIN colaboradores col ON col.idcolaboradores = pro.idusuariore
 	WHERE pro.estado = '1' AND pro.idproyecto = _idproyecto
@@ -263,6 +265,30 @@ BEGIN
 END $$
 
 CALL obtener_proyecto(1);
+
+--------------------------------------------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE contar_total_colaboradores(IN _idproyecto SMALLINT)
+BEGIN
+SELECT COUNT(DISTINCT idcolaboradores) AS TotalUsuarios
+FROM (
+    SELECT col.idcolaboradores
+    FROM fases fas
+    INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
+    INNER JOIN colaboradores col ON fas.idresponsable = col.idcolaboradores
+    WHERE fas.idproyecto = _idproyecto
+    UNION
+    SELECT col.idcolaboradores
+    FROM tareas tar
+    INNER JOIN fases fas ON tar.idfase = fas.idfase
+    INNER JOIN colaboradores col ON tar.idcolaboradores = col.idcolaboradores
+    WHERE fas.idproyecto = _idproyecto
+) AS subquery;
+END $$
+
+DROP PROCEDURE obtener_proyecto;
+CALL contar_total_colaboradores(2);
 
 --------------------------------------------------------------
 -- PA. para editar un proyecto
@@ -318,17 +344,19 @@ CALL listar_fase();
 DELIMITER $$
 CREATE PROCEDURE listar_fase_proyecto(IN _idproyecto SMALLINT)
 BEGIN
-SELECT fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyecto', pro.fechafin AS 'FinProyecto', 
-		pro.precio, emp.nombre AS 'empresa', col.usuario, fas.nombrefase, fas.fechainicio, 
-		fas.fechafin, fas.comentario,fas.estado,fas.porcentaje_fase,fas.porcentaje
+    SELECT fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyecto', pro.fechafin AS 'FinProyecto', 
+        pro.precio, emp.nombre AS 'empresa', col.usuario, fas.nombrefase, fas.fechainicio, 
+        fas.fechafin, fas.comentario, fas.estado, fas.porcentaje_fase, fas.porcentaje,
+        (SELECT COUNT(*) FROM tareas tar WHERE tar.idfase = fas.idfase) AS Tareas
     FROM fases fas
     INNER JOIN proyecto pro ON pro.idproyecto = fas.idproyecto
     INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
     INNER JOIN colaboradores col ON col.idcolaboradores = fas.idresponsable
     WHERE fas.estado = 1 AND pro.idproyecto = _idproyecto
-    ORDER BY pro.idproyecto, fas.fechainicio;
+    ORDER BY fas.fechainicio,fas.fechafin;
 END $$
 
+DROP PROCEDURE listar_fase_proyecto
 CALL listar_fase_proyecto(1);
 
 --------------------------------------------

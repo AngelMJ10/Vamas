@@ -894,6 +894,14 @@ function registrar(){
     }
 }
 
+function generarReporteP(idproyecto){
+  const parametros = new URLSearchParams();
+  if(idproyecto > 0) {
+  parametros.append("idproyecto", idproyecto);
+  window.open(`../reports/Proyecto/reporteF.php?${parametros}`, '_blank');
+  }
+}
+
 listarColaboradores();
 listarColaboradores_A();
 listartipoproyecto();
