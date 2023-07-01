@@ -353,7 +353,7 @@ BEGIN
     INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
     INNER JOIN colaboradores col ON col.idcolaboradores = fas.idresponsable
     WHERE fas.estado = 1 AND pro.idproyecto = _idproyecto
-    ORDER BY fas.fechainicio,fas.fechafin;
+    ORDER BY fas.fechainicio;
 END $$
 
 DROP PROCEDURE listar_fase_proyecto

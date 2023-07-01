@@ -280,6 +280,7 @@
           <table class="table table-hover mt-3" id="tabla-evidencias">
             <thead>
               <tr>
+                <th>#</th>
                 <th>Emisor</th>
                 <th>Receptor</th>
                 <th>Mensaje</th>

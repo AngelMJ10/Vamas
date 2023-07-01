@@ -12,10 +12,11 @@ use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 $proyecto = new Proyecto();
 $fase = new Fase();
-
+$fechaActual = date('d-m-Y');
 $datosP = $proyecto->get($_GET['idproyecto']);
 $datosC = $proyecto->contarColaboradores($_GET['idproyecto']);
 $datosF = $fase->getFases_by_P($_GET['idproyecto']);
+$piePagina = "Reporte generado el {$fechaActual}, área de sistemas";
 // Contenido (HTML) que vamos a renderizar como PDF
 $content = "";
 

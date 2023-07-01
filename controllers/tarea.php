@@ -305,7 +305,7 @@
         if ($_POST['op'] == 'verEvidencias') {
             $data = ["idtarea" => $_POST['idtarea']];
             $evidencias = $tarea->verEvidencias($data);
-        
+            $contador = 1;
             if (empty($evidencias) || $evidencias[0]['evidencia'] == '[]') {
                 echo "
                     <tr>
@@ -319,6 +319,7 @@
                     foreach ($evidenciaArray as $item) {
                         $tbody = "
                             <tr>
+                                <td>{$contador}</td>
                                 <td>{$item['colaborador']}</td>
                                 <td>{$item['receptor']}</td>
                                 <td>{$item['mensaje']}</td>
@@ -329,6 +330,7 @@
                             </tr>
                         ";
                         echo $tbody;
+                        $contador++;
                     }
                 }
             }

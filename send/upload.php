@@ -92,8 +92,8 @@
         echo $resultado->id . '<br>';
         echo $resultado->name . '<br>';
         echo '<a href="' . $ruta . '" target="_blank">' . $resultado->name . '</a>';
+        
         $tarea = new Tarea();
-        $datosT =$tarea->getWork($t_idtarea);
 
         $e_colaborador = $_SESSION['usuario'];
         // Llamar al procedimiento almacenado enviar_evidencia
@@ -106,15 +106,18 @@
         $destino = $_POST['correo'];
         $datosE = $tarea->obtenerUser($destino);
         $usuario = $datosE['usuario'];
+
+        $datosT =$tarea->getWork($t_idtarea);
         
         $callProcedure = "CALL enviar_evidencia('$e_colaborador','$usuario', '$e_mensaje', '$e_documento', '$e_fecha', '$e_hora', $p_porcentaje, $t_idtarea)";
         $conn->exec($callProcedure);
         echo "El procedimiento almacenado 'enviar_evidencia' se ejecutó exitosamente.";
         
         $mensajeAdicional = "
-            <h2>{$datosT['nombrefase']}</h2>
+            <p>Fase: <b>{$datosT['nombrefase']}</b></p>
+            <hr>
             <p>Avance de trabajo</p>
-            <p>{$datosT['tarea']}</p>
+            <p>Tarea: <b>{$datosT['tarea']}</b></p>
             <p>Enviado por el colaborador: {$e_colaborador}</p>
             <hr>
             <h4>
