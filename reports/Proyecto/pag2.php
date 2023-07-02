@@ -1,5 +1,4 @@
 <div>
-  <img src="../../img/logos vamas_Mesa de trabajo 1 copia 2.png">
   <p>Area de sistemas</p>
 </div>
 <h3 class="center mb-3">Proyecto</h3>

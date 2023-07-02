@@ -30,7 +30,7 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
 
     <!-- Custom styles for this template-->
     <!-- <link href="css/sb-admin-2.min.css" rel="stylesheet"> -->
-    <link href="./css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="./css/sb-admin-2.css" rel="stylesheet">
 
 </head>
 
@@ -47,7 +47,7 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                <div class="sidebar-brand-text mx-3">Vamas</div>
             </a>
 
             <!-- Divider -->
@@ -226,7 +226,18 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                                 </div>
                             </div>
                         </div>
-                    </div>                    
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Proyectos</h4>
+                                        <canvas id="grafico-proyectos"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.container-fluid -->
                 <!-- Fin contenido dinámico -->
@@ -262,11 +273,19 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
     <!-- Core plugin JavaScript-->
     <script src="./vendor/jquery-easing/jquery.easing.min.js"></script>
 
+    <!-- ChartJS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Custom scripts for all pages -->
-    <script src="./js/sb-admin-2.min.js"></script>
+    <script src="./js/sb-admin-2.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", () =>{
+            const lienzo = document.querySelector("#grafico-proyectos");
+
+            const coloresFondo = ['rgba(253, 123, 113, 0.5)','rgba(172, 255, 171, 0.7)','rgba(51, 225, 202,0.8)','rgba(253, 240, 113,0.8)'];
+            const coloresBorde = ['rgb(253, 123, 113)','rgb(172, 255, 171)','rgb(51, 225, 202)','rgb(253, 240, 113)'];
+            const borde = 2;
+            
             // Obtiene el nombre del enlace(vista);
             function getURL(){
                 // Paso 1. Obtener la URL (barra de direcciones)
@@ -375,8 +394,73 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                 });
             }
 
+            function obtenerDatos() {
+                const parametros = new URLSearchParams();
+                parametros.append('op', 'iniGrafico');
+                fetch('../controllers/proyecto.php', {
+                    method: 'POST',
+                    body: parametros
+                })
+                .then(respuesta => respuesta.json())
+                .then(datos => {
+                    // console.log(datos.Covid)
+                    grafico.data.labels = datos.labels;
+                    grafico.data.datasets[0].data = datos.data;
+                    grafico.update();
+                });
+            }
+
+            function getConfig(valMin, valMax, titulo) {
+                const configuraciones = {
+                    responsive: true,
+                    legend: { position: 'bottom' },
+                    scales: {
+                        y: {
+                            min: valMin,
+                            max: valMax
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: titulo
+                        },
+                        legend: { position: 'bottom' }
+                    }
+                };
+                return configuraciones;
+            }
+
+            function renderGrafico() {
+                const etiquetas = [];
+                const coloresFondo = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)']; // Colores de fondo para las barras (puedes personalizarlos)
+                const borde = 1; // Ancho del borde de las barras
+                const coloresBorde = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)']; // Colores de borde para las barras (puedes personalizarlos)
+
+                grafico = new Chart(lienzo, {
+                    type: 'pie',
+                    data: {
+                        labels: etiquetas,
+                        datasets: [
+                            {
+                                label: 'Proyectos',
+                                data: [50, 40, 60, 80], // Datos de ejemplo, serán reemplazados por los datos obtenidos de la operación
+                                backgroundColor: coloresFondo,
+                                borderWidth: borde,
+                                borderColor: coloresBorde
+                            }
+                        ]
+                    },
+                    options: getConfig(0, 100, 'Proyectos en proceso')
+                });
+
+                obtenerDatos();
+            }
+
             getNum();
             getURL();
+            renderGrafico();
+
         });
     </script>
 

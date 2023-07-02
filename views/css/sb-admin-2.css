@@ -6539,7 +6539,7 @@ button.bg-dark:focus {
 }
 
 .border-primary {
-  border-color: #4e73df !important;
+  border-color: #005478 !important;
 }
 
 .border-secondary {
@@ -9901,7 +9901,8 @@ a:focus {
 
 .bg-gradient-primary {
   background-color: #4e73df;
-  background-image: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
+  /* ! COLOR DEL DASBOARD */
+  background-image: linear-gradient(180deg, #005478 10%, #224abe 100%);
   background-size: cover;
 }
 
@@ -10041,11 +10042,11 @@ a:focus {
 }
 
 .border-left-primary {
-  border-left: 0.25rem solid #4e73df !important;
+  border-left: 0.25rem solid #005478 !important;
 }
 
 .border-bottom-primary {
-  border-bottom: 0.25rem solid #4e73df !important;
+  border-bottom: 0.25rem solid #005478 !important;
 }
 
 .border-left-secondary {

@@ -5,7 +5,6 @@
   <?php endif ?>
 
 <div>
-  <img src="../../img/logos vamas_Mesa de trabajo 1 copia 2.png">
   <p>Área de sistemas</p>
 </div>
 <div class="mb-3">
@@ -27,7 +26,7 @@
 </div>
 
   <page_footer>
-    <p class='center'><?= $piePagina ?></p>
+    <p class='center footer'><?= $piePagina ?></p>
         <p class=''>Pag. [[page_cu]]</p>
   </page_footer>
   

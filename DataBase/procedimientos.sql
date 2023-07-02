@@ -368,7 +368,7 @@ CREATE PROCEDURE obtener_fase(IN _idfase SMALLINT)
 BEGIN
 SELECT fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyecto', pro.fechafin AS 'FinProyecto', 
 		pro.precio, emp.nombre AS 'empresa',fas.idresponsable, col.usuario, fas.nombrefase, fas.fechainicio, 
-		fas.fechafin, fas.comentario,fas.estado,fas.porcentaje,fas.porcentaje_fase,
+		fas.fechafin, fas.comentario,fas.estado,fas.porcentaje,fas.porcentaje_fase
 	 FROM fases fas
 	 INNER JOIN proyecto pro ON pro.idproyecto = fas.idproyecto
 	 INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
@@ -613,11 +613,12 @@ BEGIN
 	SET fas.porcentaje_fase = (
 		SELECT SUM(tar.porcentaje_tarea * tar.porcentaje /100) FROM tareas tar
 		WHERE tar.idfase = fas.idfase AND tar.estado != 0
-	)
+	);
 END $$
 
 CALL hallar_porcentaje_fase;
 SELECT * FROM fases;
+
 ------------------------------------
 
 -- P.A para obtener ids de la fase y el proyecto con el ID de la tarea
@@ -633,3 +634,15 @@ WHERE tar.idtarea = _idtarea;
 END $$
 
 CALL obtener_ids(5);
+
+--------------------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE grafico_proyecto()
+BEGIN	
+	SELECT porcentaje
+	FROM proyecto
+	WHERE estado = 1;
+END $$
+
+CALL grafico_proyecto()

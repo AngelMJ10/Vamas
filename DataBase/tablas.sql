@@ -1,5 +1,5 @@
 USE vamas2;
-
+CREATE  DATABASE vamas2;
 CREATE TABLE personas 
 (
 	idpersona		SMALLINT AUTO_INCREMENT PRIMARY KEY,
@@ -40,7 +40,7 @@ CREATE TABLE colaboradores
 	CONSTRAINT fk_idpersona_per FOREIGN KEY (idpersona) REFERENCES personas(idpersona)		
 )ENGINE = INNODB; 
 
-INSERT INTO colaboradores(idpersona,usuario,clave,,correo,nivelacceso)
+INSERT INTO colaboradores(idpersona,usuario,clave,correo,nivelacceso)
 VALUES(1,'AngelMJ','SENATI','1342364@senati.pe','A'),(2,'MarksPC','SENATI','1342364@senati.pe','S'),
 	(5,'EmyMJ','SENATI','1342364@senati.pe','S'),(4,'JesusPC','SENATI','1342364@senati.pe','C');
 

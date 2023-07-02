@@ -76,6 +76,34 @@
             echo json_encode($datos);
         }
 
+        if ($_POST['op'] == "iniGrafico") {
+            $datos = $proyecto->listar();
+            $labels = array(); // Array para almacenar los títulos
+            $data = array(); // Array para almacenar los porcentajes
+        
+            foreach ($datos as $registro) {
+                $porcentaje = $registro['porcentaje'];
+                $titulo = $registro['titulo'];
+                if ($porcentaje) {
+                    $porcentaje = rtrim($porcentaje, "0");
+                    $porcentaje = rtrim($porcentaje, ".");
+                } elseif ($porcentaje == null || $porcentaje == 0) {
+                    $porcentaje = 0;
+                }
+        
+                $labels[] = $titulo; // Agregar el título al array de labels
+                $data[] = $porcentaje; // Agregar el porcentaje al array de data
+            }
+        
+            $result = array(
+                "labels" => $labels,
+                "data" => $data
+            );
+        
+            echo json_encode($result); // Devolver el array como JSON
+        }        
+        
+
         // Info Proyecto
         if ($_POST['op'] == 'info') {
             $idproyecto = $_POST['idproyecto'];
