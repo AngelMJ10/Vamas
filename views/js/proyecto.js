@@ -74,18 +74,32 @@ let idtarea = 0;
     const porcentajeValor = porcentaje.value;
 
     if (!namephase.value || !responsable.value || !fechainicio.value || !fechafin.value || !comentario.value || !porcentaje.value ) {
-      alert("Por favor complete los campos para poder registrara una fase.");
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor, completa todos los campos.',
+      });
       return;
     }
 
     if (isNaN(porcentajeValor) || porcentajeValor < 0 || porcentajeValor > 100) {
-      alert("Porcentaje invalido.Por favor ingrese un valor entre 0 a 100.")
+      Swal.fire({
+        icon: 'warning',
+        title: 'Porcentaje excedido',
+        text: 'Por favor, ingrese un porcentaje de 0 a 100.',
+      });
       return;
     }
-    
-    const confirmacion = confirm("¿Estás seguro de los datos ingresados para la nueva fase?");
 
-    if (confirmacion) {
+    Swal.fire({
+      icon: 'question',
+      title: 'Confirmación',
+      text: '¿Está seguro de los datos ingresados?',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
         const parametrosURL = new URLSearchParams();
         parametrosURL.append("op", "registerPhase");
         parametrosURL.append("idproyecto", idproyecto);
@@ -96,20 +110,33 @@ let idtarea = 0;
         parametrosURL.append("porcentaje", porcentaje.value);
         parametrosURL.append("comentario", comentario.value);
         
-
         fetch('../controllers/fase.php', {
             method: 'POST',
             body: parametrosURL
         })
         .then(respuesta =>{
             if(respuesta.ok){
-                alert('Fase registrada correctamente');
-                location.reload();
+              Swal.fire({
+                icon: 'success',
+                title: 'Fase registrada',
+                text: 'La fase se ha registrado correctamente.'
+            }).then(() => {
+              location.reload();
+            });
             } else{
-                alert('Error en la solicitud');
+              
             }
         })
-    }
+        .catch(error => {
+          console.error('Error:', error);
+          Swal.alert({
+            icon: 'Error',
+            title: 'Error al registrar la fase',
+            text: 'Ocurrió un error al registrar la fase. Por favor intentelo nuevamente.'
+          })
+        });
+      }
+    })
   }
 
   function createPhase(idproyectov){
@@ -212,40 +239,79 @@ let idtarea = 0;
     bootstrapModal.show();
   }
 
-  function agregarTarea(){
+  function agregarTarea() {
     const idcolaboradores = document.querySelector("#asignar-empleado");
     const roles = document.querySelector("#rol-empleado");
     const tarea = document.querySelector("#tarea-agregar");
     const porcentaje = document.querySelector("#agregar-porcentaje");
     const fecha_inicio_tarea = document.querySelector("#fecha-ini-tarea");
     const fecha_fin_tarea = document.querySelector("#fecha-f-tarea");
-
-    const parametros = new URLSearchParams();
-    parametros.append("op", "registrarTarea");
-    parametros.append("idfase", idfase);
-    parametros.append("idcolaboradores", idcolaboradores.value);
-    parametros.append("roles", roles.value);
-    parametros.append("tarea", tarea.value);
-    parametros.append("porcentaje", porcentaje.value);
-    parametros.append("fecha_inicio_tarea", fecha_inicio_tarea.value);
-    parametros.append("fecha_fin_tarea", fecha_fin_tarea.value);
-
-    fetch('../controllers/tarea.php', {
-      method: 'POST',
-      body: parametros
-    })
-      .then(respuesta => {
-        if(respuesta.ok){
-          alert('Tarea registrada correctamente');
-          location.reload();
-        } else{
-            alert('Error en la solicitud');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
+    const porcentajeValor = porcentaje.value;
+  
+    if (!roles.value || !tarea.value || !fecha_inicio_tarea.value || !fecha_fin_tarea.value || !porcentaje.value) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor, completa todos los campos.',
       });
-
+      return;
+    }
+  
+    if (isNaN(porcentajeValor) || porcentajeValor < 0 || porcentajeValor > 100) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Porcentaje excedido',
+        text: 'Por favor, ingrese un porcentaje válido de 0 a 100.',
+      });
+      return;
+    }
+  
+    Swal.fire({
+      icon: 'question',
+      title: 'Confirmación',
+      text: '¿Está seguro de los datos ingresados?',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const parametros = new URLSearchParams();
+        parametros.append("op", "registrarTarea");
+        parametros.append("idfase", idfase);
+        parametros.append("idcolaboradores", idcolaboradores.value);
+        parametros.append("roles", roles.value);
+        parametros.append("tarea", tarea.value);
+        parametros.append("porcentaje", porcentaje.value);
+        parametros.append("fecha_inicio_tarea", fecha_inicio_tarea.value);
+        parametros.append("fecha_fin_tarea", fecha_fin_tarea.value);
+  
+        fetch('../controllers/tarea.php', {
+            method: 'POST',
+            body: parametros
+        })
+        .then(respuesta => {
+          if (respuesta.ok) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Tarea registrada',
+              text: 'La tarea se ha registrado correctamente.'
+            }).then(() => {
+              location.reload();
+            });
+          } else {
+            throw new Error('Error en la solicitud');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al registrar la tarea',
+            text: 'Ocurrió un error al registrar la tarea. Por favor, inténtelo nuevamente.'
+          })
+        });
+      }
+    })
   }
 
   function listarHabilidades() {
@@ -356,39 +422,76 @@ let idtarea = 0;
   }
 
   function editarTarea(){
-    const nombreTarea = document.getElementById('nombre-tarea');
-    const usuarioTarea = document.getElementById('usuario-tarea');
-    const rolTarea = document.getElementById('rol-tarea');
-    const fechaIniTarea = document.getElementById('fecha-inicio-tarea');
-    const fechaFinTarea = document.getElementById('fecha-fin-tarea');
-    const porcentajeTarea = document.getElementById('porcentaje-tarea');
+    const nombreTarea = document.querySelector('#nombre-tarea');
+    const usuarioTarea = document.querySelector('#usuario-tarea');
+    const rolTarea = document.querySelector('#rol-tarea');
+    const fechaIniTarea = document.querySelector('#fecha-inicio-tarea');
+    const fechaFinTarea = document.querySelector('#fecha-fin-tarea');
+    const porcentajeTarea = document.querySelector('#porcentaje-tarea');
   
-    const parametros = new URLSearchParams();
-    parametros.append("op", "editarTarea");
-    parametros.append("idtarea", idtarea);
-    parametros.append("idcolaboradores", usuarioTarea.value);
-    parametros.append("roles", rolTarea.value);
-    parametros.append("tarea", nombreTarea.value);
-    parametros.append("porcentaje", porcentajeTarea.value);
-    parametros.append("fecha_inicio_tarea", fechaIniTarea.value);
-    parametros.append("fecha_fin_tarea", fechaFinTarea.value);
-  
-    fetch('../controllers/tarea.php', {
-      method: 'POST',
-      body: parametros
-    })
-      .then(respuesta => {
-        if(respuesta.ok){
-          alert('Tarea Editada correctamente');
-          location.reload();
-        } else{
-            alert('Error en la solicitud');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
+    if (!nombreTarea.value || !usuarioTarea.value || !fechaIniTarea.value || !fechaFinTarea.value || !porcentajeTarea.value) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor, completa todos los campos.',
       });
-  
+      return;
+    }
+
+    if (isNaN(porcentajeTarea.value) || porcentajeTarea.value < 0 || porcentajeTarea.value > 100) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Porcentaje excedido',
+        text: 'Por favor, ingrese un porcentaje de 0 a 100.',
+      });
+    }
+
+    Swal.fire({
+      icon: 'question',
+      title: 'Confirmación',
+      text: '¿Está seguro de los datos modificados?',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const parametros = new URLSearchParams();
+      parametros.append("op", "editarTarea");
+      parametros.append("idtarea", idtarea);
+      parametros.append("idcolaboradores", usuarioTarea.value);
+      parametros.append("roles", rolTarea.value);
+      parametros.append("tarea", nombreTarea.value);
+      parametros.append("porcentaje", porcentajeTarea.value);
+      parametros.append("fecha_inicio_tarea", fechaIniTarea.value);
+      parametros.append("fecha_fin_tarea", fechaFinTarea.value);
+    
+      fetch('../controllers/tarea.php', {
+        method: 'POST',
+        body: parametros
+      })
+        .then(respuesta => {
+          if(respuesta.ok){
+            Swal.fire({
+              icon: 'success',
+              title: 'Tarea Actualizada',
+              text: 'La tarea ha sido actualizada correctamente.'
+            }).then(() => {
+              location.reload();
+            });
+          } else{
+            throw new Error('Error en la solicitud');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          Swal.alert({
+            icon: 'Error',
+            title: 'Error al editar la tarea',
+            text: 'Ocurrió un actualizar la tarea. Por favor intentelo nuevamente.'
+          })
+        });
+      }
+    })
   }
 
 // Editar Fase
@@ -486,45 +589,68 @@ let idtarea = 0;
     const porcentajeValor = porcentajeFase.value;
 
     if (!nombreFase.value || !usuarioResponsableFase.value || !fechaInicioFase.value || !fechaFinFase.value || !comentarioFase.value || !porcentajeFase.value) {
-      alert("Por favor complete todos los campos para poder editar la fase.");
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor, completa todos los campos.',
+      });
       return;
     }
 
     if (isNaN(porcentajeValor) || porcentajeValor < 0 || porcentajeValor > 100) {
-      alert("Porcentaje invalido.Por favor ingrese un valor entre 0 a 100.")
-      return;
+      Swal.fire({
+        icon: 'warning',
+        title: 'Porcentaje excedido',
+        text: 'Por favor, ingrese un porcentaje de 0 a 100.',
+      });
     }
 
-    const confirmacion = confirm("¿Estás seguro de los datos ingresados?");
-
-    if (confirmacion) {
-
-      const parametros = new URLSearchParams();
-      parametros.append("op", "editarFase");
-      parametros.append("idfase", idfase);
-      parametros.append("idresponsable", usuarioResponsableFase.value);
-      parametros.append("nombrefase", nombreFase.value);
-      parametros.append("fechainicio", fechaInicioFase.value);
-      parametros.append("fechafin", fechaFinFase.value);
-      parametros.append("comentario", comentarioFase.value);
-      parametros.append("porcentaje", porcentajeFase.value);
-
-      fetch('../controllers/fase.php', {
-        method: 'POST',
-        body: parametros
-      })
-        .then(respuesta => {
-          if(respuesta.ok){
-            alert('Fase Actualizada correctamente');
-            location.reload();
-          } else{
-              alert('Error en la solicitud');
-          }
+    Swal.fire({
+      icon: 'question',
+      title: 'Confirmación',
+      text: '¿Está seguro de los datos modificados?',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const parametros = new URLSearchParams();
+        parametros.append("op", "editarFase");
+        parametros.append("idfase", idfase);
+        parametros.append("idresponsable", usuarioResponsableFase.value);
+        parametros.append("nombrefase", nombreFase.value);
+        parametros.append("fechainicio", fechaInicioFase.value);
+        parametros.append("fechafin", fechaFinFase.value);
+        parametros.append("comentario", comentarioFase.value);
+        parametros.append("porcentaje", porcentajeFase.value);
+  
+        fetch('../controllers/fase.php', {
+          method: 'POST',
+          body: parametros
         })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-    }
+          .then(respuesta => {
+            if(respuesta.ok){
+              Swal.fire({
+                icon: 'success',
+                title: 'Fase Actualizada',
+                text: 'La fase ha sido actualizada correctamente.'
+              }).then(() => {
+                location.reload();
+              });
+            } else{
+              throw new Error('Error en la solicitud');
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            Swal.alert({
+              icon: 'Error',
+              title: 'Error al editar la fase',
+              text: 'Ocurrió un error al actualizar la fase. Por favor intentelo nuevamente.'
+            })
+          });
+      }
+    })
   }
 
 // Fin editar Fase
@@ -644,40 +770,62 @@ let idtarea = 0;
     const precio_p = document.querySelector('#precio_proyecto');
 
     if (!tipoproyecto_p.value || !idempresa_p.value || !titulo_proyecto.value || !descripcion_p.value || !fechainicio_p.value || !fechafin_p.value || !precio_p.value) {
-      alert("Por favor complete los campos para poder editar este proyecto.");
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor, completa todos los campos.',
+      });
       return;
     }
+
+    Swal.fire({
+      icon: 'question',
+      title: 'Confirmación',
+      text: '¿Está seguro de los datos ingresados?',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+          const parametros = new URLSearchParams();
+          parametros.append("op", "editar");
+          parametros.append("idproyecto", idproyecto);
+          parametros.append("idtipoproyecto", tipoproyecto_p.value);
+          parametros.append("idempresa", idempresa_p.value);
+          parametros.append("titulo", titulo_proyecto.value);
+          parametros.append("descripcion", descripcion_p.value);
+          parametros.append("fechainicio", fechainicio_p.value);
+          parametros.append("fechafin", fechafin_p.value);
+          parametros.append("precio", precio_p.value);
     
-    const confirmacion = confirm("¿Estás seguro de los datos ingresados?");
-
-    if (confirmacion) {
-      const parametros = new URLSearchParams();
-      parametros.append("op", "editar");
-      parametros.append("idproyecto", idproyecto);
-      parametros.append("idtipoproyecto", tipoproyecto_p.value);
-      parametros.append("idempresa", idempresa_p.value);
-      parametros.append("titulo", titulo_proyecto.value);
-      parametros.append("descripcion", descripcion_p.value);
-      parametros.append("fechainicio", fechainicio_p.value);
-      parametros.append("fechafin", fechafin_p.value);
-      parametros.append("precio", precio_p.value);
-
-      fetch('../controllers/proyecto.php', {
-        method: 'POST',
-        body: parametros
-      })
-        .then(respuesta => {
-          if(respuesta.ok){
-            alert('Proyecto actualizado correctamente');
-            location.reload();
-          } else{
-              alert('Error en la solicitud');
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
+          fetch('../controllers/proyecto.php', {
+            method: 'POST',
+            body: parametros
+          })
+            .then(respuesta => {
+              if(respuesta.ok){
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Proyecto Actualizado',
+                  text: 'El proyecto se ha actualizado correctamente.'
+              }).then(() => {
+                location.reload();
+              });
+              } else{
+                throw new Error('Error en la solicitud');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              Swal.alert({
+              icon: 'Error',
+              title: 'Error al registrar la fase',
+              text: 'Ocurrió un error al registrar la fase. Por favor intentelo nuevamente.'
+            })
+          });
       }
+    })
+    
   }
 
 // Fin editar Proyecto
@@ -1008,9 +1156,24 @@ let idtarea = 0;
       const fechafin = document.querySelector("#fecha-fin");
       const precio = document.querySelector("#precio");
 
-      const confirmacion = confirm("¿Estás seguro de los datos ingresados?");
+      if (!idtipoproyecto.value || !idempresa.value || !titulo.value || !descripcion.value || !fechainicio.value || !fechafin.value || !precio.value) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Campos incompletos',
+          text: 'Por favor, completa todos los campos.',
+        });
+        return;
+      }
 
-      if (confirmacion) {
+      Swal.fire({
+        icon: 'question',
+        title: 'Confirmación',
+        text: '¿Está seguro de los datos ingresados?',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+      }).then((result) => {
+        if (result.isConfirmed) {
           const parametrosURL = new URLSearchParams();
           parametrosURL.append("op", "registrar");
           parametrosURL.append("idtipoproyecto", idtipoproyecto.value);
@@ -1020,7 +1183,6 @@ let idtarea = 0;
           parametrosURL.append("fechainicio", fechainicio.value);
           parametrosURL.append("fechafin", fechafin.value);
           parametrosURL.append("precio", precio.value);
-          
 
           fetch('../controllers/proyecto.php', {
               method: 'POST',
@@ -1028,13 +1190,28 @@ let idtarea = 0;
           })
           .then(respuesta =>{
               if(respuesta.ok){
-                  alert('Proyecto registrado correctamente');
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Proyecto registrado',
+                  text: 'El proyecto se ha registrado correctamente.'
+                }).then(() => {
                   location.reload();
+                });
               } else{
-                  alert('Error en la solicitud');
+                throw new Error('Error en la solicitud');
               }
           })
-      }
+          .catch(error => {
+            console.error('Error:', error);
+            Swal.alert({
+              icon: 'Error',
+              title: 'Error al registrar el proyecto',
+              text: 'Ocurrió un error al registrar el proyecto. Por favor intentelo nuevamente.'
+            })
+          });
+        }
+      })
+      
   }
 
   function generarReporteP(idproyecto){
@@ -1059,7 +1236,7 @@ listar();
   btnBuscar.addEventListener("click", listarHabilidades);
 
   // Para registrar tareas en el miniModal
-  const btnRegistrarTarea = document.querySelector("#registrar-tarea");
+  const btnRegistrarTarea = document.querySelector("#registrar-tarea-v2");
   btnRegistrarTarea.addEventListener("click", agregarTarea);
 
   // Para quitar o agregar la clase d-none

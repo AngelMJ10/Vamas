@@ -157,39 +157,79 @@ let idfase = 0;
     }
 
     function agregarTarea(){
-    const idcolaboradores = document.querySelector("#asignar-empleado");
-    const roles = document.querySelector("#rol-empleado");
-    const tarea = document.querySelector("#tarea-agregar");
-    const porcentaje = document.querySelector("#agregar-porcentaje");
-    const fecha_inicio_tarea = document.querySelector("#fecha-ini-tarea");
-    const fecha_fin_tarea = document.querySelector("#fecha-f-tarea");
+        const idcolaboradores = document.querySelector("#asignar-empleado");
+        const roles = document.querySelector("#rol-empleado");
+        const tarea = document.querySelector("#tarea-agregar");
+        const porcentaje = document.querySelector("#agregar-porcentaje");
+        const fecha_inicio_tarea = document.querySelector("#fecha-ini-tarea");
+        const fecha_fin_tarea = document.querySelector("#fecha-f-tarea");
+        const porcentajeValor = porcentaje.value;
 
-    const parametros = new URLSearchParams();
-    parametros.append("op", "registrarTarea");
-    parametros.append("idfase", idfase);
-    parametros.append("idcolaboradores", idcolaboradores.value);
-    parametros.append("roles", roles.value);
-    parametros.append("tarea", tarea.value);
-    parametros.append("porcentaje", porcentaje.value);
-    parametros.append("fecha_inicio_tarea", fecha_inicio_tarea.value);
-    parametros.append("fecha_fin_tarea", fecha_fin_tarea.value);
-
-    fetch('../controllers/tarea.php', {
-        method: 'POST',
-        body: parametros
-    })
-        .then(respuesta => {
-        if(respuesta.ok){
-            alert('Tarea registrada correctamente');
-            location.reload();
-        } else{
-            alert('Error en la solicitud');
+        if (!roles.value || !tarea.value || !fecha_inicio_tarea.value || !fecha_fin_tarea.value || !porcentaje.value) {
+            Swal.fire({
+            icon: 'warning',
+            title: 'Campos incompletos',
+            text: 'Por favor, completa todos los campos.',
+            });
+            return;
         }
-        })
-        .catch(error => {
-        console.error('Error:', error);
+        
+        if (isNaN(porcentajeValor) || porcentajeValor < 0 || porcentajeValor > 100) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Porcentaje excedido',
+            text: 'Por favor, ingrese un porcentaje válido de 0 a 100.',
         });
+        return;
+        }
 
+        Swal.fire({
+            icon: 'question',
+            title: 'Confirmación',
+            text: '¿Está seguro de los datos ingresados?',
+            showCancelButton: true,
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const parametros = new URLSearchParams();
+                parametros.append("op", "registrarTarea");
+                parametros.append("idfase", idfase);
+                parametros.append("idcolaboradores", idcolaboradores.value);
+                parametros.append("roles", roles.value);
+                parametros.append("tarea", tarea.value);
+                parametros.append("porcentaje", porcentaje.value);
+                parametros.append("fecha_inicio_tarea", fecha_inicio_tarea.value);
+                parametros.append("fecha_fin_tarea", fecha_fin_tarea.value);
+
+                fetch('../controllers/tarea.php', {
+                    method: 'POST',
+                    body: parametros
+                })
+                .then(respuesta => {
+                if(respuesta.ok){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Tarea Registrada',
+                        text: 'Tarea registrada correctamente'
+                    })
+                    .then(() => {
+                        location.reload();
+                    });
+                } else{
+                    throw new Error('Error en la solicitud');
+                }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al registrar la tarea',
+                        text: 'Ocurrió un error al registrar la tarea. Por favor, inténtelo nuevamente.'
+                    })
+                });
+            }
+        })
     }
 
     function listarHabilidades() {

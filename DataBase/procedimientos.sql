@@ -199,7 +199,7 @@ BEGIN
 	WHERE col.estado = '1'
 	GROUP BY col.idcolaboradores;
 END $$
-DROP PROCEDURE listar_colaboradores
+
 CALL listar_colaboradores()
 
 -------------------------------------------
@@ -440,7 +440,6 @@ BEGIN
         ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
     END IF;
 END $$
-DROP PROCEDURE listar_tarea_colaboradores
 
 CALL listar_tarea_colaboradores(1);
 
@@ -531,7 +530,7 @@ BEGIN
 	VALUES(_idfase, _idcolaboradores, _roles, _tarea, _porcentaje, JSON_ARRAY(),_fecha_inicio_tarea, _fecha_fin_tarea);
 
 END $$
-DROP PROCEDURE crear_tarea
+
 CALL crear_tarea(3,2,'Analista de Datos', 'Diseña un modelo en erwind de base de datos' , 50,'2023-06-26','2023-06-27');
 
 -----------------------------------------------------
@@ -564,7 +563,7 @@ BEGIN
 	porcentaje_tarea = p_porcentaje
 	WHERE idtarea = t_idtarea;
 END $$
-DROP PROCEDURE enviar_evidencia;
+
 CALL enviar_evidencia('a','a','a', 'a', 'a', 'a', 90,1);
 SELECT * FROM tareas;
 -----------------------------------------------------

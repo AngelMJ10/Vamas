@@ -229,10 +229,10 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                     </div>
                     
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-4">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Proyectos</h4>
+                                    <h4 class="card-title">Producción</h4>
                                         <canvas id="grafico-proyectos"></canvas>
                                 </div>
                             </div>

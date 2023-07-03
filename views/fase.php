@@ -15,15 +15,6 @@
 </head>
 <body>
 <link rel="stylesheet" href="./css/style.css">
-<style>
-    body {
-      background-image: url("../img/logos\ vamas_Mesa\ de\ trabajo\ 1\ copia\ 2.png");
-      background-repeat: no-repeat;
-      background-size: 50%;
-      background-position: center ;
-      opacity: 0.9;
-    }
-</style>
 
   <div class="capa text-center">
     <h1>FASES</h1>
@@ -332,7 +323,7 @@
                 </div>
 
               </div>
-              <button class="btn btn-outline-primary" id="registrar-tarea">Registrar</button>
+              <button type='button' class="btn btn-outline-primary" id="registrar-tarea">Registrar</button>
           </form>
 
       </div>
@@ -373,6 +364,7 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="js/fase.js"></script>
     
 </body>

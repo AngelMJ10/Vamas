@@ -15,15 +15,6 @@
 </head>
 <body>
 <link rel="stylesheet" href="./css/style.css">
-<style>
-    body {
-      background-image: url("../img/logos\ vamas_Mesa\ de\ trabajo\ 1\ copia\ 2.png");
-      background-repeat: no-repeat;
-      background-size: 50%;
-      background-position: center ;
-      opacity: 0.9;
-    }
-</style>
 
   <div class="capa text-center">
     <h1>Empresas</h1>
@@ -235,7 +226,7 @@
                 </div>
               </div>
           </div>
-          <button type="button" id="editar-registro"  class="btn btn-outline-primary">Agregar</button>
+          <button type="button" id="editar-registro"  class="btn btn-outline-primary">Editar</button>
 
         </form>
       </div>
@@ -247,6 +238,7 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="js/empresa.js"></script>
     
 </body>

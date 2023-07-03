@@ -1,5 +1,6 @@
 USE vamas2;
 CREATE  DATABASE vamas2;
+
 CREATE TABLE personas 
 (
 	idpersona		SMALLINT AUTO_INCREMENT PRIMARY KEY,

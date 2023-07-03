@@ -5,32 +5,61 @@ function update(idempresa){
     const documento = document.querySelector("#documento-editar").value;
     const estado = document.querySelector("#estado-editar").value;
     
-    const confirmacion = confirm("¿Estás seguro de los nuevos datos ingresados?");
-    const boton = document.querySelector("#editar-boton");
-
-    if (confirmacion) {
-        const parametrosURL = new URLSearchParams();
-        parametrosURL.append("op", "update");
-        parametrosURL.append("nombre", nombre);
-        parametrosURL.append("razonsocial", razonsocial);
-        parametrosURL.append("tipodocumento", tipodocumento);
-        parametrosURL.append("documento", documento);
-        parametrosURL.append("estado", estado);
-        parametrosURL.append("idempresa", idempresa);
-        
-        fetch('.././controllers/empresa.php', {
-            method: 'POST',
-            body: parametrosURL
-        })
-        .then(respuesta =>{
-            if(respuesta.ok){
-                alert('Empresa actualizada correctamente');
-                location.reload();
-            } else{
-                alert('Error en la solicitud');
-            }
-        })
+    if (!nombre || !razonsocial || !tipodocumento || !documento || !estado) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Campos incompletos',
+          text: 'Por favor, completa todos los campos.',
+        });
+        return;
     }
+
+    Swal.fire({
+        icon: 'question',
+        title: 'Confirmación',
+        text: '¿Está seguro de los datos ingresados?',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) =>{
+        if (result.isConfirmed) {
+            const parametrosURL = new URLSearchParams();
+            parametrosURL.append("op", "update");
+            parametrosURL.append("nombre", nombre);
+            parametrosURL.append("razonsocial", razonsocial);
+            parametrosURL.append("tipodocumento", tipodocumento);
+            parametrosURL.append("documento", documento);
+            parametrosURL.append("estado", estado);
+            parametrosURL.append("idempresa", idempresa);
+            
+            fetch('.././controllers/empresa.php', {
+                method: 'POST',
+                body: parametrosURL
+            })
+            .then(respuesta =>{
+                if(respuesta.ok){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Empresa Actualizada',
+                        text: 'La empresa ha sido actualizada.'
+                    }).then(() => {
+                    location.reload();
+                    });
+                } else{
+                    throw new Error('Error en la solicitud');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error al actualizar la empresa',
+                  text: 'Ocurrió un error al actualizar la empresa. Por favor, inténtelo nuevamente.'
+                })
+            });
+        }
+    })
+    
 }
 
 function obtenerDatos(id) {
@@ -110,9 +139,24 @@ function registrar(){
     const tipodocumento = document.querySelector("#tipodocumento").value;
     const documento = document.querySelector("#documento").value;
 
-    const confirmacion = confirm("¿Estás seguro de los datos ingresados?");
+    if (!nombre || !razonsocial || !tipodocumento || !documento) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Campos incompletos',
+          text: 'Por favor, completa todos los campos.',
+        });
+        return;
+    }
 
-    if (confirmacion) {
+    Swal.fire({
+        icon: 'question',
+        title: 'Confirmación',
+        text: '¿Está seguro de los datos ingresados?',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
+       if (result.isConfirmed) {
         const parametrosURL = new URLSearchParams();
         parametrosURL.append("op", "registrar");
         parametrosURL.append("nombre", nombre);
@@ -126,13 +170,28 @@ function registrar(){
         })
         .then(respuesta =>{
             if(respuesta.ok){
-                alert('Empresa registrada correctamente');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Empresa Registrada',
+                    text: 'La empresa ha sido registrada correctamente.'
+                }).then(() => {
                 location.reload();
+                });
             } else{
-                alert('Error en la solicitud');
+                throw new Error('Error en la solicitud');
             }
         })
-    }
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error al registrar la empresa',
+              text: 'Ocurrió un error al registrar la empresa. Por favor, inténtelo nuevamente.'
+            })
+        });
+    } 
+    })
+    
 }
 const btnRegistrar = document.querySelector("#registrar-datos");
 btnRegistrar.addEventListener("click", registrar);

@@ -659,7 +659,7 @@
                 </div>
 
               </div>
-              <button class="btn btn-outline-primary" id="registrar-tarea">Registrar</button>
+              <button type='button' class="btn btn-outline-primary" id="registrar-tarea-v2">Registrar</button>
           </form>
 
       </div>
@@ -671,7 +671,7 @@
   </div>
 </div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="js/proyecto.js"></script>
     
 </body>
