@@ -14,35 +14,6 @@
   const tablaEvidencias = document.querySelector("#tabla-evidencias tbody"); 
   
   let idtareaPdf = 0;
-    
-  function sendWork(idtarea) {
-      const documento = document.querySelector("#documento").files[0];
-      const correo = document.querySelector("#correo");
-      const mensaje = document.querySelector("#mensaje");
-      const confirmacion = confirm("¿Estás seguro del documento ingresado?");
-      if (confirmacion) {
-          const formData = new FormData();
-          formData.append("op", "sendWork");
-          formData.append("idtarea", idtarea);
-          formData.append("documento", documento, documento.name);
-          formData.append("mensaje", mensaje.value);
-          formData.append("correo", correo.value);
-
-          fetch('../controllers/tarea.php', {
-              method: 'POST',
-              body: formData
-          }).then(respuesta => {
-              if (respuesta.ok) {
-                  alert('Trabajo enviado correctamente');
-                  location.reload();
-              } else {
-                  alert('Error en la solicitud');
-              }
-          }).catch(error => {
-              console.error('Error:', error);
-          });
-      }
-  }
 
   function enviarTrabajo(idtarea) {
     const documento = document.querySelector("#documento").files[0];
@@ -51,39 +22,70 @@
     const correo = document.querySelector("#correo3").value;
   
     // Validación de campos
-    if (!documento || !mensaje || !porcentaje || !correo) {
-      alert("Por favor, completa todos los campos.");
+
+    if (isNaN(porcentaje) || porcentaje < 0 || porcentaje > 100) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Porcentaje excedido',
+        text: 'Por favor, ingrese un porcentaje de 0 a 100.',
+      });
       return;
     }
-  
-    const confirmacion = confirm("¿Estás seguro del documento ingresado?");
-    if (confirmacion) {
-      const formData = new FormData();
-      formData.append("correo", correo)
-      formData.append("documento", documento);
-      formData.append("mensaje", mensaje);
-      formData.append("porcentaje", porcentaje);
-      formData.append("idtarea", idtarea);
-  
-      fetch('../send/upload.php', {
-        method: 'POST',
-        body: formData
-      })
-      .then(respuesta => {
-        if (respuesta.ok) {
-          alert('Trabajo enviado correctamente');
-          obtenerPorcentajeF();
-          obtenerPorcentajeP();
-          location.reload();
-        } else {
-          throw new Error('Error en la solicitud');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Ocurrió un error al enviar el trabajo. Por favor, inténtalo nuevamente.');
+
+    if (!documento || !mensaje || !porcentaje || !correo) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor, completa todos los campos.',
       });
+      return;
     }
+
+    Swal.fire({
+      icon: 'question',
+      title: 'Confirmación',
+      text: '¿Está seguro del avance a enviar?',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const formData = new FormData();
+        formData.append("correo", correo)
+        formData.append("documento", documento);
+        formData.append("mensaje", mensaje);
+        formData.append("porcentaje", porcentaje);
+        formData.append("idtarea", idtarea);
+    
+        fetch('../send/upload.php', {
+          method: 'POST',
+          body: formData
+        })
+        .then(respuesta => {
+          if (respuesta.ok) {
+            obtenerPorcentajeF();
+            obtenerPorcentajeP();
+            Swal.fire({
+              icon: 'success',
+              title: 'Avance enviado',
+              text: 'El avance se ha enviado correctamente.'
+            }).then(() => {
+              location.reload();
+            });
+          } else {
+            throw new Error('Error en la solicitud');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          Swal.alert({
+            icon: 'Error',
+            title: 'Error al enviar el avance',
+            text: 'Ocurrió un error al enviar el avance. Por favor intentelo nuevamente.'
+          })
+        });
+      }
+    })
   }
   
   function obtenerPorcentajeF() {

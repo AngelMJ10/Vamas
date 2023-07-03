@@ -393,7 +393,7 @@ let idtarea = 0;
 
 // Editar Fase
 
-// Para quitar el readOnly de los inputs
+  // Para quitar el readOnly de los inputs
   function quitarReadonly() {
     const nombreFaseInput = document.querySelector('#nombre-Fase');
     const comentarioTextarea = document.querySelector('#comentario-Fase');

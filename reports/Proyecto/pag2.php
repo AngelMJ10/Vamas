@@ -1,5 +1,6 @@
 <div>
   <p>Area de sistemas</p>
+  <img src="../../img/logos vamas_Mesa de trabajo 1 copia 2.png" alt="">
 </div>
 <h3 class="center mb-3">Proyecto</h3>
 
