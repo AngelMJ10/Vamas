@@ -28,7 +28,7 @@ try {
   
   // Configuración del archivo PDF
   // P = portrait(Vertical) / L = Landscape(Horizontal)
-  $html2pdfo = new Html2Pdf('P', 'A4', 'es', true, 'UTF-8', array(15,15,15,15));
+  $html2pdf = new Html2Pdf('P', 'A4', 'es', true, 'utf-8', array(15,15,15,15));
   $html2pdfo->writeHTML('contenido');
   $html2pdfo->output('reporte.pdf');
 

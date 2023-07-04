@@ -23,7 +23,7 @@ $content = "";
 
 ob_start(); // INICIO
 include '../estilos.html';
-include 'datosF.php';
+include 'pag1.php';
 include 'pag2.php';
 
 $content .= ob_get_clean(); // FIN

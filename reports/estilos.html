@@ -103,19 +103,24 @@
   .pl-5 { padding-left: 25px; }
 
   /* Estílos para la tabla */
-  .table{
-    width: 100%; /* requiere <colgroup> */
-    border-collapse: collapse;
-    page-break-inside: avoid;
+  .table {
+    width: 100%;
+    border-collapse: collapse; /* Colapsar los bordes de las celdas */
   }
 
-  .table td, th{
-    padding: 5px;
+  .table th, .table td {
+    padding: 5px; /* Espaciado interno de las celdas */
+    border: 0.8px solid gray;
   }
 
-  .table-border td, .table-border th{
-    border: 0.5px solid gray;
+  .table th {
+    background-color: #005478; /* Color de fondo de las celdas de encabezado */
   }
+
+  .table tr:nth-child(even) {
+    background-color: #005478; /* Color de fondo de las filas pares */
+  }
+
 
   /* Colores de fondo */
   .bg-primary { background-color: #005478; }
@@ -147,6 +152,10 @@
     color: #333;
     font-family: Arial, sans-serif;
     border-top: 1px solid #ccc;
+  }
+
+  .content-container {
+    margin-top: 50px; /* Ajusta el valor según sea necesario para dejar suficiente espacio para la cabecera */
   }
 
 </style>
