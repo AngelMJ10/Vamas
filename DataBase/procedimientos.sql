@@ -106,6 +106,7 @@ CALL recuperar_clave(1,'1342364@senati.pe','1234');
 --------------------------------------------
 -- P.A para poder validar el tiempo de 15 minutos 
 -- En caso pasado 15 minutos de generado el código,se deniega
+
 DELIMITER $$
 CREATE PROCEDURE spu_colaborador_validartiempo
 (
@@ -186,21 +187,19 @@ CALL spu_usuarios_actualizarclave(?,?);
 DELIMITER $$
 CREATE PROCEDURE listar_colaboradores()
 BEGIN
-	SELECT col.idcolaboradores,col.usuario,col.correo,col.nivelacceso,
-	per.apellidos,per.nombres,
-	COUNT(hab.idhabilidades) AS Habilidades,
-	COUNT(fas.idresponsable) AS Fases,
-	COUNT(tar.idcolaboradores) AS Tareas
-	FROM colaboradores col
-	INNER JOIN personas per ON col.idpersona = per.idpersona
-	LEFT JOIN habilidades hab ON col.idcolaboradores = hab.idcolaboradores
-	LEFT JOIN fases fas ON col.idcolaboradores = fas.idfase
-	LEFT JOIN tareas tar ON col.idcolaboradores = tar.idcolaboradores
-	WHERE col.estado = '1'
-	GROUP BY col.idcolaboradores;
+    SELECT col.idcolaboradores, col.usuario, col.correo, col.nivelacceso,
+        per.apellidos, per.nombres,
+        (SELECT COUNT(DISTINCT idhabilidades) FROM habilidades WHERE idcolaboradores = col.idcolaboradores) AS Habilidades,
+        (SELECT COUNT(DISTINCT idfase) FROM fases WHERE idresponsable = col.idcolaboradores) AS Fases,
+        (SELECT COUNT(DISTINCT idtarea) FROM tareas WHERE idcolaboradores = col.idcolaboradores) AS Tareas
+    FROM colaboradores col
+    INNER JOIN personas per ON col.idpersona = per.idpersona
+    WHERE col.estado = '1';
 END $$
 
+DROP PROCEDURE listar_colaboradores
 CALL listar_colaboradores()
+SELECT * FROM habilidades
 
 -------------------------------------------
 -- P.A Para obtener la información de un colaborador por su ID
@@ -208,20 +207,43 @@ CALL listar_colaboradores()
 DELIMITER $$ 
 CREATE PROCEDURE obtener_info_colaborador(IN _idcolaboradores SMALLINT)
 BEGIN
-	SELECT col.idcolaboradores, col.usuario, col.correo, col.nivelacceso,
-	per.apellidos, per.nombres, GROUP_CONCAT(hab.habilidad SEPARATOR ', ') AS habilidades,
-	COUNT(tar.idcolaboradores) AS Tareas,
-	 IF(col.nivelacceso = 'S', COUNT(fas.idfase),0) AS Fases
+	SELECT col.idcolaboradores,per.idpersona, col.usuario, col.correo, col.nivelacceso,
+	per.apellidos, per.nombres,per.nrodocumento,telefono, GROUP_CONCAT(hab.habilidad SEPARATOR ', ') AS habilidades,
+	(SELECT COUNT(DISTINCT idfase) FROM fases WHERE idresponsable = col.idcolaboradores) AS Fases,
+	(SELECT COUNT(DISTINCT idtarea) FROM tareas WHERE idcolaboradores = col.idcolaboradores) AS Tareas
 	FROM colaboradores col
 	INNER JOIN personas per ON col.idpersona = per.idpersona
 	LEFT JOIN habilidades hab ON col.idcolaboradores = hab.idcolaboradores
-	LEFT JOIN fases fas ON col.idcolaboradores = fas.idresponsable
-	LEFT JOIN tareas tar ON col.idcolaboradores = tar.idcolaboradores
 	WHERE col.idcolaboradores = _idcolaboradores AND col.estado = '1'
 	GROUP BY col.idcolaboradores;
 END $$
 
-CALL obtener_info_colaborador(1)
+CALL obtener_info_colaborador(3)
+
+------------------------------------
+-- Para editar al colaborador
+
+DELIMITER $$
+CREATE PROCEDURE editar_Colaborador
+(
+	IN _idpersona 		SMALLINT,
+	IN _usuario   		VARCHAR(20),
+	IN _correo	   	VARCHAR(100),
+	IN _nivelacceso 	CHAR(1),
+	IN _apellidos 		VARCHAR(40),
+	IN _nombres 		VARCHAR(40),
+	IN _nrodocumento 	CHAR(8),
+	IN _telefono 		CHAR(9)
+)
+BEGIN
+	UPDATE personas SET apellidos = _apellidos, nombres = _nombres, nrodocumento = _nrodocumento,
+			telefono = _telefono WHERE idpersona = _idpersona;
+	UPDATE colaboradores SET usuario = _usuario, correo = _correo, nivelacceso = _nivelacceso
+		WHERE idpersona = _idpersona;
+END $$
+
+CALL editar_Colaborador(1,'AngelMJ','1342364@senati.pe','A','Marquina Jaime','Ángel Eduardo',72745028,951531166);
+
 
 --------------------------------------------------- -- P.A DE PROYECTOS -------------------------------------------------------------------
 

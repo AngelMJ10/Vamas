@@ -11,19 +11,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/24503cbed7.js" crossorigin="anonymous"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <title>Colaboradores</title>
 </head>
 <body>
 <link rel="stylesheet" href="./css/style.css">
-<style>
-    body {
-      background-image: url("../img/logos\ vamas_Mesa\ de\ trabajo\ 1\ copia\ 2.png");
-      background-repeat: no-repeat;
-      background-size: 50%;
-      background-position: center ;
-      opacity: 0.9;
-    }
-</style>
 
   <div class="capa text-center">
     <h1>Colaboradores</h1>
@@ -117,7 +110,9 @@
                   <th>Apellidos</th>
                   <th>Nombres</th>
                   <th>Habilidades</th>
+                  <th>Fases</th>
                   <th>Tareas</th>
+                  <th>Acciones</th>
               </thead>
 
               <tbody>
@@ -198,18 +193,26 @@
                       <label for="nombre" class="form-label">Usuario</label>
                   </div>
               </div>
+
               <div class="col-md-3">
                   <div class="form-floating mb-3">
                       <input type="text" class="form-control" readonly id="correo-editar" placeholder="Razón Social" name="razonsocial">
                       <label for="razonsocial" class="form-label">Correo</label>
                   </div>
               </div>
+
               <div class="col-md-3">
                   <div class="form-floating mb-3">
-                      <input type="text" class="form-control" readonly id="nivel-editar" placeholder="Razón Social" name="razonsocial">
-                      <label for="razonsocial" class="form-label">Nivel</label>
+                    <select name="nivel" id="nivel-editar" readonly class="form-control form-control-sm">
+                      <label for="nivel">Seleccione el nivel de acceso:</label>
+                      <option value="">Seleccione</option>
+                      <option value="A">Administrador</option>
+                      <option value="S">Supervisor</option>
+                      <option value="C">Colaborador</option>
+                    </select>
                   </div>
               </div>
+
               <div class="col-md-3">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control"  readonly id="fases-editar" placeholder="Razón Social" name="razonsocial">
@@ -220,6 +223,7 @@
           </div>
 
           <div class="row">
+
             <div class="col-md-3">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" readonly id="nombres-editar" placeholder="Razón Social" name="razonsocial">
@@ -240,6 +244,7 @@
                   <label for="razonsocial" class="form-label">Habilidades</label>
               </div>
             </div>
+
             <div class="col-md-3">
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" readonly id="tareas-editar" placeholder="Razón Social" name="razonsocial">
@@ -250,27 +255,29 @@
           </div>
 
           <div class="row mb-2">
-              <div class="col-md-4">
-                  <div class="form-floating mb-3">
-                      <input type="number" class="form-control" id="documento-editar" placeholder="Nro de Documento" name="documento">
-                      <label for="documento" class="form-label">Documento</label>
-                  </div>
-              </div>
-              <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-floating mb-3">
-                  <select name="estado" id="estado-editar" class="form-control form-control-sm">
-                    <label for="estado">Seleccione el tipo estado:</label>
-                    <option value="">Seleccione</option>
-                    <option value="1">Activo</option>
-                    <option value="0">Inactivo</option>
-                  </select>
+                  <input type="text" class="form-control" readonly id="documento-cola" placeholder="N° Documento" name="nrodocumento">
+                  <label for="nrodocumento" class="form-label">N° Documento</label>
                 </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" readonly id="telefono-cola" placeholder="Teléfono" name="telefono">
+                <label for="telefono" class="form-label">Teléfono</label>
               </div>
+            </div>
           </div>
-          <button type="button" id="editar-registro"  class="btn btn-outline-primary">Agregar</button>
+
+          <div class="btn-group">
+            <button type="button" id="editar-colaborador"  class="btn btn-outline-primary">Editar</button>
+            <button type="button" id="guardar-edicion"  class="btn btn-outline-success d-none">Guardar Cambios</button>
+            <button type="button" id="cancelar-edicion"  class="btn btn-outline-danger d-none">Cancelar</button>
+          </div>
 
         </form>
       </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>
@@ -279,6 +286,52 @@
   </div>
 </div>
 
-<script src="js/colaboradores.js"></script>    
+<!-- Modal para agregar habilidades -->
+  <div class="modal fade" id="modal-habilidades" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header text-light" style='background-color: #005478;'>
+          <h1 class="modal-title fs-5" id="modalEditarLabel">Editar Datos</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-10">
+              <select name="so" id="habilidades" class="form-select">
+                <option value="">Seleccione las habilidades</option>
+                <option value="Front-end Básico">Front-end Básico</option>
+                <option value="Front-end Intermedio">Front-end Intermedio</option>
+                <option value="Front-end Avanzado">Front-end Avanzado</option>
+                <option value="Front-end Framework React">Front-end Framework React</option>
+                <option value="Back-end Básico">Back-end Básico</option>
+                <option value="Back-end Intermedio">Back-end Intermedio</option>
+                <option value="Back-end Avanzado">Back-end Avanzado</option>
+                <option value="Back-end FrameWork Laravel">Back-end FrameWork Laravel</option>
+                <option value="Diseño Gráfico">Diseño Gráfico</option>
+              </select>
+            </div>
+
+            <div class="col-md-2">
+              <div class="d-grid">
+                <button type="button" id="generarpdf" class="btn btn-outline-success">Generar PDF</button>
+                <button type="button" id="buscar" class="btn btn-outline-primary">Buscar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="js/colaboradores.js"></script>
+
+
 </body>
 </html>

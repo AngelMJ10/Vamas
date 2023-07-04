@@ -60,6 +60,25 @@
 
         }
 
+        public function editarCol_Per($data = []){
+            try {
+                $query = "CALL editar_Colaborador(?,?,?,?,?,?,?,?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array(
+                    $data['idpersona'],
+                    $data['usuario'],
+                    $data['correo'],
+                    $data['nivelacceso'],
+                    $data['apellidos'],
+                    $data['nombres'],
+                    $data['nrodocumento'],
+                    $data['telefono']
+                ));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
     }
 
 ?>

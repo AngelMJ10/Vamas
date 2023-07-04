@@ -37,7 +37,7 @@
             echo json_encode($datos);
         }
 
-         // Listar colaboradores
+        // Listar colaboradores
           if ($_POST['op'] == 'listarTcolaboradores') {
             require_once '../models/Colaboradores.php';
             $colaborador = new Colaborador();
@@ -45,7 +45,7 @@
             $contador = 1;
             foreach ($datos as $datos) {
               $tbody = "
-                <tr class='mb-2' ondblclick='obtenerInfo({$datos['idcolaboradores']})'>
+                <tr class='mb-2' title='Doble click para ver más información' ondblclick='obtenerInfo({$datos['idcolaboradores']})'>
                   <td class='p-3' data-label='#'>{$contador}</td>
                   <td class='p-3' data-label='Usuario'>{$datos['usuario']}</td>
                   <td class='p-3' data-label='Correo'>{$datos['correo']}</td>
@@ -53,7 +53,13 @@
                   <td class='p-3' data-label='Apellidos'>{$datos['apellidos']}</td>
                   <td class='p-3' data-label='Nombres'>{$datos['nombres']}</td>
                   <td class='p-3' data-label='Habilidades'>{$datos['Habilidades']}</td>
+                  <td class='p-3' data-label='Habilidades'>{$datos['Fases']}</td>
                   <td class='p-3' data-label='Tareas asig.'>{$datos['Tareas']}</td>
+                  <td data-label='Acciones'>
+                      <div class='btn-group' role='group'>
+                          <button type='button' onclick='abrirModalH()' title='Clic, para editar la tarea.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
+                      </div>
+                  </td>
                 </tr>
               ";
               $contador++;
@@ -68,6 +74,20 @@
             $datos = $colaborador->obtener_info_Colaborador($idcolaboradores);
             echo json_encode($datos);
           }
+        // Editar persona y colaborador
+          if ($_POST['op'] == 'editarPersona') {
+            $datos = [
+                "idpersona" => $_POST['idpersona'],
+                "usuario" => $_POST['usuario'],
+                "correo" => $_POST['correo'],
+                "nivelacceso" => $_POST['nivelacceso'],
+                "apellidos" => $_POST['apellidos'],
+                "nombres" => $_POST['nombres'],
+                "nrodocumento" => $_POST['nrodocumento'],
+                "telefono" => $_POST['telefono']        
+            ];
+            $persona->editarCol_Per($datos);
+        }
 
     }
 
