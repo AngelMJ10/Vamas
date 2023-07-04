@@ -70,6 +70,17 @@
             }
         }
 
+        public function contar_trabajos_colaboradores($idproyecto){
+            try {
+                $consulta = $this->conexion->prepare("CALL contar_colaboradores(?)");
+                $consulta->execute(array($idproyecto));
+                $datos = $consulta->fetchall(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
         public function listarTipoProyecto(){
             try {
                 $consulta = $this->conexion->prepare("SELECT * FROM tiposproyecto where estado = 1");

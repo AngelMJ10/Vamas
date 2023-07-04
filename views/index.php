@@ -443,7 +443,7 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                         labels: etiquetas,
                         datasets: [
                             {
-                                label: 'Proyectos',
+                                label: 'Avance %',
                                 data: [50, 40, 60, 80], // Datos de ejemplo, serán reemplazados por los datos obtenidos de la operación
                                 backgroundColor: coloresFondo,
                                 borderWidth: borde,

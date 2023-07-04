@@ -267,28 +267,56 @@ END $$
 CALL obtener_proyecto(1);
 
 --------------------------------------------------------------------
-
+-- Para contar los usuario en los proyectos
 DELIMITER $$
 CREATE PROCEDURE contar_total_colaboradores(IN _idproyecto SMALLINT)
 BEGIN
-SELECT COUNT(DISTINCT idcolaboradores) AS TotalUsuarios
-FROM (
-    SELECT col.idcolaboradores
-    FROM fases fas
-    INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
-    INNER JOIN colaboradores col ON fas.idresponsable = col.idcolaboradores
-    WHERE fas.idproyecto = _idproyecto
-    UNION
-    SELECT col.idcolaboradores
-    FROM tareas tar
-    INNER JOIN fases fas ON tar.idfase = fas.idfase
-    INNER JOIN colaboradores col ON tar.idcolaboradores = col.idcolaboradores
-    WHERE fas.idproyecto = _idproyecto
-) AS subquery;
+	SELECT COUNT(DISTINCT idcolaboradores) AS TotalUsuarios
+	FROM (
+	    SELECT col.idcolaboradores
+	    FROM fases fas
+	    INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
+	    INNER JOIN colaboradores col ON fas.idresponsable = col.idcolaboradores
+	    WHERE fas.idproyecto = _idproyecto
+	    UNION
+	    SELECT col.idcolaboradores
+	    FROM tareas tar
+	    INNER JOIN fases fas ON tar.idfase = fas.idfase
+	    INNER JOIN colaboradores col ON tar.idcolaboradores = col.idcolaboradores
+	    WHERE fas.idproyecto = _idproyecto
+	) AS subquery;
 END $$
 
-DROP PROCEDURE obtener_proyecto;
+DROP PROCEDURE contar_total_colaboradores;
 CALL contar_total_colaboradores(2);
+
+---------------------------------------------------------
+-- Contar colaboradores con nombres
+
+DELIMITER $$
+CREATE PROCEDURE contar_colaboradores(IN _idproyecto SMALLINT)
+BEGIN
+    SELECT col.idcolaboradores, col.usuario, col.nivelacceso, col.correo,
+        COUNT(DISTINCT fas.idfase) AS fases,
+        COUNT(DISTINCT tar.idtarea) AS tareas
+    FROM colaboradores col
+    LEFT JOIN fases fas ON fas.idresponsable = col.idcolaboradores AND fas.idproyecto = _idproyecto
+    LEFT JOIN tareas tar ON tar.idcolaboradores = col.idcolaboradores
+    WHERE col.idcolaboradores IN (
+        SELECT DISTINCT fas.idresponsable
+        FROM fases fas
+        WHERE fas.idproyecto = _idproyecto
+        UNION
+        SELECT DISTINCT tar.idcolaboradores
+        FROM tareas tar
+        INNER JOIN fases fas ON tar.idfase = fas.idfase
+        WHERE fas.idproyecto = _idproyecto
+    )
+    GROUP BY col.idcolaboradores, col.usuario, col.nivelacceso, col.correo;
+END $$
+
+DROP PROCEDURE contar_colaboradores
+CALL contar_colaboradores(1);
 
 --------------------------------------------------------------
 -- PA. para editar un proyecto
@@ -599,7 +627,7 @@ BEGIN
 	);
 END $$
 
-CALL hallar_porcentaje_proyecto(1)
+CALL hallar_porcentaje_proyecto
 
 -----------------------------------
 

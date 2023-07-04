@@ -16,6 +16,7 @@ $fechaActual = date('d-m-Y');
 $datosP = $proyecto->get($_GET['idproyecto']);
 $datosC = $proyecto->contarColaboradores($_GET['idproyecto']);
 $datosF = $fase->getFases_by_P($_GET['idproyecto']);
+$datosC_Trabajo = $proyecto->contar_trabajos_colaboradores($_GET['idproyecto']);
 $piePagina = "Reporte generado el {$fechaActual}, área de sistemas";
 // Contenido (HTML) que vamos a renderizar como PDF
 $content = "";
