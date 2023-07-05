@@ -96,11 +96,11 @@
       
             // Cuerpo del mensaje
             $mensaje = "
-            <h3>App SENATI</h3>
-            <strong>Recuperación de cuenta</strong>
-            <hr>
-            <p>Estimado usuario, para recuperar el acceso, utilice el siguiente código</p>
-            <h3>{$valRandom}</h3>
+              <h3>App Vamas</h3>
+              <strong>Recuperación de cuenta</strong>
+              <hr>
+              <p>Estimado usuario, para recuperar el acceso, utilice el siguiente código</p>
+              <h3>{$valRandom}</h3>
             ";
       
             // Arreglo con datos a guardar en la tabla de recuperación
@@ -114,7 +114,7 @@
             $colaborador->restoure($data);
       
             //Enviando Correo
-            sendEmail($_POST['correo'], 'Código de restauración: ', $mensaje);
+            enviarEmail($_POST['correo'], 'Código de restauración: ', $mensaje);
             $retorno["mensaje"] = "Se ha generado y enviado la clave al email indicado";
           }
           // Enviando el mensaje

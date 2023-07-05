@@ -70,8 +70,9 @@ if (isset($_SESSION['login'])){
         </div>
     </div>
 
-   <script src="login.js">
-   </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="login.js">
+    </script>
 
 </body>
 </html>

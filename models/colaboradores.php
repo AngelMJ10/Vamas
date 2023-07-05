@@ -207,6 +207,19 @@
             }
         }
 
+        public function registrarHabilidades($data = []){
+            try {
+                $query = "CALL registrar_habilidades(?,?);";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array(
+                    $data['idcolaboradores'],
+                    $data['habilidad']
+                ));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
     }
 
 ?>

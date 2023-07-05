@@ -240,7 +240,7 @@
 
             <div class="col-md-3">
               <div class="form-floating mb-3">
-                  <input type="text" class="form-control" readonly id="habilidades-editar" placeholder="Razón Social" name="razonsocial">
+                  <textarea type="text" class="form-control" readonly id="habilidades-editar" placeholder="Razón Social" name="razonsocial"></textarea>
                   <label for="razonsocial" class="form-label">Habilidades</label>
               </div>
             </div>
@@ -313,8 +313,7 @@
 
             <div class="col-md-2">
               <div class="d-grid">
-                <button type="button" id="generarpdf" class="btn btn-outline-success">Generar PDF</button>
-                <button type="button" id="buscar" class="btn btn-outline-primary">Buscar</button>
+                <button type="button" id="registrar-habilidad" class="btn btn-outline-success">Asignar Habilidad</button>
               </div>
             </div>
           </div>
@@ -331,7 +330,6 @@
   
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="js/colaboradores.js"></script>
-
 
 </body>
 </html>

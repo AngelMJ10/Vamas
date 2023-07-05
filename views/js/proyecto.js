@@ -101,7 +101,7 @@ let idtarea = 0;
     }).then((result) => {
       if (result.isConfirmed) {
         const parametrosURL = new URLSearchParams();
-        parametrosURL.append("op", "registerPhase");
+        parametrosURL.append("op", "registerPhaseV2");
         parametrosURL.append("idproyecto", idproyecto);
         parametrosURL.append("idresponsable", responsable.value);
         parametrosURL.append("nombrefase", namephase.value);
@@ -116,6 +116,8 @@ let idtarea = 0;
         })
         .then(respuesta =>{
             if(respuesta.ok){
+              obtenerPorcentajeF();
+              obtenerPorcentajeP();
               Swal.fire({
                 icon: 'success',
                 title: 'Fase registrada',
@@ -167,6 +169,8 @@ let idtarea = 0;
           })
           .then(respuesta =>{
               if(respuesta.ok){
+                  obtenerPorcentajeF();
+                  obtenerPorcentajeP();
                   alert('Fase registrado correctamente');
                   location.reload();
               } else{
@@ -276,7 +280,7 @@ let idtarea = 0;
     }).then((result) => {
       if (result.isConfirmed) {
         const parametros = new URLSearchParams();
-        parametros.append("op", "registrarTarea");
+        parametros.append("op", "registrarTareaV2");
         parametros.append("idfase", idfase);
         parametros.append("idcolaboradores", idcolaboradores.value);
         parametros.append("roles", roles.value);
@@ -291,6 +295,8 @@ let idtarea = 0;
         })
         .then(respuesta => {
           if (respuesta.ok) {
+            obtenerPorcentajeF();
+            obtenerPorcentajeP();
             Swal.fire({
               icon: 'success',
               title: 'Tarea registrada',
@@ -456,14 +462,14 @@ let idtarea = 0;
     }).then((result) => {
       if (result.isConfirmed) {
         const parametros = new URLSearchParams();
-      parametros.append("op", "editarTarea");
-      parametros.append("idtarea", idtarea);
-      parametros.append("idcolaboradores", usuarioTarea.value);
-      parametros.append("roles", rolTarea.value);
-      parametros.append("tarea", nombreTarea.value);
-      parametros.append("porcentaje", porcentajeTarea.value);
-      parametros.append("fecha_inicio_tarea", fechaIniTarea.value);
-      parametros.append("fecha_fin_tarea", fechaFinTarea.value);
+        parametros.append("op", "editarTarea");
+        parametros.append("idtarea", idtarea);
+        parametros.append("idcolaboradores", usuarioTarea.value);
+        parametros.append("roles", rolTarea.value);
+        parametros.append("tarea", nombreTarea.value);
+        parametros.append("porcentaje", porcentajeTarea.value);
+        parametros.append("fecha_inicio_tarea", fechaIniTarea.value);
+        parametros.append("fecha_fin_tarea", fechaFinTarea.value);
     
       fetch('../controllers/tarea.php', {
         method: 'POST',
@@ -471,6 +477,8 @@ let idtarea = 0;
       })
         .then(respuesta => {
           if(respuesta.ok){
+            obtenerPorcentajeF();
+            obtenerPorcentajeP();
             Swal.fire({
               icon: 'success',
               title: 'Tarea Actualizada',
@@ -614,6 +622,8 @@ let idtarea = 0;
       cancelButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
+        obtenerPorcentajeF();
+        obtenerPorcentajeP();
         const parametros = new URLSearchParams();
         parametros.append("op", "editarFase");
         parametros.append("idfase", idfase);
@@ -787,6 +797,8 @@ let idtarea = 0;
       cancelButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
+          obtenerPorcentajeF();
+          obtenerPorcentajeP();
           const parametros = new URLSearchParams();
           parametros.append("op", "editar");
           parametros.append("idproyecto", idproyecto);
@@ -1220,6 +1232,44 @@ let idtarea = 0;
     parametros.append("idproyecto", idproyecto);
     window.open(`../reports/Proyecto/reporteF.php?${parametros}`, '_blank');
     }
+  }
+
+  function obtenerPorcentajeF() {
+    const formData = new FormData();
+    formData.append("op", "obtenerPorcentajeF");
+  
+    fetch('../controllers/fase.php', {
+      method: 'POST',
+      body: formData
+    })
+    .then(respuesta => {
+      if (respuesta.ok) {
+      } else {
+        throw new Error('Error en la solicitud');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
+  function obtenerPorcentajeP() {
+  const formData = new FormData();
+  formData.append("op", "obtenerPorcentajeP");
+
+  fetch('../controllers/proyecto.php', {
+      method: 'POST',
+      body: formData
+  })
+  .then(respuesta => {
+      if (respuesta.ok) {
+      } else {
+      throw new Error('Error en la solicitud');
+      }
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
   }
 
 listarColaboradores();

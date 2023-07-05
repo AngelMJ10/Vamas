@@ -1,10 +1,12 @@
 <?php
     session_start();
     require_once '../models/Persona.php';
+    require_once '../models/Colaboradores.php';
 
     if (isset($_POST['op'])) {
 
         $persona = new Persona();
+        $colaborador = new Colaborador();
 
         if ($_POST['op'] == 'listar') {
             $datos = $persona->listar();
@@ -39,8 +41,6 @@
 
         // Listar colaboradores
           if ($_POST['op'] == 'listarTcolaboradores') {
-            require_once '../models/Colaboradores.php';
-            $colaborador = new Colaborador();
             $datos = $colaborador->listar_t_Colaborador();
             $contador = 1;
             foreach ($datos as $datos) {
@@ -57,7 +57,7 @@
                   <td class='p-3' data-label='Tareas asig.'>{$datos['Tareas']}</td>
                   <td data-label='Acciones'>
                       <div class='btn-group' role='group'>
-                          <button type='button' onclick='abrirModalH()' title='Clic, para editar la tarea.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
+                          <button type='button' onclick='abrirModalH({$datos['idcolaboradores']})' title='Clic, para editar la tarea.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
                       </div>
                   </td>
                 </tr>
@@ -87,7 +87,15 @@
                 "telefono" => $_POST['telefono']        
             ];
             $persona->editarCol_Per($datos);
-        }
+          }
+
+          if ($_POST['op'] == 'asignarHabilidad') {
+            $datos = [
+                "idcolaboradores" => $_POST['idcolaboradores'],
+                "habilidad" => $_POST['habilidad']      
+            ];
+            $colaborador->registrarHabilidades($datos);
+          }
 
     }
 

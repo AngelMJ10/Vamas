@@ -183,6 +183,7 @@ END $$
 CALL spu_usuarios_actualizarclave(?,?);
 
 ------------------------------------------------------------
+
 -- P.A para listar a los colaboradores
 DELIMITER $$
 CREATE PROCEDURE listar_colaboradores()
@@ -218,6 +219,7 @@ BEGIN
 	GROUP BY col.idcolaboradores;
 END $$
 
+DROP PROCEDURE obtener_info_colaborador
 CALL obtener_info_colaborador(3)
 
 ------------------------------------
@@ -244,6 +246,21 @@ END $$
 
 CALL editar_Colaborador(1,'AngelMJ','1342364@senati.pe','A','Marquina Jaime','Ángel Eduardo',72745028,951531166);
 
+-----------------------------------------------
+-- Para registrar habilidades con usuario
+
+DELIMITER $$
+CREATE PROCEDURE registrar_habilidades
+(
+	IN _idcolaboradores 	SMALLINT,
+	IN _habilidad		VARCHAR(40)	
+)
+BEGIN 
+	INSERT INTO habilidades(idcolaboradores,habilidad)
+	VALUES(_idcolaboradores,_habilidad);
+END $$
+
+CALL registrar_habilidades(1,'Back-end Básico');
 
 --------------------------------------------------- -- P.A DE PROYECTOS -------------------------------------------------------------------
 

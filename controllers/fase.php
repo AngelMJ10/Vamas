@@ -1,6 +1,7 @@
 <?php
     session_start();
     require_once '../models/Fase.php';
+    require_once '../models/Mailclave.php';
 
     if (isset($_POST['op'])) {
 
@@ -175,6 +176,33 @@
             $porcentaje = $_POST['porcentaje'];
             $comentario = $_POST['comentario'];
             $fase->registerPhase($idproyecto, $idresponsable, $nombrefase, $fechainicio, $fechafin, $porcentaje ,$comentario);
+        }
+
+        // Registrar Fases y tambien se envia un correo con la información
+        if ($_POST['op'] == 'registerPhaseV2') {
+            require_once '../models/Colaboradores.php';
+            $colaborador = new Colaborador();
+            $idproyecto = $_POST['idproyecto'];
+            $idresponsable = $_POST['idresponsable'];
+            $nombrefase = $_POST['nombrefase'];
+            $fechainicio = $_POST['fechainicio'];
+            $fechafin = $_POST['fechafin'];
+            $porcentaje = $_POST['porcentaje'];
+            $comentario = $_POST['comentario'];
+
+            $fase->registerPhase($idproyecto, $idresponsable, $nombrefase, $fechainicio, $fechafin, $porcentaje ,$comentario);
+            
+            $getColabolador = $colaborador->obtener_info_Colaborador(['idcolaboradores' => $_POST['idresponsable']]);
+            $mensaje = "
+                <h3>App Vamas</h3>
+                <strong>Se le ha asignado una nueva fase a dirigir</strong>
+                <hr>
+                <p>El colabolador {$_SESSION['usuario']} le ha asignado la siguiente fase:</p>
+                <b>{$_POST['nombrefase']}</b>
+                <p>La fase inicia: {$_POST['fechainicio']}</p>
+                <p>La fase finaliza: {$_POST['fechafin']}</p>
+            ";
+            enviarEmail($getColabolador['correo'],'Nueva fase asignada',$mensaje);
         }
 
         if ($_POST['op'] == 'editarFase') {

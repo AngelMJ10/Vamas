@@ -19,8 +19,10 @@ const btnCancelar = document.querySelector("#cancelar-edicion");
 // Modal de habilidades
 const modalH = document.querySelector("#modal-habilidades");
 const habilidades = document.querySelector("#habilidades");
+const btnRegistrar = document.querySelector("#registrar-habilidad");
 
 let idpersona = 0;
+let idcolaboradores = 0;
 
 function obtenerInfo(id){
     const parametros = new URLSearchParams();
@@ -153,12 +155,66 @@ function editarColaborardor_Persona(){
     })  
 }
 
-function abrirModalH(){
+function abrirModalH(id){
     const bootstrapModal = new bootstrap.Modal(modalH);
     bootstrapModal.show();
+    idcolaboradores = id;
+}
+
+function asignarHabilidad(){
+    if (!habilidades.value) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Campo incompleto',
+          text: 'Por favor, completa todos los campos.',
+        });
+        return;
+    }
+
+    Swal.fire({
+        icon: 'question',
+        title: 'Confirmacion',
+        text: '¿Está seguro de la habilidad asignada?',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const parametros = new URLSearchParams();
+            parametros.append("op", "asignarHabilidad");
+            parametros.append("idcolaboradores", idpersona);
+            parametros.append("habilidad", habilidades.value);
+            fetch('../controllers/persona.php', {
+                method: 'POST',
+                body: parametros,
+            })
+            .then(respuesta =>{
+                if (respuesta.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Habilidad asignada',
+                        text: 'Se ha agregado una nueva habilidad correctamente.'
+                    }).then(() =>{
+                        location.reload();
+                    });
+                } else{
+                    throw new Error('Error en la solicitud');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.alert({
+                    icon: 'Error',
+                    title: 'Error al asignar la habilidad',
+                    text: 'Ocurrió un error al asignar la habilidad. Por favor intentelo de nuevo.'
+                })
+            });
+        }
+    })  
 }
 
 listar();
 btnRead.addEventListener("click", quitarRead);
 btnCancelar.addEventListener("click", cancelarEditar);
 btnEditar.addEventListener("click",editarColaborardor_Persona);
+btnRegistrar.addEventListener("click",asignarHabilidad);

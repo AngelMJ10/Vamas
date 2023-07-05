@@ -17,11 +17,20 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(respuesta => respuesta.json())
       .then(datos => {
           if (!datos.status){
-          alert(datos.mensaje);
-          usuario.focus();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Error en los campos',
+                text: (datos.mensaje)
+            })
+            usuario.focus();
           }else{
-              alert(`Bienvenido ${datos.usuario}`);
-              window.location.href = './views/';
+            Swal.fire({
+                icon: 'success',
+                title: 'Sesión Iniciada',
+                text: `Bienvenido ${datos.usuario}`
+            }).then(() => {
+                window.location.href = './views/';
+            });
           }
       })
       .catch(error => {

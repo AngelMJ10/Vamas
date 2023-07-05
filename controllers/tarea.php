@@ -2,6 +2,7 @@
     session_start();
     require_once '../models/Tarea.php';
     require_once '../models/Mail.php';
+    require_once '../models/Mailclave.php';
     require '../vendor/autoload.php';
 
 
@@ -159,6 +160,34 @@
                 "fecha_fin_tarea"       => $_POST['fecha_fin_tarea']
             ];
             $tarea->registrarTarea($datos);
+        }
+
+        // Registrar Tarea y tambien se le envia un correo con la información
+        if ($_POST['op'] == 'registrarTareaV2') {
+            require_once '../models/Colaboradores.php';
+            $colaborador = new Colaborador();
+            $datos = [
+                "idfase"                => $_POST['idfase'],
+                "idcolaboradores"       => $_POST['idcolaboradores'],
+                "roles"                 => $_POST['roles'],
+                "tarea"                 => $_POST['tarea'],
+                "porcentaje"            => $_POST['porcentaje'],
+                "fecha_inicio_tarea"    => $_POST['fecha_inicio_tarea'],
+                "fecha_fin_tarea"       => $_POST['fecha_fin_tarea']
+            ];
+            $tarea->registrarTarea($datos);
+            $getColabolador = $colaborador->obtener_info_Colaborador(['idcolaboradores' => $_POST['idcolaboradores']]);
+            $mensaje = "
+                <h3>App Vamas</h3>
+                <strong>Se le ha asignado una nueva tarea</strong>
+                <hr>
+                <p>El colabolador {$_SESSION['usuario']} le ha asignado la siguiente tarea:</p>
+                <b>{$_POST['tarea']}</b>
+                <p>La tarea inicia: {$_POST['fecha_inicio_tarea']}</p>
+                <p>La tarea finaliza: {$_POST['fecha_fin_tarea']}</p>
+            ";
+            
+            enviarEmail($getColabolador['correo'],'Nueva tarea asignada',$mensaje);
         }
 
         if ($_POST['op'] == 'editarTarea') {

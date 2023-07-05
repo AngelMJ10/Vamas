@@ -15,11 +15,11 @@
         <h3 class='center mt-4'>Proyecto</h3>
         <table style="width:100%;" class='table table-border mt-3 center'>
           <colgroup>
-            <col style="width: 15%;">
+            <col style="width: 22%;">
             <col style="width: 15%;">
             <col style="width: 10%;">
-            <col style="width: 12%;">
-            <col style="width: 12%;">
+            <col style="width: 13%;">
+            <col style="width: 13%;">
             <col style="width: 10%;">
             <col style="width: 15%;">
           </colgroup>

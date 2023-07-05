@@ -193,7 +193,7 @@ let idfase = 0;
         }).then((result) => {
             if (result.isConfirmed) {
                 const parametros = new URLSearchParams();
-                parametros.append("op", "registrarTarea");
+                parametros.append("op", "registrarTareaV2");
                 parametros.append("idfase", idfase);
                 parametros.append("idcolaboradores", idcolaboradores.value);
                 parametros.append("roles", roles.value);
@@ -208,6 +208,8 @@ let idfase = 0;
                 })
                 .then(respuesta => {
                 if(respuesta.ok){
+                    obtenerPorcentajeF();
+                    obtenerPorcentajeP();
                     Swal.fire({
                         icon: 'success',
                         title: 'Tarea Registrada',
@@ -361,6 +363,8 @@ let idfase = 0;
         })
             .then(respuesta => {
             if(respuesta.ok){
+                obtenerPorcentajeF();
+                obtenerPorcentajeP();
                 alert('Tarea Editada correctamente');
                 location.reload();
             } else{
@@ -435,6 +439,44 @@ let idfase = 0;
         }
     }
 
+    function obtenerPorcentajeF() {
+        const formData = new FormData();
+        formData.append("op", "obtenerPorcentajeF");
+      
+        fetch('../controllers/fase.php', {
+          method: 'POST',
+          body: formData
+        })
+        .then(respuesta => {
+          if (respuesta.ok) {
+          } else {
+            throw new Error('Error en la solicitud');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    function obtenerPorcentajeP() {
+    const formData = new FormData();
+    formData.append("op", "obtenerPorcentajeP");
+    
+    fetch('../controllers/proyecto.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(respuesta => {
+        if (respuesta.ok) {
+        } else {
+        throw new Error('Error en la solicitud');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+    }
+    
 listProject();
 list();
 
@@ -458,8 +500,8 @@ const btnAddRead = document.querySelector("#cancelar-E-Tarea");
 btnAddRead.addEventListener("click",addRead);
 
   // Para editar una tarea 
-  const btnEditarTarea = document.querySelector("#guardar-C-Tarea");
-  btnEditarTarea.addEventListener("click", editarTarea);
+const btnEditarTarea = document.querySelector("#guardar-C-Tarea");
+btnEditarTarea.addEventListener("click", editarTarea);
 
 const btnRegistrar = document.querySelector("#create-phase");
 btnRegistrar.addEventListener("click", createPhase);

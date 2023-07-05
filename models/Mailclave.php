@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\Exception;
 
 
 
-function sendEmail($destino, $asunto, $mensaje) {
+function enviarEmail($destino, $asunto, $mensaje) {
     $mail = new PHPMailer(true);
     try {
         
