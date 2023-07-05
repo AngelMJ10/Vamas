@@ -50,6 +50,15 @@
       cancelButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Enviando avance...',
+          allowOutsideClick: false,
+          showCancelButton: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
         const formData = new FormData();
         formData.append("correo", correo)
         formData.append("documento", documento);

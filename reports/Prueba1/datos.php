@@ -3,6 +3,8 @@
 </div>
 <hr>
 <div>
+
+  <h3 class="center mb-4 mt-5">Fase</h3>
   <table class="table table-border mb-5 center">
     <colgroup>
       <col style="width: 20%;">
@@ -22,7 +24,7 @@
         <th>Avance</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody> 
       <?php foreach ($datosE as $registro): ?>
         <?= $porcentaje = $registro['porcentaje_tarea']?>
           <?php if($porcentaje): ?>
@@ -45,16 +47,18 @@
 
   <table class="table table-border mt-3 center">
     <colgroup>
-      <col style="width: 15%;">
-      <col style="width: 15%;">
+      <col style="width: 4%;">
+      <col style="width: 14%;">
+      <col style="width: 14%;">
       <col style="width: 20%;">
-      <col style="width: 20%;">
+      <col style="width: 19%;">
       <col style="width: 10%;">
       <col style="width: 10%;">
-      <col style="width: 10%;">
+      <col style="width: 9%;">
     </colgroup>
     <thead>
       <tr class="bg-primary text-light center">
+        <th>#</th>
         <th>Emisor</th>
         <th>Receptor</th>
         <th>Mensaje</th>
@@ -65,10 +69,12 @@
       </tr>
     </thead>
     <tbody>
+    <?php $contador = 1;?>
     <?php foreach ($datosE as $evidencia): ?>
         <?php $evidenciaArray = json_decode($evidencia['evidencia'], true); ?>
         <?php foreach ($evidenciaArray as $item): ?>
             <tr>
+                <td><?= $contador ?></td>
                 <td><?= $item['colaborador'] ?></td>
                 <td><?= $item['receptor'] ?></td>
                 <td><?= $item['mensaje'] ?></td>
@@ -77,7 +83,8 @@
                 <td><?= $item['hora'] ?></td>
                 <td><?= $item['porcentaje'] ?>%</td>
             </tr>
-        <?php endforeach; ?>
+            <?php $contador++;?>
+        <?php endforeach; ?> 
     <?php endforeach; ?>
 
     </tbody>

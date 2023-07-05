@@ -192,6 +192,15 @@ let idfase = 0;
             cancelButtonText: 'No',
         }).then((result) => {
             if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Creando tarea ...',
+                    allowOutsideClick: false,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
                 const parametros = new URLSearchParams();
                 parametros.append("op", "registrarTareaV2");
                 parametros.append("idfase", idfase);

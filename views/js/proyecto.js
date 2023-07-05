@@ -100,6 +100,15 @@ let idtarea = 0;
       cancelButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Creando la fase...',
+          allowOutsideClick: false,
+          showCancelButton: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
         const parametrosURL = new URLSearchParams();
         parametrosURL.append("op", "registerPhaseV2");
         parametrosURL.append("idproyecto", idproyecto);
@@ -279,6 +288,15 @@ let idtarea = 0;
       cancelButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Creando tarea ...',
+          allowOutsideClick: false,
+          showCancelButton: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
         const parametros = new URLSearchParams();
         parametros.append("op", "registrarTareaV2");
         parametros.append("idfase", idfase);

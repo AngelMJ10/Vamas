@@ -421,7 +421,7 @@
             </div>
 
             <div class="col-md-3">
-              <div class="form-floating">
+              <div class="form-floating mb-3">
                 <input name="porcentaje" type='number' class="form-control" placeholder="Porcentaje" id="porcentaje">
                 <label form="porcentaje" class="form-label">Porcentaje</label>
               </div>
@@ -431,7 +431,7 @@
 
           <div class="row mb-3">
             <div class="col-md-3">
-              <div class="form-floating">
+              <div class="form-floating mb-3">
                 <textarea name="comentario" class="form-control" placeholder="Comentario" id="comentario"></textarea>
                 <label form="comentario" class="form-label">Comentario</label>
               </div>
@@ -521,14 +521,14 @@
             </div>
 
             <div class="col-md-4">
-              <div class="form-floating">
+              <div class="form-floating  mb-3">
                 <input name="porcentaje" type='number' class="form-control" placeholder="Porcentaje" id="porcentaje-crear-F">
                 <label form="porcentaje" class="form-label">Porcentaje</label>
               </div>
             </div>
 
             <div class="col-md-4">
-              <div class="form-floating">
+              <div class="form-floating  mb-3">
                 <textarea name="comentario" class="form-control" placeholder="Comentario" id="comentario-faseV2"></textarea>
                 <label form="comentario" class="form-label">Comentario</label>
               </div>
@@ -624,10 +624,10 @@
                       <label for="tipoProyecto">Seleccione el empleado:</label>
                       <option value="">Seleccione el empleado</option>
                     </select>
-                    <button type="button" class="btn btn-sm btn-outline-primary" id="btn-habilidades">Habilidades</button>
+                    <button type="button" class="btn btn-sm btn-outline-primary mt-5" id="btn-habilidades">Habilidades</button>
                 </div>
 
-                <div class="col-md-6 form-floating">
+                <div class="col-md-6 form-floating mb-3">
                     <select name="tipoProyecto" id="rol-empleado" class="form-control form-control-sm">
                       <label for="tipoProyecto">Seleccione el Rol:</label>
                       <option value="">Seleccione el rol</option>
@@ -636,24 +636,24 @@
 
               </div>
               <div class="row mb-3">
-                <div class="col-md-6 form-floating">
+                <div class="col-md-6 form-floating mb-3">
                   <input type="text" name="tarea" class="form-control" id="tarea-agregar"  placeholder="Tarea">
                   <label for="tarea" class="form-label">Tarea</label>
                 </div>
               
-                <div class="col-md-6 form-floating">
+                <div class="col-md-6 form-floating mb-3">
                   <input type="number" class="form-control" name="porcentaje" id="agregar-porcentaje"  placeholder="Porcentaje">
                   <label for="porcentaje" class="form-label">Porcentaje</label>
                 </div>
 
               </div>
               <div class="row mb-3">
-                <div class="col-md-6 form-floating">
+                <div class="col-md-6 form-floating mb-3">
                   <input type="date" class="form-control" name="fecha-ini" id="fecha-ini-tarea"  placeholder="Fecha Inicio">
                   <label for="fecha-ini" class="form-label">Fecha de inicio</label>
                 </div>
               
-                <div class="col-md-6 form-floating">
+                <div class="col-md-6 form-floating mb-3">
                   <input type="date" name="fecha-fin" class="form-control" id="fecha-f-tarea"  placeholder="Fecha Fin">
                   <label for="fecha-fin" class="form-label">Fecha de Fin</label>
                 </div>

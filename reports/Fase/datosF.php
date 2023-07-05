@@ -3,7 +3,7 @@
 </div>
 <hr>
 <div>
-  <table class="table table-border mb-5 center">
+  <table class="table table-border mt-5 mb-5 center">
     <colgroup>
       <col style="width: 20%;">
       <col style="width: 25%;">
@@ -24,11 +24,11 @@
     </thead>
     <tbody>
       <?php if ($datosE): ?>
-        <?= $porcentaje = $datosE[0]['porcentaje_fase']?>
-          <?php if($porcentaje): ?>
-          <?=  $porcentaje = rtrim($porcentaje, "0")?>
-          <?=  $porcentaje = rtrim($porcentaje, ".")?>
-          <?php endif ?>
+        <?php $porcentaje = $datosE[0]['porcentaje_fase']?>
+        <?php if($porcentaje): ?>
+        <?php  $porcentaje = rtrim($porcentaje, "0")?>
+        <?php  $porcentaje = rtrim($porcentaje, ".")?>
+        <?php endif ?>
         <tr>
           <td><?= $datosE[0]['titulo'] ?></td>
           <td><?= $datosE[0]['nombrefase'] ?></td>
@@ -45,16 +45,18 @@
 
   <table class="table table-border mt-3 center">
     <colgroup>
-      <col style="width: 15%;">
+      <col style="width: 5%;">
+      <col style="width: 20%;">
       <col style="width: 15%;">
       <col style="width: 20%;">
-      <col style="width: 20%;">
+      <col style="width: 10%;">
       <col style="width: 10%;">
       <col style="width: 10%;">
       <col style="width: 10%;">
     </colgroup>
     <thead>
       <tr class="bg-primary text-light center">
+        <th>#</th>
         <th>Tarea</th>
         <th>Encargado</th>
         <th>Rol</th>
@@ -65,18 +67,26 @@
       </tr>
     </thead>
     <tbody>
+      <?php $contador = 1;?>
       <?php foreach($datosF as $element):?>
+        <?php $porcentajeT = $element['porcentaje_tarea']?>
+        <?php if($porcentajeT): ?>
+        <?php  $porcentajeT = rtrim($porcentajeT, "0")?>
+        <?php  $porcentajeT = rtrim($porcentajeT, ".")?>
+        <?php endif ?>
       <?php $evidencia = json_decode($element['evidencia']) ?>
       <?php $count = count($evidencia) ?>
       <tr>
+          <td><?= $contador ?></td>
           <td><?= $element['tarea'] ?></td>
           <td><?= $element['usuario_tarea'] ?></td>
           <td><?= $element['roles'] ?></td>
           <td><?= $element['fecha_inicio_tarea'] ?></td>
           <td><?= $element['fecha_fin_tarea'] ?></td>
           <td><?= $count ?></td>
-          <td><?= $element['porcentaje_tarea'] ?>%</td>
+          <td><?= $porcentajeT?>%</td>
       </tr>
+      <?php $contador++;?>
       <?php endforeach ?>
 
     </tbody>
