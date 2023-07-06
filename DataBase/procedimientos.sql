@@ -383,7 +383,6 @@ END $$
 
 CALL editar_proyecto(1, 1, 1, 'Página web sobre test', 'Prueba 2', '2023-05-29', '2023-05-29', 150);
 
-
 ----------------------------------------------------------- P.A DE FASES ------------------------------------------------
 
 -- P.A para listar fases
@@ -712,3 +711,87 @@ BEGIN
 END $$
 
 CALL grafico_proyecto()
+
+-------------------------------------------------------------
+
+-- P.A para finalizar proyecto
+
+DELIMITER $$
+CREATE PROCEDURE finalizar_proyecto(IN _idproyecto SMALLINT)
+BEGIN 
+	UPDATE proyecto SET estado = 2, fecha_update = NOW()
+	WHERE idproyecto = _idproyecto;
+END $$
+
+CALL finalizar_proyecto(2);
+SELECT * FROM proyecto;
+DROP PROCEDURE finalizar_proyecto;
+----------------------------------------------
+
+-- Para reactivar un proyecto 
+DELIMITER $$
+CREATE PROCEDURE reactivar_proyecto(IN _idproyecto SMALLINT)
+BEGIN 
+	UPDATE proyecto SET estado = 1
+	WHERE idproyecto = _idproyecto;
+END $$
+CALL reactivar_proyecto(2);
+DROP PROCEDURE reactivar_proyecto;
+
+-----------------------------------------------------
+-- Para finalizar la fase con el proyecto 
+DELIMITER $$
+CREATE PROCEDURE finalizar_fase()
+BEGIN 
+    UPDATE fases AS fas
+    INNER JOIN proyecto AS pro ON pro.idproyecto = fas.idproyecto
+    SET fas.estado = 2, fas.fecha_update = NOW()
+    WHERE pro.estado = 2;
+END $$
+
+DROP PROCEDURE finalizar_fase
+CALL finalizar_fase();
+SELECT * FROM fases
+
+--------------------------------------------------
+-- Para reactivar una fase
+DELIMITER $$
+CREATE PROCEDURE reactivar_fase()
+BEGIN 
+    UPDATE fases AS fas
+    INNER JOIN proyecto AS pro ON pro.idproyecto = fas.idproyecto
+    SET fas.estado = 1
+    WHERE pro.estado = 1;
+END $$
+
+DROP PROCEDURE reactivar_fase
+CALL reactivar_fase();
+
+-------------------------------------------
+-- Para finalizar las tareas de la fase
+
+DELIMITER $$
+CREATE PROCEDURE finalizar_tarea()
+BEGIN 
+    UPDATE tareas AS tar
+    INNER JOIN fases AS fas ON fas.idfase = tar.idfase
+    SET tar.estado = 2, tar.fecha_update = NOW()
+    WHERE fas.estado = 2;
+END $$
+
+SELECT * FROM tareas
+CALL finalizar_tarea;
+DROP PROCEDURE finalizar_tarea;
+---------------------------------------
+-- Para reactivar las tareas de la fase
+DELIMITER $$
+CREATE PROCEDURE reactivar_tarea()
+BEGIN 
+    UPDATE tareas AS tar
+    INNER JOIN fases AS fas ON fas.idfase = tar.idfase
+    SET tar.estado = 1
+    WHERE fas.estado = 1;
+END $$
+
+CALL reactivar_tarea();
+DROP PROCEDURE reactivar_tarea;

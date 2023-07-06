@@ -101,5 +101,27 @@
             }
         }
 
+        // Método para finalizar las fases de un proyecto finalizado
+        public function finalizar_fase(){
+            try {
+                $query = "CALL finalizar_fase()";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute();
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
+        // Método para reactivar las fases de un proyecto reactivado
+        public function reactivar_fase(){
+            try {
+                $query = "CALL reactivar_fase()";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute();
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
     }
 ?>

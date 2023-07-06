@@ -488,6 +488,14 @@
             }
             vista($datos);
         }
+
+        if ($_POST['op'] == 'finalizar_tarea') {
+            $tarea->finalizar_tarea();
+        }
+
+        if ($_POST['op'] == 'reactivar_tarea') {
+            $tarea->reactivar_tarea();
+        }
         
     }
 

@@ -312,7 +312,85 @@
         if ($_POST['op'] == 'obtenerPorcentajeP') {
             $proyecto->obtenerPorcentajeP();
         }
-        
+
+        // Finalizar el proyecto si lo seleccionas
+        if ($_POST['op'] == 'finalizar_proyecto'){
+            $data = ["idproyecto" => $_POST['idproyecto']];
+            $proyecto->finalizar_proyecto($data);
+            require_once '../models/Fase.php';
+            $fase = new Fase();
+            $fase->finalizar_fase();
+            require_once '../models/Tarea.php';
+            $tarea = new Tarea();
+            $tarea->finalizar_tarea();
+        }
+
+        // Finaliza los proyectos que ya pasan de su fecha limite
+        if ($_POST['op'] == 'finalizar_proyectoV2') {
+            $datosP = $proyecto->listarTodos();
+            
+            // Obtener la fecha actual
+            $fechaActual = date('Y-m-d');
+            
+            foreach ($datosP as $registro) {
+                if ($registro['fechafin'] < $fechaActual) {
+                    $data = ["idproyecto" => $registro['idproyecto']];
+                    
+                    // Ejecutar el método finalizar_proyecto
+                    $proyecto->finalizar_proyecto($data);
+                    
+                    // Ejecutar el método finalizar_fase
+                    require_once '../models/Fase.php';
+                    $fase = new Fase();
+                    $fase->finalizar_fase();
+                    
+                    // Ejecutar el método finalizar_tarea
+                    require_once '../models/Tarea.php';
+                    $tarea = new Tarea();
+                    $tarea->finalizar_tarea();
+                }
+            }
+        }
+
+        // Reactiva el proyecto si lo seleccionas
+        if ($_POST['op'] == 'reactivar_proyecto'){
+            $data = ["idproyecto" => $_POST['idproyecto']];
+            $proyecto->reactivar_proyecto($data);
+            require_once '../models/Fase.php';
+            $fase = new Fase();
+            $fase->reactivar_fase();
+            require_once '../models/Tarea.php';
+            $tarea = new Tarea();
+            $tarea->reactivar_tarea();
+        }
+
+        // Reactiva los proyectos que se han modificado la fecha limite
+        if ($_POST['op'] == 'reactivar_proyectoV2') {
+            $datosP = $proyecto->listarTodos();
+            
+            // Obtener la fecha actual
+            $fechaActual = date('Y-m-d');
+            
+            foreach ($datosP as $registro) {
+                if ($registro['fechafin'] > $fechaActual) {
+                    $data = ["idproyecto" => $registro['idproyecto']];
+                    
+                    // Ejecutar el método reactivar_proyecto
+                    $proyecto->reactivar_proyecto($data);
+                    
+                    // Ejecutar el método reactivar_fase
+                    require_once '../models/Fase.php';
+                    $fase = new Fase();
+                    $fase->reactivar_fase();
+                    
+                    // Ejecutar el método reactivar_tarea
+                    require_once '../models/Tarea.php';
+                    $tarea = new Tarea();
+                    $tarea->reactivar_tarea();
+                }
+            }
+        }
+
     }
 
 ?>

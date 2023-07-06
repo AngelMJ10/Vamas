@@ -236,6 +236,14 @@
             
             
         }
+
+        if ($_POST['op'] == 'finalizar_fase') {
+            $fase->finalizar_fase();
+        }
+
+        if ($_POST['op'] == 'reactivar_fase') {
+            $fase->reactivar_fase();
+        }
     }
 
 ?>

@@ -139,5 +139,27 @@
             }
         }
 
+        // Método para finalizar las tarea de las fases finalizadas finalizado
+        public function finalizar_tarea(){
+            try {
+                $query = "CALL finalizar_tarea()";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute();
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
+        // Método para reactivar las tarea de las fases reactivadas
+        public function reactivar_tarea(){
+            try {
+                $query = "CALL reactivar_tarea()";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute();
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
     }
 ?>

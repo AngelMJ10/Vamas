@@ -20,6 +20,17 @@
             }
         }
 
+        public function listarTodos(){
+            try {
+                $consulta  = $this->conexion->prepare("SELECT * FROM proyecto");
+                $consulta->execute();
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
         public function registrar($idtipoproyecto,$idempresa,$titulo,$descripcion,$fechainicio,$fechafin,$precio,$idusuariore){
             try {
                 $consulta = $this->conexion->prepare("INSERT INTO proyecto (idtipoproyecto,idempresa,titulo, descripcion, fechainicio,fechafin,precio,idusuariore) values (?,?,?,?,?,?,?,?)");
@@ -125,7 +136,27 @@
             }
         }
 
-        
+        // Método para poder finalizar un proyecto
+        public function finalizar_proyecto($data = []){
+            try {
+                $query = "CALL finalizar_proyecto(?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array($data['idproyecto']));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
+        // Método para poder reactivar un proyecto
+        public function reactivar_proyecto($data = []){
+            try {
+                $query = "CALL reactivar_proyecto(?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array($data['idproyecto']));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
 
     }
 
