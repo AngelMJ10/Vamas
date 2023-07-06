@@ -16,7 +16,6 @@ switch ($permiso) {
       ["menu" => "Proyectos", "url" => "index.php?view=proyecto.php"],
       ["menu" => "Fases", "url" => "index.php?view=fase.php"],
       ["menu" => "Tareas", "url" => "index.php?view=tareas.php"],
-      ["menu" => "Reportes", "url" => "index.php?view=reportes.php"],
       ["menu" => "Empresas", "url" => "index.php?view=empresa.php"]
     ];
   break;
@@ -25,7 +24,6 @@ switch ($permiso) {
     $opciones = [
       ["menu" => "Fases", "url" => "index.php?view=fase.php"],
       ["menu" => "Tareas", "url" => "index.php?view=tareas.php"],
-      ["menu" => "Reportes", "url" => "index.php?view=reportes.php"],
       ["menu" => "Empresas", "url" => "index.php?view=empresa.php"]
     ];
   break;
@@ -33,7 +31,6 @@ switch ($permiso) {
   case "C":
     $opciones = [
       ["menu" => "Tareas", "url" => "index.php?view=tareas.php"],
-      ["menu" => "Reportes", "url" => "index.php?view=reportes.php"],
       ["menu" => "Empresas", "url" => "index.php?view=empresa.php"]
     ];
   break;

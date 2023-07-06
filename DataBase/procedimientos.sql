@@ -692,11 +692,11 @@ SELECT * FROM fases;
 DELIMITER $$
 CREATE PROCEDURE obtener_ids(IN _idtarea SMALLINT)
 BEGIN
-SELECT pro.idproyecto,fas.idfase,idtarea
-FROM tareas tar
-INNER JOIN fases fas ON tar.idfase = fas.idfase
-INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
-WHERE tar.idtarea = _idtarea;
+	SELECT pro.idproyecto,fas.idfase,idtarea
+	FROM tareas tar
+	INNER JOIN fases fas ON tar.idfase = fas.idfase
+	INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
+	WHERE tar.idtarea = _idtarea;
 END $$
 
 CALL obtener_ids(5);

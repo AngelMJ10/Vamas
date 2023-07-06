@@ -297,7 +297,7 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-md-10">
-              <select name="so" id="habilidades" class="form-select">
+              <select name="so" id="habilidadesCol" class="form-select">
                 <option value="">Seleccione las habilidades</option>
                 <option value="Front-end Básico">Front-end Básico</option>
                 <option value="Front-end Intermedio">Front-end Intermedio</option>

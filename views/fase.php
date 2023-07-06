@@ -116,68 +116,6 @@
         </div>
       </div>
 
-      <div class="tab-pane fade mb-5" id="registrar" role="tabpanel" aria-labelledby="registrar-tab">
-        <div class="card shadow-lg border-0">
-            <div class="card-header text-white capa-listar py-3" style="background: #005478">
-              <h4 class="card-title mb-0">Agregar nuevo registro <i class="bi bi-universal-access"></i></h4>
-            </div>
-            <div class="card-body">
-            <form>
-              <div class="row mb-2 mt-2">
-                <div class="col-md-3">
-                  <div class="form-floating mb-3">
-                      <select name="project" id="project-phase" class="form-control form-control-sm">
-                        <label for="project">Seleccione el Proyecto:</label>
-                      </select>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-floating mb-3">
-                    <input type="text" class="form-control" placeholder="Nombre de la fase" id="name-phase" name="phase">
-                    <label for="phase" class="form-label">Nombre de la fase</label>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-floating mb-3">
-                    <select name="responsible" id="responsible-phase" class="form-control form-control-sm">
-                      <label for="responsible">Seleccione el responsable de la fase:</label>
-                    </select>
-                  </div>
-                </div> 
-                <div class="col-md-3">
-                  <div class="form-floating mb-3">
-                    <input type="date" class="form-control" placeholder="Fecha de Inicio" id="fecha-inicio-phase" name="fechare">
-                    <label form="fecha" class="form-label">Fecha de Inicio</label>
-                  </div>
-                </div>
-
-              </div>
-
-              <div class="row mb-3">
-                
-                <div class="col-md-3">
-                  <div class="form-floating mb-3">
-                    <input type="date" class="form-control" placeholder="Fecha de Fin" id="fecha-fin-phase" name="fechare">
-                    <label form="fecha" class="form-label">Fecha de Fin</label>
-                  </div>
-                </div>
-
-                <div class="col-md-3">
-                  <div class="form-floating">
-                    <textarea name="comentario" class="form-control" placeholder="Comentario" id="comentario"></textarea>
-                    <label for="comentario" class="form-label">Comentario</label>
-                  </div>
-                </div>
-              
-              </div>
-
-              <button type="button" id="create-phase"  class="btn btn-outline-primary">Agregar</button>
-
-            </form>
-            </div>
-        </div>
-      </div>
-
     </div>
 
   </div>

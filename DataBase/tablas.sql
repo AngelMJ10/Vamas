@@ -21,7 +21,8 @@ VALUES('Marquina Jaime','Ángel Eduardo','DNI','72745028','951531166','León de 
 	('Padilla Chumbiauca','Marks Steven','DNI','72854857','924563458','Atrás de plaza vea','2004-06-07'),
 	('Uribe Garcia','Cristhian Manuel','DNI','72548675','95123654','Rosedal por donde roban','2004-05-21'),
 	('Chacaliaza Pachas','Ítalo Jesús','DNI','7254789','963214587','AV. Santos Nagaro 210','2003-10-29'),
-	('Marquina Jaime','Emily Fernanda','DNI','78383886','952145879','León de Vivero Mz V LT-22','2013-12-16');
+	('Marquina Jaime','Emily Fernanda','DNI','78383886','952145879','León de Vivero Mz V LT-22','2013-12-16'),
+	('Valles Roncero','Cristhian','DNI','72568965','985206356','Sunampe','1996-08-16');
 	
 SELECT * FROM personas;
 
@@ -43,7 +44,8 @@ CREATE TABLE colaboradores
 
 INSERT INTO colaboradores(idpersona,usuario,clave,correo,nivelacceso)
 VALUES(1,'AngelMJ','SENATI','1342364@senati.pe','A'),(2,'MarksPC','SENATI','1342364@senati.pe','S'),
-	(5,'EmyMJ','SENATI','1342364@senati.pe','S'),(4,'JesusPC','SENATI','1342364@senati.pe','C');
+	(5,'EmyMJ','SENATI','1342364@senati.pe','S'),(4,'JesusPC','SENATI','1342364@senati.pe','C'),
+	(6,'CrisValle','SENATI','cvaller@senati.pe','S');
 
 UPDATE colaboradores SET
 	clave = '$2y$10$WY.iP85bEYxBMkVBG0jKO.9Q97kEbofLVwJPUT1OAmsDzLXQ8Pcka';

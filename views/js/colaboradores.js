@@ -18,7 +18,7 @@ const btnCancelar = document.querySelector("#cancelar-edicion");
 
 // Modal de habilidades
 const modalH = document.querySelector("#modal-habilidades");
-const habilidades = document.querySelector("#habilidades");
+const habilidadesCol = document.querySelector("#habilidadesCol");
 const btnRegistrar = document.querySelector("#registrar-habilidad");
 
 let idpersona = 0;
@@ -162,7 +162,7 @@ function abrirModalH(id){
 }
 
 function asignarHabilidad(){
-    if (!habilidades.value) {
+    if (!habilidadesCol.value) {
         Swal.fire({
           icon: 'warning',
           title: 'Campo incompleto',
@@ -182,8 +182,8 @@ function asignarHabilidad(){
         if (result.isConfirmed) {
             const parametros = new URLSearchParams();
             parametros.append("op", "asignarHabilidad");
-            parametros.append("idcolaboradores", idpersona);
-            parametros.append("habilidad", habilidades.value);
+            parametros.append("idcolaboradores", idcolaboradores);
+            parametros.append("habilidad", habilidadesCol.value);
             fetch('../controllers/persona.php', {
                 method: 'POST',
                 body: parametros,

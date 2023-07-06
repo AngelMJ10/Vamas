@@ -7,7 +7,6 @@
 
   <div>
     <p>Área de sistemas</p>
-    <img src="../../img/logos vamas_Mesa de trabajo 1 copia 2.png" alt="">
   </div>
   <div class="mb-3">
     <h2 class="center text-md mb-3"><?= $datosP['titulo'] ?></h2>
