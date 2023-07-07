@@ -151,6 +151,7 @@
             echo json_encode($datos);
         }
 
+        // Gráfico 1
         if ($_POST['op'] == "iniGrafico") {
             $datos = $proyecto->listar();
             $labels = array(); // Array para almacenar los títulos
@@ -176,7 +177,40 @@
             );
         
             echo json_encode($result); // Devolver el array como JSON
-        }        
+        }
+
+        // Gráfico 2
+        if ($_POST['op'] == "listarPFinalizados") {
+            $datos = $proyecto->listarPFinalizados();
+            $fechas = array(); // Array para almacenar las fechas
+            $labels = array(); // Array para almacenar los títulos
+            $data = array(); // Array para almacenar los porcentajes
+        
+            foreach ($datos as $registro) {
+                $porcentaje = $registro['porcentaje'];
+                $titulo = $registro['titulo'];
+                $fecha = $registro['fechafin']; // Obtener la fecha del registro
+        
+                if ($porcentaje) {
+                    $porcentaje = rtrim($porcentaje, "0");
+                    $porcentaje = rtrim($porcentaje, ".");
+                } elseif ($porcentaje == null || $porcentaje == 0) {
+                    $porcentaje = 0;
+                }
+        
+                $fechas[] = $fecha; // Agregar la fecha al array de fechas
+                $labels[] = $titulo; // Agregar el título al array de labels
+                $data[] = $porcentaje; // Agregar el porcentaje al array de data
+            }
+        
+            $result = array(
+                "fechas" => $fechas,
+                "labels" => $labels,
+                "data" => $data
+            );
+        
+            echo json_encode($result); // Devolver el array como JSON
+        }   
 
         // Info Proyecto
         if ($_POST['op'] == 'info') {

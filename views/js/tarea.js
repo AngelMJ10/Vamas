@@ -296,7 +296,7 @@
     parametros.append("idtarea", idtarea);
     window.open(`../reports/Prueba1/reporte.php?${parametros}`, '_blank');
     }
-}
+  }
 
 listarCorreo();
 list();

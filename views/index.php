@@ -216,7 +216,7 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-10">
-                                            <h4 class="text-danger card-title">Proyecto Finalizados</h4>
+                                            <h4 class="text-danger card-title">Proyectos Finalizados</h4>
                                         </div>
                                         <div class="col-md-2">
                                             <i class="fa-solid fa-list-check fa-3x"></i>
@@ -228,6 +228,7 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                         </div>
                     </div>
                     
+                    <!-- Gráfico -->
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card">
@@ -237,6 +238,16 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Finalizados</h4>
+                                        <canvas id="grafico-proyectos-Finalizados"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -281,6 +292,7 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
     <script>
         document.addEventListener("DOMContentLoaded", () =>{
             const lienzo = document.querySelector("#grafico-proyectos");
+            const lienzo2 = document.querySelector("#grafico-proyectos-Finalizados");
 
             const coloresFondo = ['rgba(253, 123, 113, 0.5)','rgba(172, 255, 171, 0.7)','rgba(51, 225, 202,0.8)','rgba(253, 240, 113,0.8)'];
             const coloresBorde = ['rgb(253, 123, 113)','rgb(172, 255, 171)','rgb(51, 225, 202)','rgb(253, 240, 113)'];
@@ -339,59 +351,62 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                 const countFinishProjectsParams = new URLSearchParams();
                 countFinishProjectsParams.append("op", "countFinishProjects");
                 
-                fetch('../controllers/proyecto.php', {
-                    method: 'POST',
-                    body: countProjectsParams
-                })
-                .then(respuesta => {
-                    if (respuesta.ok) {
-                        return respuesta.json();
-                    } else {
-                        throw new Error('Error en la solicitud');
-                    }
-                })
-                .then(datos => {
-                    numProjects.innerHTML = datos;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                // Contar proyectos
+                    fetch('../controllers/proyecto.php', {
+                        method: 'POST',
+                        body: countProjectsParams
+                    })
+                    .then(respuesta => {
+                        if (respuesta.ok) {
+                            return respuesta.json();
+                        } else {
+                            throw new Error('Error en la solicitud');
+                        }
+                    })
+                    .then(datos => {
+                        numProjects.innerHTML = datos;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
                 
-                fetch('../controllers/proyecto.php', {
-                    method: 'POST',
-                    body: countUsersParams
-                })
-                .then(respuesta => {
-                    if (respuesta.ok) {
-                        return respuesta.json();
-                    } else {
-                        throw new Error('Error en la solicitud');
-                    }
-                })
-                .then(datos => {
-                    numUsers.innerHTML = datos;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                // Contar colaboradores
+                    fetch('../controllers/proyecto.php', {
+                        method: 'POST',
+                        body: countUsersParams
+                    })
+                    .then(respuesta => {
+                        if (respuesta.ok) {
+                            return respuesta.json();
+                        } else {
+                            throw new Error('Error en la solicitud');
+                        }
+                    })
+                    .then(datos => {
+                        numUsers.innerHTML = datos;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
                 
-                fetch('../controllers/proyecto.php', {
-                    method: 'POST',
-                    body: countFinishProjectsParams
-                })
-                .then(respuesta => {
-                    if (respuesta.ok) {
-                        return respuesta.json();
-                    } else {
-                        throw new Error('Error en la solicitud');
-                    }
-                })
-                .then(datos => {
-                    numFinishProjects.innerHTML = datos;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                // Contar proyectos en producción
+                    fetch('../controllers/proyecto.php', {
+                        method: 'POST',
+                        body: countFinishProjectsParams
+                    })
+                    .then(respuesta => {
+                        if (respuesta.ok) {
+                            return respuesta.json();
+                        } else {
+                            throw new Error('Error en la solicitud');
+                        }
+                    })
+                    .then(datos => {
+                        numFinishProjects.innerHTML = datos;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
             }
 
             function obtenerDatos() {
@@ -438,13 +453,13 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                 const coloresBorde = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)']; // Colores de borde para las barras (puedes personalizarlos)
 
                 grafico = new Chart(lienzo, {
-                    type: 'pie',
+                    type: 'bar',
                     data: {
                         labels: etiquetas,
                         datasets: [
                             {
                                 label: 'Avance %',
-                                data: [50, 40, 60, 80], // Datos de ejemplo, serán reemplazados por los datos obtenidos de la operación
+                                data: [], // Datos de ejemplo, serán reemplazados por los datos obtenidos de la operación
                                 backgroundColor: coloresFondo,
                                 borderWidth: borde,
                                 borderColor: coloresBorde
@@ -457,11 +472,37 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                 obtenerDatos();
             }
 
+            function obtenerDatosPF() {
+                const parametros = new URLSearchParams();
+                parametros.append('op', 'listarPFinalizados');
+                fetch('../controllers/proyecto.php', {
+                    method: 'POST',
+                    body: parametros
+                })
+                .then(respuesta => respuesta.json())
+                .then(datos => {
+                    const fechas = datos.fechas;
+                    const labels = datos.labels;
+                    const data = Array(12).fill(0); // Inicializar los valores de las barras en 0 para cada mes
+
+                    // Recorrer las fechas de finalización y actualizar los valores de las barras correspondientes
+                    fechas.forEach(fechaString => {
+                    const fecha = new Date(fechaString); // Convertir la cadena de texto en un objeto Date
+                    const mesFin = fecha.getMonth(); // Obtener el mes (0-11) de la fecha de finalización
+                    data[mesFin]++; // Incrementar el valor de la barra del mes correspondiente
+                    });
+
+                    graficoPF.data.labels = labels;
+                    graficoPF.data.datasets[0].data = data;
+                    graficoPF.update();
+                });
+            }
+
             getNum();
             getURL();
             renderGrafico();
-
         });
+        
     </script>
 
 </body>

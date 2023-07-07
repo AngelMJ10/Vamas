@@ -261,7 +261,6 @@ BEGIN
 END $$
 
 CALL registrar_habilidades(1,'Back-end Básico');
-
 --------------------------------------------------- -- P.A DE PROYECTOS -------------------------------------------------------------------
 
 -- P.A para listar todos los proyecto con estado 1

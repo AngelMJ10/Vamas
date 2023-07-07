@@ -31,6 +31,18 @@
             }
         }
 
+        public function listarPFinalizados(){
+            try {
+                $query = "SELECT * FROM proyecto WHERE estado = 2";
+                $consulta  = $this->conexion->prepare($query);
+                $consulta->execute();
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
         public function buscarProyecto($data = []){
             try {
                 $query = "CALL buscar_proyecto(?,?,?)";
@@ -132,7 +144,7 @@
 
         public function countFinishProjects(){
             try {
-                $consulta = $this->conexion->prepare("SELECT COUNT(idproyecto) AS 'ProjectsFinish' FROM proyecto WHERE estado = 0");
+                $consulta = $this->conexion->prepare("SELECT COUNT(idproyecto) AS 'ProjectsFinish' FROM proyecto WHERE estado = 2");
                 $consulta->execute();
                 $datos = $consulta->fetch(PDO::FETCH_ASSOC);
                 return $datos;
