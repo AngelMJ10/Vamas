@@ -221,6 +221,14 @@ let idtarea = 0;
         });
   }
 
+  function generarReporteF(){
+    const parametros = new URLSearchParams();
+    if(idfase > 0) {
+    parametros.append("idfase", idfase);
+    window.open(`../reports/Fase/reporteF.php?${parametros}`, '_blank');
+    }
+  }
+
 // Fin de info Fase
 
 
@@ -541,6 +549,7 @@ let idtarea = 0;
 
     const btnGuardarEdicion = document.querySelector("#guardar-fase");
     const btnCancelarEdicion = document.querySelector("#cancelar-edicion");
+    const btnReporteF = document.querySelector("#generar-reporte-F");
 
     const btnEditarF = document.querySelector("#editar-fase");
     const btnAFase = document.querySelector("#agregar-tarea");
@@ -556,6 +565,7 @@ let idtarea = 0;
     btnCancelarEdicion.classList.remove("d-none");
     btnEditarF.classList.add("d-none");
     btnAFase.classList.add("d-none");
+    btnReporteF.classList.add("d-none");
 
     function listarSupervisores(){
       const parametrosURL = new URLSearchParams();
@@ -593,6 +603,7 @@ let idtarea = 0;
 
     const btnGuardarEdicion = document.querySelector("#guardar-fase");
     const btnCancelarEdicion = document.querySelector("#cancelar-edicion");
+    const btnFase = document.querySelector("#generar-reporte-F");
 
     const btnEditarF = document.querySelector("#editar-fase");
     const btnAFase = document.querySelector("#agregar-tarea");
@@ -609,6 +620,7 @@ let idtarea = 0;
 
     btnEditarF.classList.remove("d-none");
     btnAFase.classList.remove("d-none");
+    btnFase.classList.remove("d-none");
     modalInfoFase(idfase);
   }
 
@@ -918,33 +930,17 @@ let idtarea = 0;
   .catch(error => {
     console.error('Error:', error);
   });
-}
+  }
+
+  function generarReporteT(){
+    const parametros = new URLSearchParams();
+    if(idtarea > 0) {
+    parametros.append("idtarea", idtarea);
+    window.open(`../reports/Prueba1/reporte.php?${parametros}`, '_blank');
+    }
+  }
 
 // Fin de modal tareas
-
-  function getPhase(id) {
-      const tabla_fases = document.querySelector("#tabla-fase");
-      const parametros = new URLSearchParams();
-      parametros.append("op" ,"getPhase");
-      parametros.append("idproyecto" , id);
-      fetch('../controllers/proyecto.php', {
-          method: 'POST',
-          body: parametros
-        })
-        .then(respuesta => {
-          if (respuesta.ok) {
-            return respuesta.text();
-          } else {
-            throw new Error('Error en la solicitud');
-          }
-        })
-        .then(datos => {
-          tabla_fases.innerHTML = datos;
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-  }
 
   function get(id) {
       const modal = document.querySelector("#modalEditar");
@@ -1101,6 +1097,32 @@ let idtarea = 0;
       });
   }
 
+  // Tabla de las fases del proyecto
+  function getPhase(id) {
+    const tabla_fases = document.querySelector("#tabla-fase");
+    const parametros = new URLSearchParams();
+    parametros.append("op" ,"getPhase");
+    parametros.append("idproyecto" , id);
+    fetch('../controllers/proyecto.php', {
+        method: 'POST',
+        body: parametros
+      })
+      .then(respuesta => {
+        if (respuesta.ok) {
+          return respuesta.text();
+        } else {
+          throw new Error('Error en la solicitud');
+        }
+      })
+      .then(datos => {
+        tabla_fases.innerHTML = datos;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+
+  // Aquí habre el modal de para agregar fase
   function addPhase(id) {
       const modal = document.querySelector("#modalFase");
       const tipoproyecto = document.querySelector("#tipoProyecto-phase");
@@ -1344,7 +1366,7 @@ let idtarea = 0;
     .catch(error => {
       console.error('Error:', error);
     });
-}
+  }
 
   function obtenerPorcentajeP() {
   const formData = new FormData();
@@ -1398,6 +1420,179 @@ let idtarea = 0;
     });
   }
 
+  // Función para finalizar un proyecto manualmente
+  function finalizarProyecto(id){
+    Swal.fire({
+      icon: 'question',
+      title: 'Confirmación',
+      text: '¿Está seguro de finalizar este proyecto?',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const parametrosURL = new URLSearchParams();
+        parametrosURL.append("op" ,"finalizar_proyecto");
+        parametrosURL.append("idproyecto" ,id);
+        fetch('../controllers/proyecto.php', {
+          method: 'POST',
+          body: parametrosURL
+        })
+        .then(respuesta =>{
+            if(respuesta.ok){
+              Swal.fire({
+                icon: 'success',
+                title: 'Proyecto Finalizado',
+                text: 'El proyecto ha finalizado con éxito.'
+              }).then(() => {
+                location.reload();
+              });
+            } else{
+              throw new Error('Error en la solicitud');
+            }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          Swal.alert({
+            icon: 'Error',
+            title: 'Error al finalizar el proyecto',
+            text: 'Ocurrió un error al finalizar el proyecto. Por favor intentelo nuevamente.'
+          })
+        });
+      }
+    })
+  }
+
+  // Función para reactivar un proyecto manualmente
+  function reactivarProyecto(id) {
+    // Validamos la fecha de fin (si esta es mayor a la fecha actual se podrá realizar la reactivación)
+    let fechafinP = 0;
+    const parametos = new URLSearchParams();
+    parametos.append('op', "get");
+    parametos.append('idproyecto', id);
+    fetch('../controllers/proyecto.php', {
+      method: 'POST',
+      body: parametos
+    })
+    .then(respuesta => {
+      if (respuesta.ok) {
+        return respuesta.json();
+      } else {
+        throw new Error('Error en la solicitud');
+      }
+    })
+    .then(datos => {
+        fechafinP = datos.fechafin;
+        console.log(fechafinP);
+
+      // Obtenemos la fecha actual
+      const fechaActual = new Date();
+    
+      // Convertimos la fecha de fin a objeto Date
+      const fechaFin = new Date(fechafinP);
+
+      if (fechaFin > fechaActual){
+        Swal.fire({
+        icon: 'question',
+        title: 'Confirmación',
+        text: '¿Está seguro de reactivar este proyecto?',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            const parametrosURL = new URLSearchParams();
+            parametrosURL.append("op" ,"reactivar_proyecto");
+            parametrosURL.append("idproyecto" ,id);
+            fetch('../controllers/proyecto.php', {
+              method: 'POST',
+              body: parametrosURL
+            })
+            .then(respuesta =>{
+                if(respuesta.ok){
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Proyecto Reactivado',
+                    text: 'El proyecto ha reactivado con éxito.'
+                  }).then(() => {
+                    location.reload();
+                  });
+                } else{
+                  throw new Error('Error en la solicitud');
+                }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              Swal.alert({
+                icon: 'Error',
+                title: 'Error al reactivar el proyecto',
+                text: 'Ocurrió un error al reactivar el proyecto. Por favor intentelo nuevamente.'
+              })
+            });
+          }
+        })
+      } else{
+        Swal.fire({
+          icon: 'warning',
+          title: 'Fecha de cierre expirada',
+          text: 'Por favor, cambia la fecha de cierre del proyecto para reactivarlo.',
+        });
+        return;
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
+  }
+
+  // Función que se ejecute una vez al día,para finalizar los proyectos
+  function ejecutarDiariamente() {
+    const fechaActual = new Date();
+    const horaEjecucion = new Date();
+  
+    // Establecer la hora de ejecución diaria
+    horaEjecucion.setHours(0, 0, 0, 0); // Ejemplo: 00:00:00 (medianoche)
+  
+    // Calcular los milisegundos hasta la próxima ejecución
+    let milisegundosHastaEjecucion = horaEjecucion.getTime() - fechaActual.getTime();
+    if (milisegundosHastaEjecucion < 0) {
+      // Si la hora de ejecución ya ha pasado hoy, establecer la hora de ejecución para mañana
+      horaEjecucion.setDate(horaEjecucion.getDate() + 1);
+      milisegundosHastaEjecucion = horaEjecucion.getTime() - fechaActual.getTime();
+    }
+  
+    // Establecer el intervalo para la próxima ejecución
+    setTimeout(() => {
+      // Ejecutar el código correspondiente a tu controlador aquí
+      const parametros = new URLSearchParams();
+      parametros.append('op', 'finalizar_proyectoV2');
+  
+      fetch('../controllers/proyecto.php', {
+        method: 'POST',
+        body: parametros
+      })
+        .then(respuesta => {
+          if (respuesta.ok) {
+            console.log('Proyectos finalizados con éxito');
+          } else {
+            throw new Error('Error en la solicitud');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+  
+      // Volver a programar la próxima ejecución
+      ejecutarDiariamente();
+    }, milisegundosHastaEjecucion);
+  }
+  
+  // Iniciar la ejecución diaria
+  ejecutarDiariamente();
+  
+
 listarColaboradores();
 listartipoproyecto();
 listarempresa();
@@ -1426,6 +1621,10 @@ listar();
   const btnEditarTarea = document.querySelector("#guardar-C-Tarea");
   btnEditarTarea.addEventListener("click", editarTarea);
 
+  // Para generar un reporte de una tarea 
+  const btnReporteT = document.querySelector("#generar-reporteT");
+  btnReporteT.addEventListener("click", generarReporteT);
+
 // *Para fases
   // Para quitar el readOnly de los inputs
   const btnQuitarOnly = document.querySelector("#editar-fase");
@@ -1438,6 +1637,10 @@ listar();
   // Para editar los datos de la fase
   const btnGuardarFase = document.querySelector("#guardar-fase");
   btnGuardarFase.addEventListener("click", editarFase);
+
+  // Para generar reporte de la fase
+  const btnReporteF = document.querySelector("#generar-reporte-F");
+  btnReporteF.addEventListener("click", generarReporteF)
 
 
 

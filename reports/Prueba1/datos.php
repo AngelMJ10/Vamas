@@ -4,7 +4,7 @@
 <hr>
 <div>
 
-  <h3 class="center mb-4 mt-5">Fase</h3>
+  <h3 class="center mb-4 mt-5">Info de la tarea</h3>
   <table class="table table-border mb-5 center">
     <colgroup>
       <col style="width: 20%;">

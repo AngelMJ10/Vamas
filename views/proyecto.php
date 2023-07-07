@@ -515,14 +515,17 @@
         <div class="mb-5" id="inputs-fase">
         </div>
 
-        <div id="tabla-info-fase">
-        </div>
         <div class="btn-group">
           <button class="btn btn-outline-success" id="editar-fase">Editar Fase</button>
           <button class="btn btn-outline-warning d-none" id="guardar-fase">Guardar Edición</button>
           <button class="btn btn-outline-danger d-none" id="cancelar-edicion">Cancelar Edición</button>
           <button class="btn btn-outline-primary" id="agregar-tarea">Agregar nueva tarea</button>
+          <button type="button" class="btn btn-outline-danger" id="generar-reporte-F">Generar reporte de la fase</button>
         </div>
+        
+        <div id="tabla-info-fase">
+        </div>
+        
 
       </div>
         <div class="modal-footer">
