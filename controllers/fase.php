@@ -45,6 +45,46 @@
                 $contador++;
             }
         }
+
+        if ($_POST['op'] == 'buscarFase') {
+            $datos = ["idproyecto" => $_POST['idproyecto']];
+            $datos = $fase->buscarFase($datos);
+            $contador = 1; // Variable contador inicializada en 1
+            
+            foreach ($datos as $registro) {
+                $estado = $registro['estado'] == 1 ? 'Activo' : $registro['estado'];
+                $porcentaje = $registro['porcentaje_fase'];
+                // If para poder quitar ".00" de los porcentajes y en caso del que porcentaje sea NULL,
+                // Se muestre como "0" 
+                if ($porcentaje) {
+                    $porcentaje = rtrim($porcentaje, "0");
+                    $porcentaje = rtrim($porcentaje, ".");
+                } elseif ($porcentaje == null){
+                    $porcentaje = 0;
+                }
+                echo "
+                    <tr class='mb-2' ondblclick='getPhase({$registro['idfase']})'>
+                        <td class='p-3' data-label='#'>{$contador}</td>
+                        <td class='p-3' data-label='Titulo'>{$registro['titulo']}</td>
+                        <td class='p-3' data-label='Nombre de la Fase'>{$registro['nombrefase']}</td>
+                        <td class='p-3' data-label='Responsable'>{$registro['usuario']}</td>
+                        <td class='p-3' data-label='Inicio de la Fase'>{$registro['fechainicio']}</td>
+                        <td class='p-3' data-label='Fin del Fase'>{$registro['fechafin']}</td>
+                        <td class='p-3' data-label='Porcentaje'>{$porcentaje}%</td>
+                        <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
+                        <td data-label='Acciones'>
+                            <div class='btn-group' role='group'>
+                                <button type='button' title='Clic, para editar el proyecto.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
+                                <button type='button' data-id='{$registro['idproyecto']}' class='btn btn-outline-primary btn-sm' title='Clic, para más información'><i class='fa-sharp fa-solid fa-circle-info'></i></button>
+                                <button type='button' onclick='generarReporteF({$registro['idfase']})' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                ";
+                
+                $contador++;
+            }
+        }
         
         if ($_POST['op'] == 'getPhase') {
             $idfase = $_POST['idfase']; 
@@ -130,7 +170,7 @@
             $dato_t = $fase->tablaFases(["idfase" => $datos[0]['idfase']]);
             
             foreach ($dato_t as $registro) {
-                $estado = $registro['estado'] == 1 ? 'Activo' : $registro['estado'];
+                $estado = $registro['estado'] == 1 ? 'Activo' : ($registro['estado'] == 2 ? 'Finalizado' : $registro['estado']);
                 $porcentaje = $registro['porcentaje'];
                 $porcentaje_tarea = $registro['porcentaje_tarea'];
                 if ($porcentaje) {
@@ -159,7 +199,6 @@
                 
                 $contador++;
             }
-
             echo "  
                     </tbody>
                     </table>
@@ -229,7 +268,6 @@
                 $evidencia = json_decode($datos[0]['evidencia'], true);
                 foreach ($evidencia as $evidencias) {
                     $count = count($evidencias);
-                    
                 }
                 echo "($count)";
             }
@@ -241,7 +279,7 @@
             $fase->finalizar_fase();
         }
 
-        if ($_POST['op'] == 'reactivar_fase') {
+        if ($_POST['op'] == 'reactivar_fase ') {
             $fase->reactivar_fase();
         }
     }

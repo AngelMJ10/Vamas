@@ -31,6 +31,22 @@
             }
         }
 
+        public function buscarProyecto($data = []){
+            try {
+                $query = "CALL buscar_proyecto(?,?,?)";
+                $consulta  = $this->conexion->prepare($query);
+                $consulta->execute(array(
+                    $data['idtipoproyecto'],
+                    $data['idempresa'],
+                    $data['estado']
+                ));
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
         public function registrar($idtipoproyecto,$idempresa,$titulo,$descripcion,$fechainicio,$fechafin,$precio,$idusuariore){
             try {
                 $consulta = $this->conexion->prepare("INSERT INTO proyecto (idtipoproyecto,idempresa,titulo, descripcion, fechainicio,fechafin,precio,idusuariore) values (?,?,?,?,?,?,?,?)");

@@ -17,6 +17,17 @@
             }
         }
 
+        public function buscarFase($data = []){
+            try {
+                $consulta = $this->conexion->prepare("CALL buscar_fase(?)");
+                $consulta->execute(array($data['idproyecto']));
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
         public function registerPhase($idproyecto, $idresponsable, $nombrefase, $fechainicio, $fechafin,$porcentaje, $comentario){
             try {
                 $consulta = $this->conexion->prepare("INSERT INTO fases(idproyecto,idresponsable,nombrefase,fechainicio,fechafin,porcentaje,comentario) values(?,?,?,?,?,?,?)");

@@ -59,7 +59,7 @@
             
             foreach ($datos as $registro) {
                 $porcentajeTarea = $registro['porcentaje_tarea'];
-                $estado = $registro['estado'] == 1 ? 'Activo' : $registro['estado'];
+                $estado = $registro['estado'] == 1 ? 'Activo' : ($registro['estado'] == 2 ? 'Finalizado' : $registro['estado']);
 
                 // ? Se utiliza date(),para formatear las fechas a formato M j
                 // ? strotime() se utiliza para convertir los valores pasados a un valor valido para la función date()

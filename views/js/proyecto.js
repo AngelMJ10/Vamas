@@ -189,6 +189,10 @@ let idtarea = 0;
       }
   }
 
+// Fin de agregar Fase
+
+// Modal de info de fase (está con la tabla de tareas incluida)
+
   function modalInfoFase(id) {
       const inputs = document.querySelector("#inputs-fase");
       const modalInfoFase = document.querySelector("#modal-info-fase");
@@ -216,6 +220,9 @@ let idtarea = 0;
           console.error('Error:', error);
         });
   }
+
+// Fin de info Fase
+
 
 // Agregar Tarea
 
@@ -1094,7 +1101,7 @@ let idtarea = 0;
   function listarempresa(){
       const empresa = document.querySelector("#idempresa");
       const empresaupdate = document.querySelector("#idempresa-update");
-      const empresasearch = document.querySelector("#idempresa-search");
+      const empresasearch = document.querySelector("#idempresa-buscar");
       const empresaphase = document.querySelector("#idempresa-phase");
 
       const parametrosURL = new URLSearchParams();
@@ -1125,7 +1132,7 @@ let idtarea = 0;
   function listartipoproyecto(){
       const tipoproyecto = document.querySelector("#tipoProyecto");
       const tipoproyectoupdate = document.querySelector("#tipoProyecto-update");
-      const tipoproyectosearch = document.querySelector("#tipoProyecto-search");
+      const tipoproyectosearch = document.querySelector("#tipoProyecto-buscar");
       const tipoproyectophase = document.querySelector("#tipoProyecto-phase");
 
       const parametrosURL = new URLSearchParams();
@@ -1290,6 +1297,39 @@ let idtarea = 0;
   });
   }
 
+  function buscarProyecto() {
+    const table = document.querySelector("#tabla-proyecto");
+    const bodytable = table.querySelector("tbody");
+    const tipoproyecto = document.querySelector("#tipoProyecto-buscar");
+    const empresa = document.querySelector("#idempresa-buscar");
+    const estadoP = document.querySelector("#estado-buscar");
+
+    const parametrosURL = new URLSearchParams();
+    parametrosURL.append("op", "buscarProyecto");
+    parametrosURL.append("idtipoproyecto", tipoproyecto.value);
+    parametrosURL.append("idempresa", empresa.value);
+    parametrosURL.append("estado", estadoP.value);
+
+    fetch('../controllers/proyecto.php',{
+        method: 'POST',
+        body: parametrosURL
+    })
+    .then(respuesta => {
+        if(respuesta.ok){
+            return respuesta.text();
+        } else{
+            throw new Error('Error en la solicitud');
+        }
+    })
+    .then(datos =>{
+        bodytable.innerHTML = "";
+        bodytable.innerHTML = datos;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+  }
+
 listarColaboradores();
 listartipoproyecto();
 listarempresa();
@@ -1356,3 +1396,8 @@ listar();
 
   const btnRegistrar = document.querySelector("#registrar-datos");
   btnRegistrar.addEventListener("click", registrar);
+
+
+// Para buscar proyectos
+  const btnBuscarP = document.querySelector("#buscar-proyecto");
+  btnBuscarP.addEventListener("click", buscarProyecto);

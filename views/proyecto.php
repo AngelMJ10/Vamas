@@ -49,69 +49,32 @@
                   <div class="row mb-2 mt-2">
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                          <select name="tipoProyecto" id="tipoProyecto-search" class="form-control form-control-sm">
+                          <select name="tipoProyecto" id="tipoProyecto-buscar" class="form-control form-control-sm">
                             <label for="tipoProyecto">Seleccione el tipo de Proyecto:</label>
                           </select>
                       </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-floating mb-3">
-                            <select name="idempresa" id="idempresa-search" placeholder="Tipo de empresa" class="form-control form-control-sm">
+                            <select name="idempresa" id="idempresa-buscar" placeholder="Tipo de empresa" class="form-control form-control-sm">
                               <label for="idempresa">Seleccione la empresa:</label>
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="titulo-search" name="titulo" placeholder="Título">
-                            <label for="titulo" class="form-label">Titulo</label>
-                        </div>
-                    </div>
-                  </div>
 
-                  <div class="row mb-3">
-
-                    <div class="col-md-4">
-                        <div class="form-floating mb-3">
-                          <textarea class="form-control" id="descripcion-search" placeholder="Descripción" name="descripcion"></textarea>
-                            <label for="descripcion" class="form-label">Descripción</label>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                      <div class="form-floating mb-3">
-                        <input type="date" class="form-control" placeholder="Fecha de Inicio" id="fecha-inicio-search" name="fechare">
-                        <label form="fecha" class="form-label">Fecha de Inicio</label>
-                      </div>
-                    </div>
-
-                    <div class="col-md-4">
-                      <div class="form-floating mb-3">
-                        <input type="date" class="form-control" placeholder="Fecha de Entrega" id="fecha-fin-search" name="fechare">
-                        <label form="fecha" class="form-label">Fecha de Entrega</label>
-                      </div>
-                    </div>
-                    
-                  </div>
-
-                  <div class="row mb-3">
-                    <div class="col-md-4">
-                      <div class="form-floating mb-3">
-                        <input type="number" class="form-control" placeholder="Precio del Proyecto" id="precio-search" name="precio">
-                        <label for="precio" class="form-label">Precio de proyecto</label>
-                      </div>
-                    </div>
                     <div class="col-md-4">
                         <div class="form-floating">
-                          <select name="estado" class="form-control" id="estado-seach">
+                          <select name="estado" class="form-control" id="estado-buscar">
                             <option value="">Seleccion un estado</option>
                             <option value="1">Activo</option>
-                            <option value="2">Inactivo</option>
+                            <option value="2">Finalizado</option>
                           </select>
                         </div>
                       </div>
+
                   </div>
-                  <button type="button" id="search"  class="btn btn-outline-primary">Buscar</button>
+
+                  <button type="button" id="buscar-proyecto"  class="btn btn-outline-primary">Buscar</button>
 
                 </form>
               </div>

@@ -191,8 +191,8 @@ BEGIN
     SELECT col.idcolaboradores, col.usuario, col.correo, col.nivelacceso,
         per.apellidos, per.nombres,
         (SELECT COUNT(DISTINCT idhabilidades) FROM habilidades WHERE idcolaboradores = col.idcolaboradores) AS Habilidades,
-        (SELECT COUNT(DISTINCT idfase) FROM fases WHERE idresponsable = col.idcolaboradores) AS Fases,
-        (SELECT COUNT(DISTINCT idtarea) FROM tareas WHERE idcolaboradores = col.idcolaboradores) AS Tareas
+        (SELECT COUNT(DISTINCT fas.idfase) FROM fases fas WHERE fas.idresponsable = col.idcolaboradores AND fas.estado = 1) AS Fases,
+        (SELECT COUNT(DISTINCT tar.idtarea) FROM tareas tar WHERE tar.idcolaboradores = col.idcolaboradores AND tar.estado = 1) AS Tareas
     FROM colaboradores col
     INNER JOIN personas per ON col.idpersona = per.idpersona
     WHERE col.estado = '1';
@@ -282,6 +282,29 @@ END $$
 
 CALL listar_proyecto()
 
+-------------------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE buscar_proyecto(IN _idtipoproyecto INT, IN _idempresa INT, IN _estado_proyecto VARCHAR(255))
+BEGIN
+    SELECT pro.idproyecto, pro.titulo, pro.descripcion, pro.fechainicio, pro.fechafin, pro.precio,
+        emp.nombre, pro.estado, col.usuario,
+        COUNT(fas.idfase) AS Fases, pro.porcentaje
+    FROM proyecto pro
+    INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
+    LEFT JOIN fases fas ON pro.idproyecto = fas.idproyecto
+    INNER JOIN colaboradores col ON col.idcolaboradores = pro.idusuariore
+    WHERE
+        (NULLIF(_idtipoproyecto, '') IS NULL OR pro.idtipoproyecto = _idtipoproyecto)
+        AND (NULLIF(_idempresa, '') IS NULL OR pro.idempresa = _idempresa)
+        AND (NULLIF(_estado_proyecto, '') IS NULL OR pro.estado = _estado_proyecto)
+    GROUP BY pro.idproyecto;
+END $$
+
+DROP PROCEDURE buscar_proyecto
+CALL buscar_proyecto('','', '');
+
+
 ---------------------------------------
 
 -- P.A para obtener info del proyecto con su ID
@@ -299,10 +322,10 @@ BEGIN
 	INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
 	LEFT JOIN fases fas ON pro.idproyecto = fas.idproyecto
 	INNER JOIN colaboradores col ON col.idcolaboradores = pro.idusuariore
-	WHERE pro.estado = '1' AND pro.idproyecto = _idproyecto
+	WHERE pro.idproyecto = _idproyecto
 	GROUP BY pro.idproyecto;
 END $$
-
+DROP PROCEDURE obtener_proyecto
 CALL obtener_proyecto(1);
 
 --------------------------------------------------------------------
@@ -405,6 +428,24 @@ CALL listar_fase();
 
 ------------------------------------------------------------
 
+DELIMITER $$
+CREATE PROCEDURE buscar_fase(IN _idproyecto SMALLINT)
+BEGIN
+    SELECT pro.idproyecto, fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyecto', pro.fechafin AS 'FinProyecto', 
+        pro.precio, emp.nombre AS 'empresa', col.usuario, fas.nombrefase, fas.fechainicio, 
+        fas.fechafin, fas.comentario, fas.porcentaje_fase, fas.porcentaje, fas.estado
+    FROM fases fas
+    INNER JOIN proyecto pro ON pro.idproyecto = fas.idproyecto
+    INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
+    INNER JOIN colaboradores col ON col.idcolaboradores = fas.idresponsable
+    WHERE (fas.idproyecto = _idproyecto OR _idproyecto IS NULL)
+    ORDER BY pro.idproyecto, fas.fechainicio, fas.fechafin; -- Ordenar por el idproyecto ascendente
+END $$
+DROP PROCEDURE buscar_fase
+CALL buscar_fase(2);
+
+------------------------------------------------------------
+
 -- P.A para listar las fases de un proyecto con el ID del un  proyecto
 
 DELIMITER $$
@@ -418,7 +459,7 @@ BEGIN
     INNER JOIN proyecto pro ON pro.idproyecto = fas.idproyecto
     INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
     INNER JOIN colaboradores col ON col.idcolaboradores = fas.idresponsable
-    WHERE fas.estado = 1 AND pro.idproyecto = _idproyecto
+    WHERE pro.idproyecto = _idproyecto
     ORDER BY fas.fechainicio;
 END $$
 
@@ -439,10 +480,10 @@ SELECT fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyec
 	 INNER JOIN proyecto pro ON pro.idproyecto = fas.idproyecto
 	 INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
 	 INNER JOIN colaboradores col ON col.idcolaboradores = fas.idresponsable
-	 WHERE fas.estado = 1 AND fas.idfase = _idfase
+	 WHERE fas.idfase = _idfase
 	 ORDER BY pro.idproyecto, fas.fechainicio;
 END $$
-
+DROP PROCEDURE obtener_fase
 CALL obtener_fase(1);
 
 -----------------------------------------------
@@ -550,10 +591,10 @@ BEGIN
         INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
         INNER JOIN colaboradores col_tarea ON tar.idcolaboradores = col_tarea.idcolaboradores
         INNER JOIN colaboradores col_fase ON fas.idresponsable = col_fase.idcolaboradores
-        WHERE fas.idfase = _idfase AND tar.estado = 1
+        WHERE fas.idfase = _idfase
         ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
 END $$
-
+¡
 CALL obtener_tareas_fase(1);
 
 ---------------------------------------------
@@ -572,9 +613,9 @@ BEGIN
         INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
         INNER JOIN colaboradores col_tarea ON tar.idcolaboradores = col_tarea.idcolaboradores
         INNER JOIN colaboradores col_fase ON fas.idresponsable = col_fase.idcolaboradores
-        WHERE tar.idtarea = _idtarea AND tar.estado = 1;
+        WHERE tar.idtarea = _idtarea;
 END $$
-
+DROP PROCEDURE obtener_tarea
 CALL obtener_tarea(1);
 
 --------------------------------------------------
@@ -646,7 +687,7 @@ BEGIN
         INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
         INNER JOIN colaboradores col_tarea ON tar.idcolaboradores = col_tarea.idcolaboradores
         INNER JOIN colaboradores col_fase ON fas.idresponsable = col_fase.idcolaboradores
-        WHERE idtarea = _idtarea AND tar.estado = 1
+        WHERE idtarea = _idtarea
         ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
 END $$
 DROP PROCEDURE ver_evidencia(1);
@@ -735,7 +776,9 @@ BEGIN
 	UPDATE proyecto SET estado = 1
 	WHERE idproyecto = _idproyecto;
 END $$
+
 CALL reactivar_proyecto(2);
+
 DROP PROCEDURE reactivar_proyecto;
 
 -----------------------------------------------------
@@ -782,6 +825,7 @@ END $$
 SELECT * FROM tareas
 CALL finalizar_tarea;
 DROP PROCEDURE finalizar_tarea;
+
 ---------------------------------------
 -- Para reactivar las tareas de la fase
 DELIMITER $$

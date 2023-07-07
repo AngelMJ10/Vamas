@@ -42,6 +42,55 @@
             }
         }
 
+        if ($_POST['op'] == 'buscarProyecto') {
+            $data = [
+                "idtipoproyecto"    => $_POST['idtipoproyecto'],
+                "idempresa"         => $_POST['idempresa'],
+                "estado"            => $_POST['estado']
+            ];
+            $datos = $proyecto->buscarProyecto($data);
+            foreach ($datos as $registro){
+                $estado = $registro['estado'] == 1 ? 'Activo' : ($registro['estado'] == 2 ? 'Finalizado' : $registro['estado']);
+                $porcentaje = $registro['porcentaje'];
+                // If para poder quitar ".00" de los porcentajes y en caso del que porcentaje sea NULL,
+                // Se muestre como "0" 
+                if ($porcentaje) {
+                    $porcentaje = rtrim($porcentaje, "0");
+                    $porcentaje = rtrim($porcentaje, ".");
+                } elseif ($porcentaje == null) {
+                    $porcentaje = 0;
+                }
+                echo "
+                    <tr class='mb-2' ondblclick='info({$registro['idproyecto']})'>
+                        <td class='p-3' data-label='#'>{$registro['idproyecto']}</td>
+                        <td class='p-3' data-label='Titulo'>{$registro['titulo']}</td>
+                        <td class='p-3' data-label='Fecha de Inicio'>{$registro['fechainicio']}</td>
+                        <td class='p-3' data-label='Fecha de Fin'>{$registro['fechafin']}</td>
+                        <td class='p-3' data-label='Porcentaje'>{$porcentaje}%</td>
+                        <td class='p-3' data-label='Empresa'>{$registro['nombre']}</td>
+                        <td class='p-3' data-label='N° Fases'>{$registro['Fases']}</td>
+                        <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
+                        <td data-label='Acciones'>
+                            <div class='btn-group' role='group'>
+                                <button type='button' onclick='get({$registro['idproyecto']})'  title='Clic, para editar el proyecto.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
+                                <button type='button' onclick='addPhase({$registro['idproyecto']})' class='btn btn-outline-success btn-sm' title='Clic, para agregar una fase.'><i class='fas fa-arrow-alt-circle-down'></i></button>
+                                <button type='button' onclick='generarReporteP({$registro['idproyecto']})' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                ";
+            }
+        }
+
+        if ($_POST['op'] == 'listarSelectProyecto') {
+            $datos = $proyecto->listar();
+            $etiqueta = "<option value=''>Seleccione el proyecto</option>";
+            echo $etiqueta;
+            foreach ($datos as $registro){
+                echo "<option value={$registro['idproyecto']}>{$registro['titulo']}</option>";
+            }
+        }
+
         if ($_POST['op'] == 'registrar') {
             $idtipoproyecto = $_POST['idtipoproyecto'];
             $idempresa = $_POST['idempresa'];
@@ -102,7 +151,6 @@
         
             echo json_encode($result); // Devolver el array como JSON
         }        
-        
 
         // Info Proyecto
         if ($_POST['op'] == 'info') {
@@ -210,7 +258,7 @@
             vista($datos);
             
             foreach ($datos as $registro) {
-                $estado = $registro['estado'] == 1 ? 'Activo' : $registro['estado'];
+                $estado = $registro['estado'] == 1 ? 'Activo' : ($registro['estado'] == 2 ? 'Finalizado' : $registro['estado']);
                 $porcentaje = $registro['porcentaje'];
                 $porcentaje_fase = $registro['porcentaje_fase'];
                 if ($porcentaje !== null) {
@@ -254,7 +302,7 @@
 
         if ($_POST['op'] == 'listartipoproyecto') {
             $datos = $proyecto->listarTipoProyecto();
-            $etiqueta = "<option value='0'>Seleccione el tipo de proyecto</option>";
+            $etiqueta = "<option value=''>Seleccione el tipo de proyecto</option>";
             echo $etiqueta;
             foreach ($datos as $registro){
                 echo "<option value={$registro['idtipoproyecto']}>{$registro['tipoproyecto']}</option>";

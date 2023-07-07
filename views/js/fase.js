@@ -58,29 +58,28 @@ let idfase = 0;
         });
     }
 
-    function listProject(){
-        const project = document.querySelector("#project-phase");
-
-        const parametrosURL = new URLSearchParams();
-        parametrosURL.append("op", "listProject");
-
-        fetch('../controllers/proyecto.php',{
+    function listarProyectosSelect() {
+        const selectProyecto = document.querySelector("#buscar-proyecto");
+    
+        const parametros = new URLSearchParams();
+        parametros.append("op", "listarSelectProyecto");
+        fetch('../controllers/proyecto.php', {
             method: 'POST',
-            body: parametrosURL
+            body: parametros
         })
-        .then(respuesta => {
-            if(respuesta.ok){
+            .then(respuesta => {
+            if (respuesta.ok) {
                 return respuesta.text();
-            } else{
+            } else {
                 throw new Error('Error en la solicitud');
             }
-        })
-        .then(datos =>{
-            project.innerHTML = datos;
-        })
-        .catch(error => {
+            })
+            .then(datos => {
+            selectProyecto.innerHTML = datos;
+            })
+            .catch(error => {
             console.error('Error:', error);
-        });
+            });
     }
 
     function createPhase(){
@@ -121,6 +120,34 @@ let idfase = 0;
         }
     }
 
+    function buscarFase(){
+        const table = document.querySelector("#tabla-fase");
+        const bodytable = table.querySelector("tbody");
+        const selectProyecto = document.querySelector("#buscar-proyecto");
+
+        const parametrosURL = new URLSearchParams();
+        parametrosURL.append("op", "buscarFase");
+        parametrosURL.append("idproyecto", selectProyecto.value);
+
+        fetch('../controllers/fase.php',{
+            method: 'POST',
+            body: parametrosURL
+        })
+        .then(respuesta => {
+            if(respuesta.ok){
+                return respuesta.text();
+            } else{
+                throw new Error('Error en la solicitud');
+            }
+        })
+        .then(datos =>{
+            bodytable.innerHTML = "";
+            bodytable.innerHTML = datos;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
 
 // Agregar Tarea
 
@@ -485,8 +512,8 @@ let idfase = 0;
         console.error('Error:', error);
     });
     }
-    
-listProject();
+
+listarProyectosSelect();
 list();
 
 // *Para tareas
@@ -512,5 +539,6 @@ btnAddRead.addEventListener("click",addRead);
 const btnEditarTarea = document.querySelector("#guardar-C-Tarea");
 btnEditarTarea.addEventListener("click", editarTarea);
 
-const btnRegistrar = document.querySelector("#create-phase");
-btnRegistrar.addEventListener("click", createPhase);
+// Para buscar fases por el proyecto
+const btnBuscarFase = document.querySelector("#buscar-por-proyecto");
+btnBuscarFase.addEventListener("click", buscarFase);

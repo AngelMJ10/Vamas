@@ -31,7 +31,7 @@
 
         if ($_POST['op'] == 'listarempresa') {
             $datos = $empresa->listar();
-            $etiqueta = "<option value='0'>Seleccione la empresa</option>";
+            $etiqueta = "<option value=''>Seleccione la empresa</option>";
             echo $etiqueta;
             foreach ($datos as $registro){
                

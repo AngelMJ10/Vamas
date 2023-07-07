@@ -25,9 +25,6 @@
       <li class="nav-item">
         <a class="nav-link active" id="listar-tab" data-bs-toggle="tab" href="#listar" role="tab" aria-controls="listar" aria-selected="true">Listar</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" id="registrar-tab" data-bs-toggle="tab" href="#registrar" role="tab" aria-controls="registrar" aria-selected="false">Registrar</a>
-      </li>
     </ul>
 
     <!-- Tabs -->
