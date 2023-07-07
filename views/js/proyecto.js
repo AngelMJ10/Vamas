@@ -862,7 +862,6 @@ let idtarea = 0;
           });
       }
     })
-    
   }
 
 // Fin editar Proyecto
@@ -989,7 +988,7 @@ let idtarea = 0;
 
         const btnEditar = document.querySelector("#update-datos");
           btnEditar.addEventListener("click", function () {
-              update(idproyecto); // Pasar el valor de idproyecto a la función update
+            editarProyectoV2(idproyecto); // Pasar el valor de idproyecto a la función update
           });
 
     
@@ -999,6 +998,75 @@ let idtarea = 0;
       .catch(error => {
         console.error('Error:', error);
       });
+  }
+
+  function editarProyectoV2(id){
+      const titulo = document.querySelector("#titulo-update");
+      const tipoproyecto = document.querySelector("#tipoProyecto-update");
+      const empresa = document.querySelector("#idempresa-update");
+      const descripcion = document.querySelector("#descripcion-update");
+      const fechainicio = document.querySelector("#fecha-inicio-update");
+      const fechafin = document.querySelector("#fecha-fin-update");
+      const precio = document.querySelector("#precio-update");
+
+      if (!tipoproyecto.value || !empresa.value || !titulo.value || !descripcion.value || !fechainicio.value || !fechafin.value || !precio.value) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Campos incompletos',
+          text: 'Por favor, completa todos los campos.',
+        });
+        return;
+      }
+  
+      Swal.fire({
+        icon: 'question',
+        title: 'Confirmación',
+        text: '¿Está seguro de los datos ingresados?',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+      }).then((result) => {
+        if (result.isConfirmed) {
+            obtenerPorcentajeF();
+            obtenerPorcentajeP();
+            const parametros = new URLSearchParams();
+            parametros.append("op", "editar");
+            parametros.append("idproyecto", id);
+            parametros.append("idtipoproyecto", tipoproyecto.value);
+            parametros.append("idempresa", empresa.value);
+            parametros.append("titulo", titulo.value);
+            parametros.append("descripcion", descripcion.value);
+            parametros.append("fechainicio", fechainicio.value);
+            parametros.append("fechafin", fechafin.value);
+            parametros.append("precio", precio.value);
+      
+            fetch('../controllers/proyecto.php', {
+              method: 'POST',
+              body: parametros
+            })
+              .then(respuesta => {
+                if(respuesta.ok){
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Proyecto Actualizado',
+                    text: 'El proyecto se ha actualizado correctamente.'
+                }).then(() => {
+                  location.reload();
+                });
+                } else{
+                  throw new Error('Error en la solicitud');
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                Swal.alert({
+                icon: 'Error',
+                title: 'Error al registrar la fase',
+                text: 'Ocurrió un error al registrar la fase. Por favor intentelo nuevamente.'
+              })
+            });
+        }
+      })
   }
 
 // Aqui se abre el modal de proyecto

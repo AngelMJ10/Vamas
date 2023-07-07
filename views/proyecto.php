@@ -194,11 +194,6 @@
               <div class="form-floating mb-3">
                   <select name="tipoProyecto" id="tipoProyecto-update" class="form-control form-control-sm">
                     <label for="tipoProyecto">Seleccione el tipo de Proyecto:</label>
-                    <option value="">Seleccione</option>
-                    <option value="1">Desarollo Web</option>
-                    <option value="2">Sistema de ventas</option>
-                    <option value="3">Sistema de almacen</option>
-                    <option value="4">Marketing</option>
                   </select>
               </div>
             </div>
@@ -206,11 +201,6 @@
                 <div class="form-floating mb-3">
                     <select name="idempresa" id="idempresa-update" class="form-control form-control-sm">
                       <label for="idempresa">Seleccione la empresa:</label>
-                      <option value="">Seleccione</option>
-                      <option value="1">VAMAS S.A.C.</option>
-                      <option value="2">Mamá Carmen</option>
-                      <option value="3">Prueba1</option>
-                      <option value="4">Prueba2</option>
                     </select>
                 </div>
             </div>
@@ -262,6 +252,7 @@
                   <option value="">Seleccione</option>
                   <option value="0">Inactivo</option>
                   <option value="1">Activo</option>
+                  <option value="2">Finalizado</option>
                 </select>
               </div>
             </div>
