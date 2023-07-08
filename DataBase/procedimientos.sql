@@ -17,6 +17,7 @@ END $$
 CALL registrarColaboradores('6','FerMJ','1342364@senati.pe','SENATI');
 
 -----------------------------------------
+
 -- P.A Para obtener el ID de las personas por su número de documento
 DELIMITER $$
 CREATE PROCEDURE obtener_idpersona(IN _nrodocumento CHAR(8))
@@ -826,6 +827,7 @@ CALL finalizar_tarea;
 DROP PROCEDURE finalizar_tarea;
 
 ---------------------------------------
+
 -- Para reactivar las tareas de la fase
 DELIMITER $$
 CREATE PROCEDURE reactivar_tarea()
