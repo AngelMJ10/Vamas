@@ -306,10 +306,10 @@
                                 <th>Inicio de la Fase</th>
                                 <th>Fin de la Fase</th>
                                 <th>Usuario Responsable</th>
-                                <th>Comentario</th>
                                 <th>Avance</th>
                                 <th>Porcentaje P.</th>
                                 <th>Estado</th>
+                                <th>Acciones</th>
                             </thead>
                             <tbody>    
                 ";
@@ -335,20 +335,46 @@
                 } else {
                     $porcentaje_fase = 0;
                 }
-                $tbody= "                 
-                    <tr class='mb-2' ondblclick='modalInfoFase({$registro['idfase']})'>
-                        <td class='p-3' data-label='#'>{$contador}</td>
-                        <td class='p-3' data-label='Nombre de la Fase'>{$registro['nombrefase']}</td>
-                        <td class='p-3' data-label='Inicio de la fase'>{$registro['fechainicio']}</td>
-                        <td class='p-3' data-label='Fin de la fase'>{$registro['fechafin']}</td>
-                        <td class='p-3' data-label='Usuario Responsable'>{$registro['usuario']}</td>
-                        <td class='p-3' data-label='Comentario'>{$registro['comentario']}</td>
-                        <td class='p-3' data-label='Porcentaje de avance'>{$porcentaje_fase}%</td>
-                        <td class='p-3' data-label='Porcentaje'>{$porcentaje}%</td>
-                        <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
-                    </tr>
-                ";
-                echo $tbody;
+                if ($estado == 'Activo') {
+                    $tbody= "                 
+                        <tr class='mb-2' ondblclick='modalInfoFase({$registro['idfase']})'>
+                            <td class='p-3' data-label='#'>{$contador}</td>
+                            <td class='p-3' data-label='Nombre de la Fase'>{$registro['nombrefase']}</td>
+                            <td class='p-3' data-label='Inicio de la fase'>{$registro['fechainicio']}</td>
+                            <td class='p-3' data-label='Fin de la fase'>{$registro['fechafin']}</td>
+                            <td class='p-3' data-label='Usuario Responsable'>{$registro['usuario']}</td>
+                            <td class='p-3' data-label='Porcentaje de avance'>{$porcentaje_fase}%</td>
+                            <td class='p-3' data-label='Porcentaje'>{$porcentaje}%</td>
+                            <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
+                            <td data-label='Acciones'>
+                                <div class='btn-group' role='group'>
+                                    <button type='button' onclick='finalizarFase({$registro['idfase']})' class='btn btn-outline-primary btn-sm' title='Clic, para finalizar la fase.'><i class='fa-solid fa-check'></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    ";
+                    echo $tbody;
+                }else {
+                    $tbody= "                 
+                        <tr class='mb-2' ondblclick='modalInfoFase({$registro['idfase']})'>
+                            <td class='p-3' data-label='#'>{$contador}</td>
+                            <td class='p-3' data-label='Nombre de la Fase'>{$registro['nombrefase']}</td>
+                            <td class='p-3' data-label='Inicio de la fase'>{$registro['fechainicio']}</td>
+                            <td class='p-3' data-label='Fin de la fase'>{$registro['fechafin']}</td>
+                            <td class='p-3' data-label='Usuario Responsable'>{$registro['usuario']}</td>
+                            <td class='p-3' data-label='Porcentaje de avance'>{$porcentaje_fase}%</td>
+                            <td class='p-3' data-label='Porcentaje'>{$porcentaje}%</td>
+                            <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
+                            <td data-label='Acciones'>
+                                <div class='btn-group' role='group'>
+                                <button type='button' onclick='reactivarFase({$registro['idfase']})' class='btn btn-outline-success btn-sm' title='Clic, para ver reactivar la fase.'><i class='fa-solid fa-arrows-rotate'></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    ";
+                    echo $tbody;
+                }
+                
                 
                 $contador++;
             }

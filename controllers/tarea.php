@@ -586,8 +586,16 @@
             $tarea->finalizar_tarea();
         }
 
+        if ($_POST['op'] == 'finalizar_tarea_by_id') {
+            $tarea->finalizar_tarea_by_id(["idtarea" => $_POST['idtarea']]);
+        }
+
         if ($_POST['op'] == 'reactivar_tarea') {
             $tarea->reactivar_tarea();
+        }
+
+        if ($_POST['op'] == 'reactivar_tarea_by_id') {
+            $tarea->reactivar_tarea_by_id(["idtarea" => $_POST['idtarea']]);
         }
         
     }

@@ -229,6 +229,92 @@ let idtarea = 0;
     }
   }
 
+  // Finalizar una tarea por su ID
+  function finalizarTarea(id){
+    Swal.fire({
+      icon: 'question',
+      title: 'Confirmación',
+      text: '¿Está seguro de finalizar esta tarea?',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const parametrosURL = new URLSearchParams();
+        parametrosURL.append("op" ,"finalizar_tarea_by_id");
+        parametrosURL.append("idtarea" ,id);
+        fetch('../controllers/tarea.php', {
+          method: 'POST',
+          body: parametrosURL
+        })
+        .then(respuesta =>{
+            if(respuesta.ok){
+              Swal.fire({
+                icon: 'success',
+                title: 'Tarea Finalizada',
+                text: 'La tarea ha sido finalizada con éxito.'
+              }).then(() => {
+                location.reload();
+              });
+            } else{
+              throw new Error('Error en la solicitud');
+            }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          Swal.alert({
+            icon: 'Error',
+            title: 'Error al finalizar la tarea',
+            text: 'Ocurrió un error al finalizar la tarea. Por favor intentelo nuevamente.'
+          })
+        });
+      }
+    })
+  }
+
+  // Finalizar una fase por su ID
+  function reactivarTarea(id){
+    Swal.fire({
+      icon: 'question',
+      title: 'Confirmación',
+      text: '¿Está seguro de reactivar esta tarea?',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const parametrosURL = new URLSearchParams();
+        parametrosURL.append("op" ,"reactivar_tarea_by_id");
+        parametrosURL.append("idtarea" ,id);
+        fetch('../controllers/tarea.php', {
+          method: 'POST',
+          body: parametrosURL
+        })
+        .then(respuesta =>{
+            if(respuesta.ok){
+              Swal.fire({
+                icon: 'success',
+                title: 'Tarea reactivada',
+                text: 'La tarea ha sido reactivada con éxito.'
+              }).then(() => {
+                location.reload();
+              });
+            } else{
+              throw new Error('Error en la solicitud');
+            }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          Swal.alert({
+            icon: 'Error',
+            title: 'Error al reactivar la tarea',
+            text: 'Ocurrió un error al reactivar la tarea. Por favor intentelo nuevamente.'
+          })
+        });
+      }
+    })
+  }
+
 // Fin de info Fase
 
 
@@ -1120,6 +1206,92 @@ let idtarea = 0;
       .catch(error => {
         console.error('Error:', error);
       });
+  }
+
+  // Para finalizar una fase
+  function finalizarFase(id){
+    Swal.fire({
+      icon: 'question',
+      title: 'Confirmación',
+      text: '¿Está seguro de finalizar esta fase?',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const parametrosURL = new URLSearchParams();
+        parametrosURL.append("op" ,"finalizar_fase_by_id");
+        parametrosURL.append("idfase" ,id);
+        fetch('../controllers/fase.php', {
+          method: 'POST',
+          body: parametrosURL
+        })
+        .then(respuesta =>{
+            if(respuesta.ok){
+              Swal.fire({
+                icon: 'success',
+                title: 'Fase Finalizada',
+                text: 'La fase ha sido finalizada con éxito.'
+              }).then(() => {
+                location.reload();
+              });
+            } else{
+              throw new Error('Error en la solicitud');
+            }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          Swal.alert({
+            icon: 'Error',
+            title: 'Error al finalizar la fase',
+            text: 'Ocurrió un error al finalizar la fase. Por favor intentelo nuevamente.'
+          })
+        });
+      }
+    })
+  }
+
+  // Para reactivar una fase
+  function reactivarFase(id){
+    Swal.fire({
+      icon: 'question',
+      title: 'Confirmación',
+      text: '¿Está seguro de reactivar esta fase?',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const parametrosURL = new URLSearchParams();
+        parametrosURL.append("op" ,"reactivar_fase_by_id");
+        parametrosURL.append("idfase" ,id);
+        fetch('../controllers/fase.php', {
+          method: 'POST',
+          body: parametrosURL
+        })
+        .then(respuesta =>{
+            if(respuesta.ok){
+              Swal.fire({
+                icon: 'success',
+                title: 'Fase Reactivada',
+                text: 'La fase ha sido reactivada con éxito.'
+              }).then(() => {
+                location.reload();
+              });
+            } else{
+              throw new Error('Error en la solicitud');
+            }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          Swal.alert({
+            icon: 'Error',
+            title: 'Error al reactivar la fase',
+            text: 'Ocurrió un error al reactivar la fase. Por favor intentelo nuevamente.'
+          })
+        });
+      }
+    })
   }
 
   // Aquí habre el modal de para agregar fase

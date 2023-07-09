@@ -168,17 +168,17 @@
                 ";
                 $inicioT=  "
                     <div class='table-responsive mt-3'>
-                        <table class='table table-hover'> 
+                        <table class='table table-hover text-center'> 
                             <thead>
                                 <th>#</th>
                                 <th>Nombre de la tarea</th>
-                                <th>Inicio de la Tarea</th>
-                                <th>Fin de la Tarea</th>
+                                <th>Inicio</th>
+                                <th>Fin</th>
                                 <th>Usuario Asignado</th>
                                 <th>Avance</th>
                                 <th>P. Fase</th>
-                                <th>Roles</th>
                                 <th>Estado</th>
+                                <th>Acciones</th>
                             </thead>
                             <tbody>
                 ";
@@ -201,21 +201,46 @@
                     $porcentaje = 0;
                     $porcentaje_tarea = 0;
                 }
-                $tbody= "                 
-                    <tr class='mb-2' ondblclick='modalInfoTarea({$registro['idtarea']})'>
-                        <td class='p-3' data-label='#'>{$contador}</td>
-                        <td class='p-3' data-label='Nombre de la tarea'>{$registro['tarea']}</td>
-                        <td class='p-3' data-label='Inicio de la tarea'>{$registro['fecha_inicio_tarea']}</td>
-                        <td class='p-3' data-label='Fin de la tarea'>{$registro['fecha_fin_tarea']}</td>
-                        <td class='p-3' data-label='Usuario Responsable'>{$registro['usuario_tarea']}</td>
-                        <td class='p-3' data-label='Porcentaje de avance'>{$porcentaje_tarea}%</td>
-                        <td class='p-3' data-label='Porcentaje en la Fase'>{$porcentaje}%</td>
-                        <td class='p-3' data-label='Rol'>{$registro['roles']}</td>
-                        <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
-                    </tr>
-                ";
-                echo $tbody;
-                
+                if ($estado == 'Activo') {
+                    $tbody= "                 
+                        <tr class='mb-2' ondblclick='modalInfoTarea({$registro['idtarea']})'>
+                            <td class='p-3' data-label='#'>{$contador}</td>
+                            <td class='p-3' data-label='Nombre de la tarea'>{$registro['tarea']}</td>
+                            <td class='p-3' data-label='Inicio de la tarea'>{$registro['fecha_inicio_tarea']}</td>
+                            <td class='p-3' data-label='Fin de la tarea'>{$registro['fecha_fin_tarea']}</td>
+                            <td class='p-3' data-label='Usuario Responsable'>{$registro['usuario_tarea']}</td>
+                            <td class='p-3' data-label='Porcentaje de avance'>{$porcentaje_tarea}%</td>
+                            <td class='p-3' data-label='Porcentaje en la Fase'>{$porcentaje}%</td>
+                            <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
+                            <td data-label='Acciones'>
+                                <div class='btn-group' role='group'>
+                                    <button type='button' onclick='finalizarTarea({$registro['idtarea']})' class='btn btn-outline-primary btn-sm' title='Clic, para finalizar la tarea.'><i class='fa-solid fa-check'></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    ";
+                    echo $tbody;
+                } else{
+                    $tbody= "
+                        <tr class='mb-2' ondblclick='modalInfoTarea({$registro['idtarea']})'>
+                            <td class='p-3' data-label='#'>{$contador}</td>
+                            <td class='p-3' data-label='Nombre de la tarea'>{$registro['tarea']}</td>
+                            <td class='p-3' data-label='Inicio de la tarea'>{$registro['fecha_inicio_tarea']}</td>
+                            <td class='p-3' data-label='Fin de la tarea'>{$registro['fecha_fin_tarea']}</td>
+                            <td class='p-3' data-label='Usuario Responsable'>{$registro['usuario_tarea']}</td>
+                            <td class='p-3' data-label='Porcentaje de avance'>{$porcentaje_tarea}%</td>
+                            <td class='p-3' data-label='Porcentaje en la Fase'>{$porcentaje}%</td>
+                            <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
+                            <td data-label='Acciones'>
+                                <div class='btn-group' role='group'>
+                                    <button type='button' onclick='reactivarTarea({$registro['idtarea']})' class='btn btn-outline-success btn-sm' title='Clic, para ver reactivar tarea.'><i class='fa-solid fa-arrows-rotate'></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    ";
+                    echo $tbody;
+                }
+            
                 $contador++;
             }
             echo "  
@@ -298,8 +323,22 @@
             $fase->finalizar_fase();
         }
 
+        if ($_POST['op'] == 'finalizar_fase_by_id') {
+            require_once '../models/Tarea.php';
+            $tarea = new Tarea();
+            $fase->finalizar_fase_by_id(["idfase" => $_POST['idfase']]);
+            $tarea->finalizar_tarea();
+        }
+
         if ($_POST['op'] == 'reactivar_fase ') {
             $fase->reactivar_fase();
+        }
+
+        if ($_POST['op'] == 'reactivar_fase_by_id') {
+            require_once '../models/Tarea.php';
+            $tarea = new Tarea();
+            $fase->reactivar_fase_by_id(["idfase" => $_POST['idfase']]);
+            $tarea->reactivar_tarea();
         }
     }
 

@@ -150,12 +150,34 @@
             }
         }
 
-        // Método para reactivar las tarea de las fases reactivadas
+        // Método para finalizar las tareas por sus ID
+        public function finalizar_tarea_by_id($data = []){
+            try {
+                $query = "CALL finalizar_tarea_by_id(?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array($data['idtarea']));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
+        // Método para reactivar las tareas de las fases reactivadas
         public function reactivar_tarea(){
             try {
                 $query = "CALL reactivar_tarea()";
                 $consulta = $this->conexion->prepare($query);
                 $consulta->execute();
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
+        // Método para reactivar la tarea por su ID
+        public function reactivar_tarea_by_id($data = []){
+            try {
+                $query = "CALL reactivar_tarea_by_id(?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array($data['idtarea']));
             } catch (Exception $e) {
                 die($e->getMessage());
             }
