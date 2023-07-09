@@ -298,8 +298,70 @@
     }
   }
 
+  function listartipoproyecto(){
+    const fase = document.querySelector("#buscar-fase");
+
+    const parametrosURL = new URLSearchParams();
+    parametrosURL.append("op", "listarFases");
+
+    fetch('../controllers/fase.php',{
+        method: 'POST',
+        body: parametrosURL
+    })
+    .then(respuesta => {
+        if(respuesta.ok){
+            return respuesta.text();
+        } else{
+            throw new Error('Error en la solicitud');
+        }
+    })
+    .then(datos =>{
+      fase.innerHTML = datos;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+  function buscarTarea() {
+    const table = document.querySelector("#tabla-tareas");
+    const bodytable = table.querySelector("tbody");
+    const fase = document.querySelector("#buscar-fase");
+    const tarea = document.querySelector("#nombre-tarea");
+    const estadoT = document.querySelector("#buscar-estado");
+
+    const parametrosURL = new URLSearchParams();
+    parametrosURL.append("op", "buscar_tareas");
+    parametrosURL.append("idfase", fase.value);
+    parametrosURL.append("tarea", tarea.value);
+    parametrosURL.append("estado", estadoT.value);
+
+    fetch('../controllers/tarea.php',{
+        method: 'POST',
+        body: parametrosURL
+    })
+    .then(respuesta => {
+        if(respuesta.ok){
+            return respuesta.text();
+        } else{
+            throw new Error('Error en la solicitud');
+        }
+    })
+    .then(datos =>{
+        bodytable.innerHTML = "";
+        bodytable.innerHTML = datos;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+  }
+
 listarCorreo();
 list();
+listartipoproyecto();
 
 const btnGenerarReporte = document.querySelector('#generarpdf-tarea');
 btnGenerarReporte.addEventListener('click',generarReporte);
+
+const btnBuscarT = document.querySelector('#buscar-tareas');
+btnBuscarT.addEventListener('click',buscarTarea);

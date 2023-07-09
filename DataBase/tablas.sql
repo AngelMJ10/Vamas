@@ -21,8 +21,7 @@ VALUES('Marquina Jaime','Ángel Eduardo','DNI','72745028','951531166','León de 
 	('Padilla Chumbiauca','Marks Steven','DNI','72854857','924563458','Atrás de plaza vea','2004-06-07'),
 	('Uribe Garcia','Cristhian Manuel','DNI','72548675','95123654','Rosedal por donde roban','2004-05-21'),
 	('Chacaliaza Pachas','Ítalo Jesús','DNI','7254789','963214587','AV. Santos Nagaro 210','2003-10-29'),
-	('Marquina Jaime','Emily Fernanda','DNI','78383886','952145879','León de Vivero Mz V LT-22','2013-12-16'),
-	('Valles Roncero','Cristhian','DNI','72568965','985206356','Sunampe','1996-08-16');
+	('Marquina Jaime','Emily Fernanda','DNI','78383886','952145879','León de Vivero Mz V LT-22','2013-12-16');
 	
 SELECT * FROM personas;
 
@@ -44,8 +43,7 @@ CREATE TABLE colaboradores
 
 INSERT INTO colaboradores(idpersona,usuario,clave,correo,nivelacceso)
 VALUES(1,'AngelMJ','SENATI','1342364@senati.pe','A'),(2,'MarksPC','SENATI','1342364@senati.pe','S'),
-	(5,'EmyMJ','SENATI','1342364@senati.pe','S'),(4,'JesusPC','SENATI','1342364@senati.pe','C'),
-	(6,'CrisValle','SENATI','cvaller@senati.pe','S');
+	(5,'EmyMJ','SENATI','1342364@senati.pe','S'),(4,'JesusPC','SENATI','1342364@senati.pe','C');
 
 UPDATE colaboradores SET
 	clave = '$2y$10$WY.iP85bEYxBMkVBG0jKO.9Q97kEbofLVwJPUT1OAmsDzLXQ8Pcka';
@@ -158,8 +156,6 @@ VALUES ('2','2','Sistema de ventas pra un restaurante','Prueba 3','2023-05-29','
 
 SELECT * FROM proyecto;
 
-CALL listar_proyecto();
-
 ----------------------------------------------------------
 
 CREATE TABLE fases
@@ -192,10 +188,7 @@ INSERT INTO fases(idproyecto,idresponsable,nombrefase,fechainicio,fechafin,comen
 VALUES(2,'4','Creación de un modelo de base de datos','2023-05-31','2023-06-03',
 	'En esta fase se definirá la base de datos',25);
 
-
 SELECT * FROM fases;
-CALL listar_fase();
-
 ----------------------------------------------------------
 
 CREATE TABLE tareas 
@@ -236,4 +229,3 @@ INSERT INTO tareas(idfase,idcolaboradores,roles,tarea,porcentaje,evidencia,fecha
 VALUES('2','3','Implementación de la vista','Implementar la vista al sistemas',60,JSON_ARRAY(),'2023-06-22','2023-06-28');
 
 SELECT * FROM tareas;
-TRUNCATE TABLE tareas;

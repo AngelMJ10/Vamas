@@ -477,30 +477,30 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                     responsive: true,
                     legend: { position: 'bottom' },
                     scales: {
-                    y: {
-                        ticks: {
-                        callback: function(value, index, values) {
-                            const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-                            return meses[value - 1]; // Restamos 1 para obtener el índice correcto del arreglo de meses
+                        y: {
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+                                    return meses[value - 1]; // Restamos 1 para obtener el índice correcto del arreglo de meses
+                                }
+                            }
                         }
-                        }
-                    }
                     },
                     plugins: {
-                    title: {
-                        display: true,
-                        text: titulo
-                    },
-                    legend: { position: 'bottom' }
+                        title: {
+                            display: true,
+                            text: titulo
+                        },
+                        legend: { position: 'bottom' }
                     },
                     tooltips: {
                         callbacks: {
                             label: function(tooltipItem, data) {
-                            const dataset = data.datasets[tooltipItem.datasetIndex].label;
-                            const value = tooltipItem.value;
-                            const mesesCompletos = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                                const dataset = data.datasets[tooltipItem.datasetIndex].label;
+                                const value = tooltipItem.value;
+                                const mesesCompletos = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-                            return `${dataset}: ${mesesCompletos[value - 1]}`;
+                                return `${dataset}: ${mesesCompletos[value]}`;
                             }
                         }
                     }
@@ -523,9 +523,9 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
 
                     // Recorrer los proyectos y las fechas de finalización y actualizar los valores de las barras correspondientes
                     fechas.forEach((fechaString, proyectoIndex) => {
-                    const fecha = new Date(fechaString); // Convertir la cadena de texto en un objeto Date
-                    const mesFin = fecha.getMonth(); // Obtener el mes (0-11) de la fecha de finalización
-                    data[proyectoIndex] = mesFin + 1; // Asignar el valor del mes correspondiente a la barra
+                        const fecha = new Date(fechaString); // Convertir la cadena de texto en un objeto Date
+                        const mesFin = fecha.getMonth(); // Obtener el mes (0-11) de la fecha de finalización
+                        data[proyectoIndex] = mesFin + 1; // Asignar el valor del mes correspondiente a la barra
                     });
 
                     // Calcular la cantidad total de meses

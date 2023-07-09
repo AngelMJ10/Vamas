@@ -161,5 +161,22 @@
             }
         }
 
+        public function buscar_tareas($data = []){
+            try {
+                $query = "CALL buscarTareas(?,?,?,?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array(
+                    $data['idcolaboradores'],
+                    $data['idfase'],
+                    $data['tarea'],
+                    $data['estado']
+                ));
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
     }
 ?>

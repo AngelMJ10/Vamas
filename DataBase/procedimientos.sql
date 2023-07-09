@@ -426,6 +426,28 @@ END $$
 
 CALL listar_fase();
 
+DELIMITER $$
+CREATE PROCEDURE listar_fase_by_Colaborador(IN _idcolaboradores SMALLINT)
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM colaboradores WHERE idcolaboradores = _idcolaboradores AND nivelacceso = 'C'
+    ) THEN
+        SELECT fas.idfase, fas.nombrefase
+        FROM fases fas
+        INNER JOIN tareas tar ON tar.idfase = fas.idfase
+        WHERE tar.idcolaboradores = _idcolaboradores
+            AND fas.estado = 1
+        ORDER BY fas.idfase; -- Ordenar por el ID de la fase ascendente
+    ELSE
+        SELECT fas.idfase, fas.nombrefase
+        FROM fases fas
+        WHERE fas.estado = 1
+        ORDER BY fas.idfase; -- Ordenar por el ID de la fase ascendente
+    END IF;
+END $$
+
+CALL listar_fase_by_Colaborador(4);
+
 ------------------------------------------------------------
 
 DELIMITER $$
@@ -441,8 +463,8 @@ BEGIN
     WHERE (fas.idproyecto = _idproyecto OR _idproyecto IS NULL)
     ORDER BY pro.idproyecto, fas.fechainicio, fas.fechafin; -- Ordenar por el idproyecto ascendente
 END $$
-DROP PROCEDURE buscar_fase
-CALL buscar_fase(2);
+
+CALL buscar_fase(1);
 
 ------------------------------------------------------------
 
@@ -483,7 +505,7 @@ SELECT fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyec
 	 WHERE fas.idfase = _idfase
 	 ORDER BY pro.idproyecto, fas.fechainicio;
 END $$
-DROP PROCEDURE obtener_fase
+
 CALL obtener_fase(1);
 
 -----------------------------------------------
@@ -549,6 +571,57 @@ BEGIN
 END $$
 
 CALL listar_tarea_colaboradores(1);
+
+------------------------------------------
+-- P.A para buscar tareas por la fase,nombre de la tarea y estado
+DELIMITER $$
+CREATE PROCEDURE buscarTareas(
+    IN _idcolaboradores SMALLINT,
+    IN _idfase SMALLINT,
+    IN _tarea VARCHAR(255),
+    IN _estado CHAR(1)
+)
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM colaboradores WHERE idcolaboradores = _idcolaboradores AND (nivelacceso = 'A' OR nivelacceso = 'S' OR nivelacceso = 'C')
+    ) THEN
+        IF (SELECT nivelacceso FROM colaboradores WHERE idcolaboradores = _idcolaboradores) = 'C' THEN
+            SELECT pro.idproyecto, fas.idfase, tar.idtarea, pro.titulo, fas.nombrefase, tar.tarea, fas.fechainicio, fas.fechafin,
+                fas.comentario, col_fase.usuario AS 'usuario_fase', col_tarea.usuario AS 'usuario_tarea',
+                tar.roles, tar.fecha_inicio_tarea, tar.fecha_fin_tarea, tar.porcentaje_tarea, tar.evidencia, tar.porcentaje, tar.estado
+            FROM tareas tar
+            INNER JOIN fases fas ON tar.idfase = fas.idfase
+            INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
+            INNER JOIN colaboradores col_tarea ON tar.idcolaboradores = col_tarea.idcolaboradores
+            INNER JOIN colaboradores col_fase ON fas.idresponsable = col_fase.idcolaboradores
+            WHERE
+                (NULLIF(_idfase, '') IS NULL OR fas.idfase = _idfase)
+                AND (NULLIF(_tarea, '') IS NULL OR tar.tarea LIKE CONCAT('%', _tarea, '%'))
+                AND (NULLIF(_estado, '') IS NULL OR tar.estado = _estado)
+                AND col_tarea.idcolaboradores = _idcolaboradores
+            ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
+        ELSE
+            SELECT pro.idproyecto, fas.idfase, tar.idtarea, pro.titulo, fas.nombrefase, tar.tarea, fas.fechainicio, fas.fechafin,
+                fas.comentario, col_fase.usuario AS 'usuario_fase', col_tarea.usuario AS 'usuario_tarea', tar.roles,
+                tar.fecha_inicio_tarea, tar.fecha_fin_tarea, tar.porcentaje_tarea, tar.evidencia,tar.porcentaje, tar.estado
+            FROM tareas tar
+            INNER JOIN fases fas ON tar.idfase = fas.idfase
+            INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
+            INNER JOIN colaboradores col_tarea ON tar.idcolaboradores = col_tarea.idcolaboradores
+            INNER JOIN colaboradores col_fase ON fas.idresponsable = col_fase.idcolaboradores
+            WHERE
+                (NULLIF(_idfase, '') IS NULL OR fas.idfase = _idfase)
+                AND (NULLIF(_tarea, '') IS NULL OR tar.tarea LIKE CONCAT('%', _tarea, '%'))
+                AND (NULLIF(_estado, '') IS NULL OR tar.estado = _estado)
+            ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
+        END IF;
+    END IF;
+END $$
+DELIMITER ;
+
+
+DROP PROCEDURE buscarTareas;
+CALL buscarTareas('4','','Boceto','');
 
 -----------------------------------------------------
 -- P.A para editar una tarea
@@ -792,9 +865,19 @@ BEGIN
     WHERE pro.estado = 2;
 END $$
 
-DROP PROCEDURE finalizar_fase
 CALL finalizar_fase();
 SELECT * FROM fases
+
+-- Para finalizar la fase por su ID
+DELIMITER $$
+CREATE PROCEDURE finalizar_fase_by_id(IN _idfase SMALLINT)
+BEGIN 
+    UPDATE fases AS fas
+    SET fas.estado = 2, fas.fecha_update = NOW()
+    WHERE fas.idfase = _idfase;
+END $$
+
+CALL finalizar_fase_by_id(1);
 
 --------------------------------------------------
 -- Para reactivar una fase
@@ -807,9 +890,18 @@ BEGIN
     WHERE pro.estado = 1;
 END $$
 
-DROP PROCEDURE reactivar_fase
 CALL reactivar_fase();
 
+-- Para reactivar una fase por su ID
+DELIMITER $$
+CREATE PROCEDURE reactivar_fase_by_id(IN _idfase SMALLINT)
+BEGIN 
+    UPDATE fases AS fas
+    SET fas.estado = 1
+    WHERE fas.idfase = _idfase;
+END $$
+
+CALL reactivar_fase_by_id(1);
 -------------------------------------------
 -- Para finalizar las tareas de la fase
 
@@ -824,7 +916,16 @@ END $$
 
 SELECT * FROM tareas
 CALL finalizar_tarea;
-DROP PROCEDURE finalizar_tarea;
+
+-- Para finalizar tareas por su id
+DELIMITER $$
+CREATE PROCEDURE finalizar_tarea_by_id(IN _idtarea SMALLINT)
+BEGIN 
+    UPDATE tareas AS tar
+    SET tar.estado = 2, tar.fecha_update = NOW()
+    WHERE tar.idtarea = _idtarea;
+END $$
+CALL finalizar_tarea_by_id(1);
 
 ---------------------------------------
 
@@ -840,3 +941,15 @@ END $$
 
 CALL reactivar_tarea();
 DROP PROCEDURE reactivar_tarea;
+
+-- Reactivar tareas por id de la tarea
+
+DELIMITER $$
+CREATE PROCEDURE reactivar_tarea_by_id(IN _idtarea SMALLINT)
+BEGIN 
+    UPDATE tareas AS tar
+    SET tar.estado = 1
+    WHERE tar.idtarea = _idtarea;
+END $$
+
+CALL reactivar_tarea_by_id(1)

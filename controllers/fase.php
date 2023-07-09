@@ -46,6 +46,25 @@
             }
         }
 
+        if ($_POST['op'] == 'listarFases') {
+            $datos = $fase->list();
+            $etiqueta = "<option value=''>Seleccione la fase</option>";
+            echo $etiqueta;
+            if ($_SESSION['nivelacceso'] != 'C') {
+                foreach ($datos as $registro){
+               
+                    $etiqueta ="<option value='{$registro['idfase']}'>{$registro['nombrefase']}</option>";
+                    echo $etiqueta;
+                }
+            } else {
+                $datosF = $fase->listar_Fase_Colaborador(["idcolaboradores" => $_SESSION['idcolaboradores']]);
+                foreach ($datosF as $registro){
+                    $etiqueta ="<option value='{$registro['idfase']}'>{$registro['nombrefase']}</option>";
+                    echo $etiqueta;
+                }
+            }
+        }
+
         if ($_POST['op'] == 'buscarFase') {
             $datos = ["idproyecto" => $_POST['idproyecto']];
             $datos = $fase->buscarFase($datos);

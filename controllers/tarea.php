@@ -136,6 +136,99 @@
             $cierre = "</tbody>";
         }
 
+        if ($_POST['op'] == 'buscar_tareas') {
+            $idcolaboradores = $_SESSION['idcolaboradores'];
+            $idfase = $_POST['idfase'];
+            $nombretarea = $_POST['tarea'];
+            $estado = $_POST['estado'];
+            $nivel = $_SESSION['nivelacceso'];
+            $datos = $tarea->buscar_tareas([
+                "idcolaboradores" => $idcolaboradores,
+                "idfase" => $idfase,
+                "tarea" => $nombretarea,
+                "estado" => $estado
+            ]);
+            $contador = 1;
+            
+            foreach ($datos as $registro) {
+                $porcentajeTarea = $registro['porcentaje_tarea'];
+                $estado = $registro['estado'] == 1 ? 'Activo' : ($registro['estado'] == 2 ? 'Finalizado' : $registro['estado']);
+
+                // ? Se utiliza date(),para formatear las fechas a formato M j
+                // ? strotime() se utiliza para convertir los valores pasados a un valor valido para la función date()
+                $fechaInicio = date('M j', strtotime($registro['fecha_inicio_tarea']));
+                $fechaFin = date('M j', strtotime($registro['fecha_fin_tarea']));
+
+                if ($nivel == 'C'){
+                    if ($porcentajeTarea) {
+                        $porcentajeTarea = rtrim($porcentajeTarea, "0");
+                        $porcentajeTarea = rtrim($porcentajeTarea, ".");
+                    }
+                    $tbodyC= "
+                        <tr ondblclick='obtenerInfo({$registro['idtarea']})'>
+                            <td class='p-3' data-label='#'>{$contador}</td>
+                            <td class='p-3' data-label='Titulo del Proyecto'>{$registro['titulo']}</td>
+                            <td class='p-3' data-label='Fase'>{$registro['nombrefase']}</td>
+                            <td class='p-3' data-label='Fase'>{$registro['tarea']}</td>
+                            <td class='p-3' data-label='Incio de la fase'>{$fechaInicio} / {$fechaFin}</td>
+                            <td class='p-3' data-label='Usuarios'>{$registro['usuario_tarea']}</td>
+                            <td class='p-3' data-label='Porcentaje de la fase'>{$porcentajeTarea}%</td>
+                            <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>{$estado}</td>
+                            <td data-label='Acciones'>
+                                <div class='btn-group' role='group'>
+                                    <button type='button' title='Clic, para editar la tarea.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
+                                    <button type='button' onclick='openModal({$registro['idtarea']})' data-id='{$registro['idtarea']}' class='btn btn-outline-primary btn-sm' title='Clic, para enviar el trabajo'><i class='fas fa-paper-plane'></i></button>
+                                    <button type='button' onclick='generarReporteV({$registro['idtarea']})' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    ";
+                    echo $tbodyC;
+
+                } else {
+                    $porcentaje = $registro['porcentaje'];
+                    if ($porcentaje) {
+                        $porcentajeTarea = rtrim($porcentajeTarea, "0");
+                        $porcentajeTarea = rtrim($porcentajeTarea, ".");
+                        $porcentaje = rtrim($porcentaje, "0");
+                        $porcentaje = rtrim($porcentaje, ".");
+                    }      
+                    $tbodyA = "
+                        <tr ondblclick='obtenerInfo({$registro['idtarea']})'>
+                            <td class='p-3' data-label='#'>{$contador}</td>
+                            <td class='p-3' data-label='Titulo del Proyecto'>{$registro['titulo']}</td>
+                            <td class='p-3' data-label='Fase'>{$registro['nombrefase']}</td>
+                            <td class='p-3' data-label='Fase'>{$registro['tarea']}</td>
+                            <td class='p-3' data-label='Incio de la fase'>{$fechaInicio} / {$fechaFin}</td>
+                            <td class='p-3' data-label='Usuario'>{$registro['usuario_tarea']}</td>
+                            <td class='p-3' data-label='Porcentaje de la fase'>{$porcentajeTarea}%</td>
+                            <td class='p-3' data-label='Porcentaje'>{$registro['porcentaje']}%</td>
+                            <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>{$estado}</td>
+                            <td data-label='Acciones'>
+                                <div class='btn-group' role='group'>
+                                    <button type='button' title='Clic, para editar la tarea.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
+                                    <button type='button' onclick='openModal({$registro['idtarea']})' data-id='{$registro['idtarea']}' class='btn btn-outline-primary btn-sm' title='Clic, para enviar el trabajo'><i class='fas fa-paper-plane'></i></button>
+                                    <button type='button' onclick='generarReporteV({$registro['idtarea']})' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    ";
+                    echo $tbodyA;
+                }
+                $contador++;
+            }
+
+            if (empty($datos) && $nivel == 'C'){
+                echo "
+                    <tr>
+                        <td colspan='9' class='text-center'>No tienes una tarea asignada.</td>
+                    </tr>
+                ";
+            }
+            
+            $cierre = "</tbody>";
+        }
+
         if ($_POST['op'] == 'listar_Habilidades') {
             require_once '../models/Colaboradores.php';
             $colaboradores = new Colaborador();

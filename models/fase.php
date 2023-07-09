@@ -17,6 +17,17 @@
             }
         }
 
+        public function listar_Fase_Colaborador($data = []){
+            try {
+                $consulta = $this->conexion->prepare("Call listar_fase_by_Colaborador(?)");
+                $consulta->execute(array($data['idcolaboradores']));
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
         public function buscarFase($data = []){
             try {
                 $consulta = $this->conexion->prepare("CALL buscar_fase(?)");
