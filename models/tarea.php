@@ -185,10 +185,11 @@
 
         public function buscar_tareas($data = []){
             try {
-                $query = "CALL buscarTareas(?,?,?,?)";
+                $query = "CALL buscarTareas(?,?,?,?,?)";
                 $consulta = $this->conexion->prepare($query);
                 $consulta->execute(array(
                     $data['idcolaboradores'],
+                    $data['idproyecto'],
                     $data['idfase'],
                     $data['tarea'],
                     $data['estado']

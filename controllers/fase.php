@@ -65,13 +65,40 @@
             }
         }
 
+        if ($_POST['op'] == 'listarFasesV2') {
+            $datos = $fase->getFases_by_P($_POST['idproyecto']);
+            $etiqueta = "<option value=''>Seleccione la fase</option>";
+            echo $etiqueta;
+            foreach ($datos as $registro){
+               
+                $etiqueta2 ="<option value='{$registro['idfase']}'>{$registro['nombrefase']}</option>";
+                echo $etiqueta2;
+            }
+            
+        }
+
+        if ($_POST['op'] == 'listarFasesV3') {
+            $datos = $fase->listar_fase_proyecto_by_C([
+                "idproyecto"         => $_POST['idproyecto'],
+                "idcolaboradores"    => $_SESSION['idcolaboradores'],
+            ]);
+            $etiqueta = "<option value=''>Seleccione la fase</option>";
+            echo $etiqueta;
+            foreach ($datos as $registro){
+               
+                $etiqueta2 ="<option value='{$registro['idfase']}'>{$registro['nombrefase']}</option>";
+                echo $etiqueta2;
+            }
+            
+        }
+
         if ($_POST['op'] == 'buscarFase') {
             $datos = ["idproyecto" => $_POST['idproyecto']];
             $datos = $fase->buscarFase($datos);
             $contador = 1; // Variable contador inicializada en 1
             
             foreach ($datos as $registro) {
-                $estado = $registro['estado'] == 1 ? 'Activo' : $registro['estado'];
+                $estado = $registro['estado'] == 1 ? 'Activo' : ($registro['estado'] == 2 ? 'Finalizado' : $registro['estado']);
                 $porcentaje = $registro['porcentaje_fase'];
                 // If para poder quitar ".00" de los porcentajes y en caso del que porcentaje sea NULL,
                 // Se muestre como "0" 

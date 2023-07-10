@@ -298,7 +298,32 @@
     }
   }
 
-  function listartipoproyecto(){
+  function listarProyecto(){
+    const proyecto = document.querySelector("#buscar-proyecto");
+
+    const parametrosURL = new URLSearchParams();
+    parametrosURL.append("op", "listarProyecto");
+
+    fetch('../controllers/proyecto.php',{
+        method: 'POST',
+        body: parametrosURL
+    })
+    .then(respuesta => {
+        if(respuesta.ok){
+            return respuesta.text();
+        } else{
+            throw new Error('Error en la solicitud');
+        }
+    })
+    .then(datos =>{
+      proyecto.innerHTML = datos;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+  }
+
+  function listarFase(){
     const fase = document.querySelector("#buscar-fase");
 
     const parametrosURL = new URLSearchParams();
@@ -321,17 +346,46 @@
     .catch(error => {
         console.error('Error:', error);
     });
-}
+  }
+
+  function listarFasesSelect(){
+    const fase = document.querySelector("#buscar-fase");
+    const proyecto = document.querySelector("#buscar-proyecto");
+
+    const parametrosURL = new URLSearchParams();
+    parametrosURL.append("op", "listarFasesV3");
+    parametrosURL.append("idproyecto", proyecto.value);
+
+    fetch('../controllers/fase.php',{
+        method: 'POST',
+        body: parametrosURL
+    })
+    .then(respuesta => {
+        if(respuesta.ok){
+            return respuesta.text();
+        } else{
+            throw new Error('Error en la solicitud');
+        }
+    })
+    .then(datos =>{
+      fase.innerHTML = datos;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+  }
 
   function buscarTarea() {
     const table = document.querySelector("#tabla-tareas");
     const bodytable = table.querySelector("tbody");
+    const proyecto = document.querySelector("#buscar-proyecto");
     const fase = document.querySelector("#buscar-fase");
     const tarea = document.querySelector("#nombre-tarea");
     const estadoT = document.querySelector("#buscar-estado");
 
     const parametrosURL = new URLSearchParams();
     parametrosURL.append("op", "buscar_tareas");
+    parametrosURL.append("idproyecto", proyecto.value);
     parametrosURL.append("idfase", fase.value);
     parametrosURL.append("tarea", tarea.value);
     parametrosURL.append("estado", estadoT.value);
@@ -358,10 +412,13 @@
 
 listarCorreo();
 list();
-listartipoproyecto();
+listarProyecto();
+listarFase();
 
 const btnGenerarReporte = document.querySelector('#generarpdf-tarea');
 btnGenerarReporte.addEventListener('click',generarReporte);
 
 const btnBuscarT = document.querySelector('#buscar-tareas');
 btnBuscarT.addEventListener('click',buscarTarea);
+const btnBuscarF = document.querySelector('#buscar-proyecto');
+btnBuscarF.addEventListener('click',listarFasesSelect);

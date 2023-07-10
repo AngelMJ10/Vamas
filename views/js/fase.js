@@ -388,6 +388,7 @@ let idtarea = 0;
     function quitarRead() {
         const nombreTarea = document.getElementById('nombre-tarea');
         const usuarioTarea = document.getElementById('usuario-tarea');
+        const rolTarea = document.getElementById('rol-tarea');
         const fechaIniTarea = document.getElementById('fecha-inicio-tarea');
         const fechaFinTarea = document.getElementById('fecha-fin-tarea');
         const porcentajeTarea = document.getElementById('porcentaje-tarea');
@@ -400,6 +401,7 @@ let idtarea = 0;
 
         nombreTarea.readOnly = false;
         usuarioTarea.readOnly = false;
+        rolTarea.readOnly = false;
         fechaIniTarea.readOnly = false;
         fechaFinTarea.readOnly = false;
         porcentajeTarea.readOnly = false;
@@ -437,6 +439,7 @@ let idtarea = 0;
     function addRead() {
         const nombreTarea = document.getElementById('nombre-tarea');
         const usuarioTarea = document.getElementById('usuario-tarea');
+        const rolTarea = document.getElementById('rol-tarea');
         const fechaIniTarea = document.getElementById('fecha-inicio-tarea');
         const fechaFinTarea = document.getElementById('fecha-fin-tarea');
         const porcentajeTarea = document.getElementById('porcentaje-tarea');
@@ -449,6 +452,7 @@ let idtarea = 0;
 
         nombreTarea.readOnly = true;
         usuarioTarea.readOnly = true;
+        rolTarea.readOnly = true;
         fechaIniTarea.readOnly = true;
         fechaFinTarea.readOnly = true;
         porcentajeTarea.readOnly = true;
@@ -469,6 +473,23 @@ let idtarea = 0;
         const fechaFinTarea = document.getElementById('fecha-fin-tarea');
         const porcentajeTarea = document.getElementById('porcentaje-tarea');
 
+        if (!nombreTarea.value || !usuarioTarea.value || !fechaIniTarea.value || !fechaFinTarea.value || !porcentajeTarea.value || !rolTarea.value) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Campos incompletos',
+              text: 'Por favor, completa todos los campos.',
+            });
+            return;
+        }
+      
+        if (isNaN(porcentajeTarea.value) || porcentajeTarea.value < 0 || porcentajeTarea.value > 100) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Porcentaje excedido',
+            text: 'Por favor, ingrese un porcentaje de 0 a 100.',
+        });
+        }
+
         const parametros = new URLSearchParams();
         parametros.append("op", "editarTarea");
         parametros.append("idtarea", idtarea);
@@ -479,24 +500,82 @@ let idtarea = 0;
         parametros.append("fecha_inicio_tarea", fechaIniTarea.value);
         parametros.append("fecha_fin_tarea", fechaFinTarea.value);
 
-        fetch('../controllers/tarea.php', {
-            method: 'POST',
-            body: parametros
-        })
-            .then(respuesta => {
-            if(respuesta.ok){
-                obtenerPorcentajeF();
-                obtenerPorcentajeP();
-                alert('Tarea Editada correctamente');
-                location.reload();
-            } else{
-                alert('Error en la solicitud');
-            }
+        Swal.fire({
+            icon: 'question',
+            title: 'Confirmación',
+            text: '¿Está seguro de los datos modificados?',
+            showCancelButton: true,
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              const parametros = new URLSearchParams();
+              parametros.append("op", "editarTarea");
+              parametros.append("idtarea", idtarea);
+              parametros.append("idcolaboradores", usuarioTarea.value);
+              parametros.append("roles", rolTarea.value);
+              parametros.append("tarea", nombreTarea.value);
+              parametros.append("porcentaje", porcentajeTarea.value);
+              parametros.append("fecha_inicio_tarea", fechaIniTarea.value);
+              parametros.append("fecha_fin_tarea", fechaFinTarea.value);
+          
+            fetch('../controllers/tarea.php', {
+              method: 'POST',
+              body: parametros
             })
-            .catch(error => {
-            console.error('Error:', error);
-            });
+              .then(respuesta => {
+                if(respuesta.ok){
+                  obtenerPorcentajeF();
+                  obtenerPorcentajeP();
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Tarea Actualizada',
+                    text: 'La tarea ha sido actualizada correctamente.'
+                  }).then(() => {
+                    location.reload();
+                  });
+                } else{
+                  throw new Error('Error en la solicitud');
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                Swal.alert({
+                  icon: 'Error',
+                  title: 'Error al editar la tarea',
+                  text: 'Ocurrió un actualizar la tarea. Por favor intentelo nuevamente.'
+                })
+              });
+            }
+          })
 
+    }
+
+    function listarHabilidadesEditar() {
+        const usuarioTarea = document.getElementById('usuario-tarea');
+        const rolTarea = document.getElementById('rol-tarea');
+        
+        const parametros = new URLSearchParams();
+        parametros.append("op", "listar_Habilidades");
+        parametros.append("idcolaboradores", usuarioTarea.value);
+    
+        fetch('../controllers/tarea.php', {
+          method: 'POST',
+          body: parametros
+        })
+          .then(respuesta => {
+            if (respuesta.ok) {
+              return respuesta.text();
+            } else {
+              throw new Error('Error en la solicitud');
+            }
+          })
+          .then(datos => {
+            rolTarea.innerHTML = datos;
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
     }
 
     // Modal de Tareas
@@ -521,6 +600,9 @@ let idtarea = 0;
             inputs.innerHTML = datos;
             const bootstrapModal = new bootstrap.Modal(modalInfoTarea);
             bootstrapModal.show();
+            // Para buscar las habilidades en la edición de tareas
+            const btnBuscarHabilidad2 = document.querySelector('#usuario-tarea');
+            btnBuscarHabilidad2.addEventListener("click", listarHabilidadesEditar);
             verEvidenciasTarear(id)
             idtarea = id;
         })
@@ -616,8 +698,8 @@ list();
     const btnAgregarT = document.querySelector("#agregar-tarea");
     btnAgregarT.addEventListener("click", openModalAgregarTarea);
 
-    const btnBuscar = document.querySelector("#btn-habilidades");
-    btnBuscar.addEventListener("click", listarHabilidades);
+    const btnBuscarHabilidad = document.querySelector("#asignar-empleado");
+    btnBuscarHabilidad.addEventListener("click", listarHabilidades);
 
     // Para registrar tareas en el miniModal
     const btnRegistrarTarea = document.querySelector("#registrar-tarea");

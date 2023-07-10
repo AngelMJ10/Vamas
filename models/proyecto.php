@@ -20,6 +20,17 @@
             }
         }
 
+        public function listar_proyecto_by_Colaborador($data = []){
+            try {
+                $consulta = $this->conexion->prepare("Call listar_proyecto_by_Colaborador(?)");
+                $consulta->execute(array($data['idcolaboradores']));
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
         public function listarTodos(){
             try {
                 $consulta  = $this->conexion->prepare("SELECT * FROM proyecto");

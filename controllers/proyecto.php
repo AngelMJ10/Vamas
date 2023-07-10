@@ -43,6 +43,25 @@
             }
         }
 
+        if ($_POST['op'] == 'listarProyecto') {
+            $datos = $proyecto->listar();
+            $etiqueta = "<option value=''>Seleccione el proyecto</option>";
+            echo $etiqueta;
+            if ($_SESSION['nivelacceso'] != 'C') {
+                foreach ($datos as $registro){
+               
+                    $etiqueta ="<option value='{$registro['idproyecto']}'>{$registro['titulo']}</option>";
+                    echo $etiqueta;
+                }
+            } else {
+                $datosF = $proyecto->listar_proyecto_by_Colaborador(["idcolaboradores" => $_SESSION['idcolaboradores']]);
+                foreach ($datosF as $registro){
+                    $etiqueta ="<option value='{$registro['idproyecto']}'>{$registro['titulo']}</option>";
+                    echo $etiqueta;
+                }
+            }
+        }
+
         if ($_POST['op'] == 'buscarProyecto') {
             $data = [
                 "idtipoproyecto"    => $_POST['idtipoproyecto'],
@@ -416,7 +435,7 @@
             require_once '../models/Colaboradores.php';
             $colaborador = new Colaborador();
             $datos = $colaborador->listarColaborador();
-            $etiqueta = "<option value='0'>Seleccione el usuario responsable</option>";
+            $etiqueta = "<option value=''>Seleccione el usuario responsable</option>";
             echo $etiqueta;
             foreach ($datos as $registro) {
                 echo "<option value='{$registro['idcolaboradores']}'>{$registro['usuario']}</option>";
@@ -427,7 +446,7 @@
             require_once '../models/Colaboradores.php';
             $colaborador = new Colaborador();
             $datos = $colaborador->listarColaborador_A();
-            $etiqueta = "<option value='0'>Seleccione el usuario a elegir</option>";
+            $etiqueta = "<option value=''>Seleccione el usuario a elegir</option>";
             echo $etiqueta;
             foreach ($datos as $registro) {
                 echo "<option value='{$registro['idcolaboradores']}'>{$registro['usuario']}</option>";

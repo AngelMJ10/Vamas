@@ -150,7 +150,7 @@ CREATE TABLE proyecto
 )ENGINE = INNODB;
 
 INSERT INTO proyecto (idtipoproyecto,idempresa,titulo,descripcion,fechainicio,fechafin,precio,idusuariore)
-VALUES ('1','1','Página web sobre test psicologicos','Prueba 2','2023-05-29','2023-05-31',150.00,'1');
+VALUES ('1','1','Desarrollar una pagina web','Prueba 2','2023-05-29','2023-05-31',150.00,'1');
 
 INSERT INTO proyecto (idtipoproyecto,idempresa,titulo,descripcion,fechainicio,fechafin,precio,idusuariore)
 VALUES ('2','2','Sistema de ventas pra un restaurante','Prueba 3','2023-05-29','2023-05-31',120.00,'1');

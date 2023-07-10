@@ -328,6 +328,31 @@ END $$
 DROP PROCEDURE obtener_proyecto
 CALL obtener_proyecto(1);
 
+--------------------------------------
+-- Solo te aparecerán las fases donde estás
+DELIMITER $$
+CREATE PROCEDURE listar_proyecto_by_Colaborador(IN _idcolaboradores SMALLINT)
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM colaboradores WHERE idcolaboradores = _idcolaboradores AND nivelacceso = 'C'
+    ) THEN
+        SELECT DISTINCT pro.idproyecto, pro.titulo
+        FROM proyecto pro
+        LEFT JOIN fases fas ON fas.idproyecto = pro.idproyecto
+        INNER JOIN tareas tar ON tar.idfase = fas.idfase AND tar.idcolaboradores = _idcolaboradores
+        WHERE pro.estado = 1
+        ORDER BY pro.idproyecto; -- Ordenar por el ID de proyecto
+    ELSE
+        SELECT pro.idproyecto, pro.titulo
+        FROM proyecto pro
+        WHERE pro.estado = 1
+        ORDER BY pro.idproyecto; -- Ordenar por el ID de proyecto
+    END IF;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE listar_proyecto_by_Colaborador
+CALL listar_proyecto_by_Colaborador(1);
 --------------------------------------------------------------------
 -- Para contar los usuario en los proyectos
 DELIMITER $$
@@ -426,6 +451,8 @@ END $$
 
 CALL listar_fase();
 
+-----------------------------------------
+-- Solo te aparecerán las fases donde estás
 DELIMITER $$
 CREATE PROCEDURE listar_fase_by_Colaborador(IN _idcolaboradores SMALLINT)
 BEGIN
@@ -460,11 +487,11 @@ BEGIN
     INNER JOIN proyecto pro ON pro.idproyecto = fas.idproyecto
     INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
     INNER JOIN colaboradores col ON col.idcolaboradores = fas.idresponsable
-    WHERE (fas.idproyecto = _idproyecto OR _idproyecto IS NULL)
+    WHERE (NULLIF(_idproyecto, '') IS NULL OR pro.idproyecto = _idproyecto)
     ORDER BY pro.idproyecto, fas.fechainicio, fas.fechafin; -- Ordenar por el idproyecto ascendente
 END $$
 
-CALL buscar_fase(1);
+CALL buscar_fase('');
 
 ------------------------------------------------------------
 
@@ -487,6 +514,44 @@ END $$
 
 DROP PROCEDURE listar_fase_proyecto
 CALL listar_fase_proyecto(1);
+
+------------------------------------------------------------------
+-- Para listar las fases de un proyecto con el ID del proyecto y el ID del colaborador
+DELIMITER $$
+CREATE PROCEDURE listar_fase_proyecto_by_C(IN _idproyecto SMALLINT, IN _idcolaboradores SMALLINT)
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM colaboradores WHERE idcolaboradores = _idcolaboradores AND nivelacceso = 'C'
+    ) THEN
+        SELECT fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyecto', pro.fechafin AS 'FinProyecto', 
+            pro.precio, emp.nombre AS 'empresa', col.usuario, fas.nombrefase, fas.fechainicio, 
+            fas.fechafin, fas.comentario, fas.estado, fas.porcentaje_fase, fas.porcentaje,
+            (SELECT COUNT(*) FROM tareas tar WHERE tar.idfase = fas.idfase AND tar.idcolaboradores = _idcolaboradores) AS Tareas
+        FROM fases fas
+        INNER JOIN proyecto pro ON pro.idproyecto = fas.idproyecto
+        INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
+        INNER JOIN colaboradores col ON col.idcolaboradores = fas.idresponsable
+        WHERE (NULLIF(_idproyecto, '') IS NULL OR pro.idproyecto = _idproyecto)
+            AND EXISTS (SELECT 1 FROM tareas tar WHERE tar.idfase = fas.idfase AND tar.idcolaboradores = _idcolaboradores)
+        ORDER BY fas.fechainicio;
+    ELSE
+        SELECT fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyecto', pro.fechafin AS 'FinProyecto', 
+            pro.precio, emp.nombre AS 'empresa', col.usuario, fas.nombrefase, fas.fechainicio, 
+            fas.fechafin, fas.comentario, fas.estado, fas.porcentaje_fase, fas.porcentaje,
+            (SELECT COUNT(*) FROM tareas tar WHERE tar.idfase = fas.idfase) AS Tareas
+        FROM fases fas
+        INNER JOIN proyecto pro ON pro.idproyecto = fas.idproyecto
+        INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
+        INNER JOIN colaboradores col ON col.idcolaboradores = fas.idresponsable
+        WHERE (NULLIF(_idproyecto, '') IS NULL OR pro.idproyecto = _idproyecto)
+        ORDER BY fas.fechainicio;
+    END IF;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE listar_fase_proyecto_by_C
+CALL listar_fase_proyecto_by_C('',4);
+
 
 --------------------------------------------
 
@@ -577,6 +642,7 @@ CALL listar_tarea_colaboradores(1);
 DELIMITER $$
 CREATE PROCEDURE buscarTareas(
     IN _idcolaboradores SMALLINT,
+    IN _idproyecto SMALLINT,
     IN _idfase SMALLINT,
     IN _tarea VARCHAR(255),
     IN _estado CHAR(1)
@@ -595,7 +661,8 @@ BEGIN
             INNER JOIN colaboradores col_tarea ON tar.idcolaboradores = col_tarea.idcolaboradores
             INNER JOIN colaboradores col_fase ON fas.idresponsable = col_fase.idcolaboradores
             WHERE
-                (NULLIF(_idfase, '') IS NULL OR fas.idfase = _idfase)
+                (NULLIF(_idproyecto, '') IS NULL OR pro.idproyecto = _idproyecto)
+                AND (NULLIF(_idfase, '') IS NULL OR fas.idfase = _idfase)
                 AND (NULLIF(_tarea, '') IS NULL OR tar.tarea LIKE CONCAT('%', _tarea, '%'))
                 AND (NULLIF(_estado, '') IS NULL OR tar.estado = _estado)
                 AND col_tarea.idcolaboradores = _idcolaboradores
@@ -610,7 +677,8 @@ BEGIN
             INNER JOIN colaboradores col_tarea ON tar.idcolaboradores = col_tarea.idcolaboradores
             INNER JOIN colaboradores col_fase ON fas.idresponsable = col_fase.idcolaboradores
             WHERE
-                (NULLIF(_idfase, '') IS NULL OR fas.idfase = _idfase)
+                (NULLIF(_idproyecto, '') IS NULL OR pro.idproyecto = _idproyecto)
+                AND (NULLIF(_idfase, '') IS NULL OR fas.idfase = _idfase)
                 AND (NULLIF(_tarea, '') IS NULL OR tar.tarea LIKE CONCAT('%', _tarea, '%'))
                 AND (NULLIF(_estado, '') IS NULL OR tar.estado = _estado)
             ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
@@ -619,9 +687,8 @@ BEGIN
 END $$
 DELIMITER ;
 
-
 DROP PROCEDURE buscarTareas;
-CALL buscarTareas('4','','Boceto','');
+CALL buscarTareas('1','','6','','');
 
 -----------------------------------------------------
 -- P.A para editar una tarea

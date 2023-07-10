@@ -137,12 +137,14 @@
 
         if ($_POST['op'] == 'buscar_tareas') {
             $idcolaboradores = $_SESSION['idcolaboradores'];
+            $idproyecto = $_POST['idproyecto'];
             $idfase = $_POST['idfase'];
             $nombretarea = $_POST['tarea'];
             $estado = $_POST['estado'];
             $nivel = $_SESSION['nivelacceso'];
             $datos = $tarea->buscar_tareas([
                 "idcolaboradores" => $idcolaboradores,
+                "idproyecto" => $idproyecto,
                 "idfase" => $idfase,
                 "tarea" => $nombretarea,
                 "estado" => $estado
@@ -253,7 +255,7 @@
             $datos = [
                 "idcolaboradores"                => $_POST['idcolaboradores']
             ];
-            echo ($etiqueta = "<option value='0'>Seleccione las habilidades</option>");
+            echo ($etiqueta = "<option value=''>Seleccione la habilidades</option>");
             $datas_H = $colaboradores->listar_Habilidades($datos);
             foreach ($datas_H as $registro) {
                 echo "<option value='{$registro['habilidad']}'>{$registro['habilidad']}</option>";

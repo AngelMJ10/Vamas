@@ -44,21 +44,29 @@
               <div class="accordion-body">
                 <form>
                   <div class="row mb-2 mt-2">
-                      <div class="col-md-4">
+                    <div class="col-md-3">
+                      <div class="form-floating mb-3">
+                        <select name="buscar-proyecto" id="buscar-proyecto" class="form-control form-control-sm">
+                            <label for="buscar-proyecto">Seleccione el proyecto:</label>
+                            <option value="">Seleccione el proyecto</option>
+                          </select>
+                      </div>
+                      </div>
+                      <div class="col-md-3">
                           <div class="form-floating mb-3">
                             <select name="buscar-fase" id="buscar-fase" class="form-control form-control-sm">
-                                <label for="buscar-fase">Seleccione el estado:</label>
+                                <label for="buscar-fase">Seleccione la fase:</label>
                                 <option value="">Seleccione una fase</option>
                               </select>
                           </div>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-3">
                           <div class="form-floating mb-3">
                               <input type="text" class="form-control" id="nombre-tarea" placeholder="Razón Social" name="razonsocial">
                               <label for="nombre-tarea" class="form-label">Nombre de la tarea</label>
                           </div>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-3">
                           <div class="form-floating mb-3">
                               <select name="buscar-estado" id="buscar-estado" class="form-control form-control-sm">
                                 <label for="buscar-estado">Seleccione el estado:</label>

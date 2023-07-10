@@ -77,6 +77,20 @@
             }
         }
 
+        public function listar_fase_proyecto_by_C($data = []){
+            try {
+                $consulta = $this->conexion->prepare("Call listar_fase_proyecto_by_C(?,?)");
+                $consulta->execute(array(
+                    $data['idproyecto'],
+                    $data['idcolaboradores'],
+                ));
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
         public function getPhase($idfase){
             try {
                 $consulta = $this->conexion->prepare("Call obtener_fase(?)");

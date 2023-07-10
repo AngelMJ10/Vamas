@@ -66,7 +66,7 @@
         </div>
         
         <div class="table-responsive mt-3" id="tabla-fase">
-          <table class="table table-hover"> 
+          <table class="table table-hover text-center"> 
 
               <thead>
                   <th>#</th>
@@ -197,7 +197,6 @@
                       <label for="tipoProyecto">Seleccione el empleado:</label>
                       <option value="">Seleccione el empleado</option>
                     </select>
-                    <button type="button" class="btn btn-sm btn-outline-primary mt-3" id="btn-habilidades">Habilidades</button>
                 </div>
 
                 <div class="col-md-6 form-floating mb-3">
