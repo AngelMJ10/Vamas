@@ -25,7 +25,7 @@ function sendEmail($destino,$ruta, $asunto, $mensaje) {
         $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
     
         //Recipients
-        $mail->setFrom('angelitomasna200410@gmail.com', 'Area de Sistemas');
+        $mail->setFrom('angelitomasna200410@gmail.com', 'App MarPad');
         $mail->addAddress($destino);               // Destinatario            // Destino
         $mail->addAttachment($ruta, 'Avance.pdf'); 
         //Archivos adjuntos

@@ -342,6 +342,7 @@ let idtarea = 0;
           }
       })
       .then(datos =>{
+        responsable.innerHTML = "";
         responsable.innerHTML = datos;
       })
       .catch(error => {
@@ -1022,7 +1023,7 @@ let idtarea = 0;
     const parametros = new URLSearchParams();
     if(idtarea > 0) {
     parametros.append("idtarea", idtarea);
-    window.open(`../reports/Prueba1/reporte.php?${parametros}`, '_blank');
+    window.open(`../reports/Tarea/reporte.php?${parametros}`, '_blank');
     }
   }
 
@@ -1517,7 +1518,7 @@ let idtarea = 0;
     const parametros = new URLSearchParams();
     if(idproyecto > 0) {
     parametros.append("idproyecto", idproyecto);
-    window.open(`../reports/Proyecto/reporteF.php?${parametros}`, '_blank');
+    window.open(`../reports/Proyecto/reporteP.php?${parametros}`, '_blank');
     }
   }
 

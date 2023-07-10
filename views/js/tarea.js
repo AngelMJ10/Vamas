@@ -286,7 +286,7 @@
       const parametros = new URLSearchParams();
       if(idtareaPdf > 0) {
       parametros.append("idtarea", idtareaPdf);
-      window.open(`../reports/Prueba1/reporte.php?${parametros}`, '_blank');
+      window.open(`../reports/Tarea/reporte.php?${parametros}`, '_blank');
       }
   }
 
@@ -294,7 +294,7 @@
     const parametros = new URLSearchParams();
     if(idtarea > 0) {
     parametros.append("idtarea", idtarea);
-    window.open(`../reports/Prueba1/reporte.php?${parametros}`, '_blank');
+    window.open(`../reports/Tarea/reporte.php?${parametros}`, '_blank');
     }
   }
 

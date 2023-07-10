@@ -146,7 +146,7 @@
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>
                                     <input type='date' class='form-control' id='fechafin-fase' placeholder='Fin de la Fase' value='{$datos[0]['fechafin']}' name='fechafin' readonly>
-                                    <label for='fechafin' class='form-label'>Fecha de Inicio</label>
+                                    <label for='fechafin' class='form-label'>Fecha de Fin</label>
                                 </div>
                             </div>
                             <div class='col-md-4'>

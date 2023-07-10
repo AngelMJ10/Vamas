@@ -26,6 +26,13 @@
           <label for="nombres">Nombres</label>
         </div>
         <div class="mb-3">
+          <select class="form-select" id="genero">
+            <option selected disabled>Tipo de documento</option>
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+          </select>
+        </div>
+        <div class="mb-3">
           <select class="form-select" id="tipo_documento">
             <option selected disabled>Tipo de documento</option>
             <option value="DNI">DNI</option>
@@ -76,6 +83,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const apellidos = document.querySelector("#apellidos");
   const nombres = document.querySelector("#nombres");
+  const genero = document.querySelector("#genero");
   const tipo_documento = document.querySelector("#tipo_documento");
   const numero_documento = document.querySelector("#numero_documento");
   const telefono = document.querySelector("#telefono");
@@ -93,6 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
     parametros.append("op", "registrarPersona");
     parametros.append("apellidos", apellidos.value);
     parametros.append("nombres", nombres.value);
+    parametros.append("genero", genero.value);
     parametros.append("tipodocumento", tipo_documento.value);
     parametros.append("nrodocumento", numero_documento.value);
     parametros.append("telefono", telefono.value);

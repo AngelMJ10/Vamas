@@ -26,8 +26,6 @@
     <p class="mb-3"><b>Porcentaje:</b> <?= $porcentaje ?>%  .</p>
   </div>
 
-  <page_footer>
-    <p class='center footer'><?= $piePagina ?></p>
-        <p class=''>Pag. [[page_cu]]</p>
-  </page_footer>
+  <div class="page-break"></div>
+
 </page>

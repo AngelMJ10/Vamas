@@ -23,7 +23,7 @@
             $mail->Port       = 465;
 
             // Recipients
-            $mail->setFrom('angelitomasna200410@gmail.com', 'Area de Sistemas');
+            $mail->setFrom('angelitomasna200410@gmail.com', 'App MARPAD');
             $mail->addAddress($destino);
             $mail->addStringAttachment(file_get_contents($_FILES['documento']['tmp_name']), $_FILES['documento']['name']);
 

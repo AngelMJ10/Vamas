@@ -78,7 +78,7 @@
                 <td><?= $item['colaborador'] ?></td>
                 <td><?= $item['receptor'] ?></td>
                 <td><?= $item['mensaje'] ?></td>
-                <td><a href='<?= $item['documento'] ?>' target='_blank'>Enlace al documento</a></td>
+                <td><a href='<?= $item['documento'] ?>'>Enlace al documento</a></td>
                 <td><?= $item['fecha'] ?></td>
                 <td><?= $item['hora'] ?></td>
                 <td><?= $item['porcentaje'] ?>%</td>

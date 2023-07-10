@@ -502,7 +502,6 @@
   </div>
 </div>
 
-
 <!-- Modal para más información de la fase -->
 <div class="modal fade" id="modal-info-fase" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">

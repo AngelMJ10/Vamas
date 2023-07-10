@@ -8,6 +8,7 @@ const txtNivel = document.querySelector("#nivel-editar");
 const txtFases = document.querySelector("#fases-editar");
 const txtNombre = document.querySelector("#nombres-editar");
 const txtApellido = document.querySelector("#apellidos-editar");
+const txtGenero = document.querySelector("#genero-editar");
 const txtxHabilidad = document.querySelector("#habilidades-editar");
 const txtTarea = document.querySelector("#tareas-editar");
 const txtDocumento = document.querySelector("#documento-cola");
@@ -40,6 +41,7 @@ function obtenerInfo(id){
         txtFases.value = datos.Fases
         txtApellido.value = datos.apellidos;
         txtNombre.value = datos.nombres;
+        txtGenero.value = datos.genero;
         txtDocumento.value = datos.nrodocumento;
         NTelefono.value = datos.telefono;
         txtTarea.value = datos.Tareas;
@@ -75,6 +77,7 @@ function quitarRead(){
     txtNivel.readOnly = false;
     txtApellido.readOnly = false;
     txtNombre.readOnly = false;
+    txtGenero.readOnly = false;
     txtDocumento.readOnly = false;
     NTelefono.readOnly = false;
 
@@ -89,6 +92,7 @@ function cancelarEditar(){
     txtNivel.readOnly = true;
     txtApellido.readOnly = true;
     txtNombre.readOnly = true;
+    txtGenero.readOnly = true;
     txtDocumento.readOnly = true;
     NTelefono.readOnly = true;
 
@@ -98,7 +102,7 @@ function cancelarEditar(){
 }
 
 function editarColaborardor_Persona(){
-    if (!txtusu.value || !txtCorreo.value || !txtNivel.value || !txtFases.value || !txtApellido.value || !txtNombre.value || !txtDocumento.value || !NTelefono.value) {
+    if (!txtusu.value || !txtCorreo.value || !txtNivel.value || !txtFases.value || !txtApellido.value || !txtNombre.value || !txtGenero.value || !txtDocumento.value || !NTelefono.value) {
         Swal.fire({
           icon: 'warning',
           title: 'Campos incompletos',
@@ -124,6 +128,7 @@ function editarColaborardor_Persona(){
             parametros.append("nivelacceso", txtNivel.value);
             parametros.append("apellidos", txtApellido.value);
             parametros.append("nombres", txtNombre.value);
+            parametros.append("genero", txtGenero.value);
             parametros.append("nrodocumento", txtDocumento.value);
             parametros.append("telefono", NTelefono.value);
             fetch('../controllers/persona.php', {

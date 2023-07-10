@@ -44,10 +44,11 @@
         
         public function registrarPersona($datos){
             try {
-                $consulta = $this->conexion->prepare("INSERT INTO personas(apellidos,nombres,tipodocumento,nrodocumento,telefono,direccion,fechanac) VALUES(?,?,?,?,?,?,?)");
+                $consulta = $this->conexion->prepare("INSERT INTO personas(apellidos,nombres,genero,tipodocumento,nrodocumento,telefono,direccion,fechanac) VALUES(?,?,?,?,?,?,?,?)");
                 $consulta->execute(array(
                     $datos['apellidos'],
                     $datos['nombres'],
+                    $datos['genero'],
                     $datos['tipodocumento'],
                     $datos['nrodocumento'],
                     $datos['telefono'],
@@ -62,7 +63,7 @@
 
         public function editarCol_Per($data = []){
             try {
-                $query = "CALL editar_Colaborador(?,?,?,?,?,?,?,?)";
+                $query = "CALL editar_Colaborador(?,?,?,?,?,?,?,?,?)";
                 $consulta = $this->conexion->prepare($query);
                 $consulta->execute(array(
                     $data['idpersona'],
@@ -71,6 +72,7 @@
                     $data['nivelacceso'],
                     $data['apellidos'],
                     $data['nombres'],
+                    $data['genero'],
                     $data['nrodocumento'],
                     $data['telefono']
                 ));

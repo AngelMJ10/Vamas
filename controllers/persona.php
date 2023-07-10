@@ -23,6 +23,7 @@
             $datos = [
                 "apellidos" => $_POST['apellidos'],
                 "nombres" => $_POST['nombres'],
+                "genero" => $_POST['genero'],
                 "tipodocumento" => $_POST['tipodocumento'],
                 "nrodocumento" => $_POST['nrodocumento'],
                 "telefono" => $_POST['telefono'],
@@ -45,7 +46,7 @@
             $contador = 1;
             foreach ($datos as $datos) {
               $tbody = "
-                <tr class='mb-2' title='Doble click para ver más información' ondblclick='obtenerInfo({$datos['idcolaboradores']})'>
+                <tr class='mb-3' title='Doble click para ver más información' ondblclick='obtenerInfo({$datos['idcolaboradores']})'>
                   <td class='p-3' data-label='#'>{$contador}</td>
                   <td class='p-3' data-label='Usuario'>{$datos['usuario']}</td>
                   <td class='p-3' data-label='Correo'>{$datos['correo']}</td>
@@ -53,11 +54,11 @@
                   <td class='p-3' data-label='Apellidos'>{$datos['apellidos']}</td>
                   <td class='p-3' data-label='Nombres'>{$datos['nombres']}</td>
                   <td class='p-3' data-label='Habilidades'>{$datos['Habilidades']}</td>
-                  <td class='p-3' data-label='Habilidades'>{$datos['Fases']}</td>
+                  <td class='p-3' data-label='Fases asig.'>{$datos['Fases']}</td>
                   <td class='p-3' data-label='Tareas asig.'>{$datos['Tareas']}</td>
-                  <td data-label='Acciones'>
+                  <td class='p-3' data-label='Acciones'>
                       <div class='btn-group' role='group'>
-                          <button type='button' onclick='abrirModalH({$datos['idcolaboradores']})' title='Clic, para editar la tarea.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
+                          <button type='button' onclick='abrirModalH({$datos['idcolaboradores']})' title='Clic, para agregar una habilidad.' class='btn btn-outline-success btn-sm editar-btn'><i class='fas fa-arrow-alt-circle-down'></i></button>
                       </div>
                   </td>
                 </tr>
@@ -83,6 +84,7 @@
                 "nivelacceso" => $_POST['nivelacceso'],
                 "apellidos" => $_POST['apellidos'],
                 "nombres" => $_POST['nombres'],
+                "genero" => $_POST['genero'],
                 "nrodocumento" => $_POST['nrodocumento'],
                 "telefono" => $_POST['telefono']        
             ];

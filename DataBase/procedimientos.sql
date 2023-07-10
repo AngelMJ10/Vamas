@@ -51,14 +51,13 @@ CALL listar_habilidades();
 DELIMITER $$
 CREATE PROCEDURE listar_habilidades_by_Col(IN _idcolaboradores SMALLINT)
 BEGIN
-	SELECT hab.idhabilidades,col.idcolaboradores,per.apellidos,per.nombres,col.usuario,col.nivelacceso,hab.habilidad
+	SELECT hab.idhabilidades,col.idcolaboradores,per.apellidos,per.nombres,per.genero,col.usuario,col.nivelacceso,hab.habilidad
 	FROM habilidades hab
 	INNER JOIN colaboradores col ON hab.idcolaboradores = col.idcolaboradores
 	INNER JOIN personas per ON col.idpersona = per.idpersona
 	WHERE col.idcolaboradores = _idcolaboradores AND hab.estado = 1
 	ORDER BY hab.habilidad;
 END $$
-
 CALL listar_habilidades_by_Col(3);
 
 ----------------------------------------- RESTAURAR CONTRASEÑA -----------------------------------
@@ -190,7 +189,7 @@ DELIMITER $$
 CREATE PROCEDURE listar_colaboradores()
 BEGIN
     SELECT col.idcolaboradores, col.usuario, col.correo, col.nivelacceso,
-        per.apellidos, per.nombres,
+        per.apellidos, per.nombres,per.genero,
         (SELECT COUNT(DISTINCT idhabilidades) FROM habilidades WHERE idcolaboradores = col.idcolaboradores) AS Habilidades,
         (SELECT COUNT(DISTINCT fas.idfase) FROM fases fas WHERE fas.idresponsable = col.idcolaboradores AND fas.estado = 1) AS Fases,
         (SELECT COUNT(DISTINCT tar.idtarea) FROM tareas tar WHERE tar.idcolaboradores = col.idcolaboradores AND tar.estado = 1) AS Tareas
@@ -210,7 +209,7 @@ DELIMITER $$
 CREATE PROCEDURE obtener_info_colaborador(IN _idcolaboradores SMALLINT)
 BEGIN
 	SELECT col.idcolaboradores,per.idpersona, col.usuario, col.correo, col.nivelacceso,
-	per.apellidos, per.nombres,per.nrodocumento,telefono, GROUP_CONCAT(hab.habilidad SEPARATOR ', ') AS habilidades,
+	per.apellidos, per.nombres,per.genero,per.nrodocumento,telefono, GROUP_CONCAT(hab.habilidad SEPARATOR ', ') AS habilidades,
 	(SELECT COUNT(DISTINCT idfase) FROM fases WHERE idresponsable = col.idcolaboradores) AS Fases,
 	(SELECT COUNT(DISTINCT idtarea) FROM tareas WHERE idcolaboradores = col.idcolaboradores) AS Tareas
 	FROM colaboradores col
@@ -221,7 +220,7 @@ BEGIN
 END $$
 
 DROP PROCEDURE obtener_info_colaborador
-CALL obtener_info_colaborador(3)
+CALL obtener_info_colaborador(1)
 
 ------------------------------------
 -- Para editar al colaborador
@@ -235,17 +234,18 @@ CREATE PROCEDURE editar_Colaborador
 	IN _nivelacceso 	CHAR(1),
 	IN _apellidos 		VARCHAR(40),
 	IN _nombres 		VARCHAR(40),
+	IN _genero			CHAR(1),
 	IN _nrodocumento 	CHAR(8),
 	IN _telefono 		CHAR(9)
 )
 BEGIN
-	UPDATE personas SET apellidos = _apellidos, nombres = _nombres, nrodocumento = _nrodocumento,
+	UPDATE personas SET apellidos = _apellidos, nombres = _nombres, genero = _genero, nrodocumento = _nrodocumento,
 			telefono = _telefono WHERE idpersona = _idpersona;
 	UPDATE colaboradores SET usuario = _usuario, correo = _correo, nivelacceso = _nivelacceso
 		WHERE idpersona = _idpersona;
 END $$
 
-CALL editar_Colaborador(1,'AngelMJ','1342364@senati.pe','A','Marquina Jaime','Ángel Eduardo',72745028,951531166);
+CALL editar_Colaborador(1,'AngelMJ','1342364@senati.pe','A','Marquina Jaime','Ángel Eduardo','M',72745028,951531166);
 
 -----------------------------------------------
 -- Para registrar habilidades con usuario
@@ -667,7 +667,7 @@ BEGIN
         WHERE fas.idfase = _idfase
         ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
 END $$
-¡
+
 CALL obtener_tareas_fase(1);
 
 ---------------------------------------------

@@ -1,23 +1,11 @@
-<page>
-    <!-- Cabecera de la página -->
-    <page_header>
-        <p class='mb-1'>Area de sistemas</p>
-        <hr class='b-simple'>
-    </page_header>
-    <!-- Pie de página -->
-    <page_footer>
-        <p class='center'><?= $piePagina ?></p>
-        <p class='italic'>Pag. [[page_cu]]</p>
-    </page_footer>
-
     <!-- Cuerpo de la página -->
-    <div class='mt-5'>
-        <h3 class='center mt-4'>Proyecto</h3>
+    <div class=''>
+        <h3 class='center'>Proyecto</h3>
         <table style="width:100%;" class='table table-border mt-3 center'>
           <colgroup>
             <col style="width: 22%;">
             <col style="width: 15%;">
-            <col style="width: 10%;">
+            <col style="width: 12%;">
             <col style="width: 13%;">
             <col style="width: 13%;">
             <col style="width: 10%;">
@@ -53,8 +41,8 @@
               <col style="width: 5%;">
               <col style="width: 20%;">
               <col style="width: 15%;">
-              <col style="width: 14%;">
-              <col style="width: 14%;">
+              <col style="width: 15%;">
+              <col style="width: 15%;">
               <col style="width: 10%;">
               <col style="width: 10%;">
               <col style="width: 10%;">
@@ -104,9 +92,9 @@
           <h3 class="mt-5">Fase Nº<?= $contador, " ", $registro['nombrefase']?></h3>
           <table style="width:100%;" class='table table-border mt-3 center'>
             <colgroup>
-              <col style="width: 3%;">
+              <col style="width: 4%;">
               <col style="width: 20%;">
-              <col style="width: 13%;">
+              <col style="width: 14%;">
               <col style="width: 14%;">
               <col style="width: 10%;">
               <col style="width: 10%;">
@@ -131,6 +119,7 @@
               <?php $datosT = $registro['idfase']; ?>
               <?php $dataT = $fase->tablaFases(["idfase" => $datosT]) ?>
               <?php $contadorTarea = 1;?>
+              
               <?php foreach($dataT as $element): ?>
                 <?php $porcentajeT = $element['porcentaje_tarea']?>
                 <?php $porcentaje = $element['porcentaje']?>
@@ -166,7 +155,7 @@
           <colgroup>
             <col style="width: 5%;">
             <col style="width: 20%;">
-            <col style="width: 10%;">
+            <col style="width: 15%;">
             <col style="width: 30%;">
             <col style="width: 15%;">
             <col style="width: 15%;">
@@ -196,7 +185,6 @@
             <?php endforeach;?>
           </tbody>
         </table>
-
     </div>
-</page>
+
 

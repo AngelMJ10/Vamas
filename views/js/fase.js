@@ -1,5 +1,5 @@
 let idfase = 0;
-
+let idtarea = 0;
     function getPhase(id) {
         const modal = document.querySelector("#modalPhase");
         const infoPhase = document.querySelector("#info-phase");
@@ -599,32 +599,46 @@ let idfase = 0;
     });
     }
 
+    function generarReporteT(){
+        console.log(idtarea);
+        const parametros = new URLSearchParams();
+        if(idtarea > 0) {
+        parametros.append("idtarea", idtarea);
+        window.open(`../reports/Tarea/reporte.php?${parametros}`, '_blank');
+        }
+    }
+
 listarProyectosSelect();
 list();
 
 // *Para tareas
-// Para abrir un miniModal de registro de tareas
-const btnAgregarT = document.querySelector("#agregar-tarea");
-btnAgregarT.addEventListener("click", openModalAgregarTarea);
+    // Para abrir un miniModal de registro de tareas
+    const btnAgregarT = document.querySelector("#agregar-tarea");
+    btnAgregarT.addEventListener("click", openModalAgregarTarea);
 
-const btnBuscar = document.querySelector("#btn-habilidades");
-btnBuscar.addEventListener("click", listarHabilidades);
+    const btnBuscar = document.querySelector("#btn-habilidades");
+    btnBuscar.addEventListener("click", listarHabilidades);
 
-// Para registrar tareas en el miniModal
-const btnRegistrarTarea = document.querySelector("#registrar-tarea");
-btnRegistrarTarea.addEventListener("click", agregarTarea);
+    // Para registrar tareas en el miniModal
+    const btnRegistrarTarea = document.querySelector("#registrar-tarea");
+    btnRegistrarTarea.addEventListener("click", agregarTarea);
 
-// Para quitar o agregar la clase d-none
-const btnEditarT = document.querySelector("#quitar-readonly");
-btnEditarT.addEventListener("click",quitarRead);
+    // Para quitar o agregar la clase d-none
+    const btnEditarT = document.querySelector("#quitar-readonly");
+    btnEditarT.addEventListener("click",quitarRead);
 
-const btnAddRead = document.querySelector("#cancelar-E-Tarea");
-btnAddRead.addEventListener("click",addRead);
+    const btnAddRead = document.querySelector("#cancelar-E-Tarea");
+    btnAddRead.addEventListener("click",addRead);
 
   // Para editar una tarea 
-const btnEditarTarea = document.querySelector("#guardar-C-Tarea");
-btnEditarTarea.addEventListener("click", editarTarea);
+    const btnEditarTarea = document.querySelector("#guardar-C-Tarea");
+    btnEditarTarea.addEventListener("click", editarTarea);
 
-// Para buscar fases por el proyecto
-const btnBuscarFase = document.querySelector("#buscar-por-proyecto");
-btnBuscarFase.addEventListener("click", buscarFase);
+    // Para buscar fases por el proyecto
+    const btnBuscarFase = document.querySelector("#buscar-por-proyecto");
+    btnBuscarFase.addEventListener("click", buscarFase);
+
+    // Para generar el reporte de la tarea
+    const btnRtarea = document.querySelector("#generar-reporteT");
+    btnRtarea.addEventListener("click", generarReporteT);
+

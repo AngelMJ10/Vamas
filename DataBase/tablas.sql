@@ -9,6 +9,7 @@ CREATE TABLE personas
 	tipodocumento		VARCHAR(20)	NOT NULL,
 	nrodocumento		CHAR(8)	   	NOT NULL,
 	telefono		CHAR(9)		NOT NULL,
+	genero			CHAR(1)		NOT NULL,
 	direccion		VARCHAR(200)	NOT NULL,
 	estado			CHAR(1)		NOT NULL DEFAULT '1',
 	fechanac		DATE 		NOT NULL,
@@ -48,7 +49,7 @@ VALUES(1,'AngelMJ','SENATI','1342364@senati.pe','A'),(2,'MarksPC','SENATI','1342
 UPDATE colaboradores SET
 	clave = '$2y$10$WY.iP85bEYxBMkVBG0jKO.9Q97kEbofLVwJPUT1OAmsDzLXQ8Pcka';
 UPDATE colaboradores SET
-	correo = 'angelitomasna200410@gmail.com' WHERE idcolaboradores = 1;
+	correo = '1343238@senati.pe' WHERE idcolaboradores = 2;
 
 SELECT * FROM colaboradores WHERE usuario = 'AngelMJ' AND estado = 1;
 

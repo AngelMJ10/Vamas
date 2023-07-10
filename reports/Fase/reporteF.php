@@ -29,7 +29,8 @@ try {
   // Configuración del archivo PDF
   $html2pdf = new Html2Pdf('P', 'A4', 'es', true, 'UTF-8', array(10, 10, 10, 10));
   $html2pdf->writeHTML($content);
-  $html2pdf->output('reporte.pdf');
+  $nombreFase = $datosE[0]['nombrefase'];
+  $html2pdf->output($nombreFase . '.pdf');
 
 } catch (Html2PdfException $error) {
   $formatter = new ExceptionFormatter($error);
