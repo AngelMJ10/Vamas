@@ -34,9 +34,8 @@
                         <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
                         <td data-label='Acciones'>
                             <div class='btn-group' role='group'>
-                                <button type='button' title='Clic, para editar el proyecto.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
-                                <button type='button' data-id='{$registro['idproyecto']}' class='btn btn-outline-primary btn-sm' title='Clic, para más información'><i class='fa-sharp fa-solid fa-circle-info'></i></button>
-                                <button type='button' onclick='generarReporteF({$registro['idfase']})' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
+                                <button type='button' data-id='{$registro['idproyecto']}' class='btn btn-outline-primary' title='Clic, para más información'><i class='fa-sharp fa-solid fa-circle-info'></i></button>
+                                <button type='button' onclick='generarReporteF({$registro['idfase']})' class='btn btn-outline-danger' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
                             </div>
                         </td>
                     </tr>
@@ -93,9 +92,14 @@
         }
 
         if ($_POST['op'] == 'buscarFase') {
-            $datos = ["idproyecto" => $_POST['idproyecto']];
+            $datos = [
+                "idproyecto"        => $_POST['idproyecto'],
+                "nombrefase"        => $_POST['nombrefase'],
+                "idresponsable"     => $_POST['idresponsable'],
+                "estado"            => $_POST['estado']
+            ];
             $datos = $fase->buscarFase($datos);
-            $contador = 1; // Variable contador inicializada en 1
+            $contador = 1;
             
             foreach ($datos as $registro) {
                 $estado = $registro['estado'] == 1 ? 'Activo' : ($registro['estado'] == 2 ? 'Finalizado' : $registro['estado']);
@@ -120,7 +124,6 @@
                         <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
                         <td data-label='Acciones'>
                             <div class='btn-group' role='group'>
-                                <button type='button' title='Clic, para editar el proyecto.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
                                 <button type='button' data-id='{$registro['idproyecto']}' class='btn btn-outline-primary btn-sm' title='Clic, para más información'><i class='fa-sharp fa-solid fa-circle-info'></i></button>
                                 <button type='button' onclick='generarReporteF({$registro['idfase']})' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
                             </div>

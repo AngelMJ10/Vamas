@@ -22,6 +22,12 @@ const modalH = document.querySelector("#modal-habilidades");
 const habilidadesCol = document.querySelector("#habilidadesCol");
 const btnRegistrar = document.querySelector("#registrar-habilidad");
 
+// Campos de filtros
+const nombreColaborador = document.querySelector("#buscar-colaborador");
+const buscarNivel = document.querySelector("#buscar-nivelacceso");
+const buscarCorreo = document.querySelector("#buscar-correo");
+const btnBuscar = document.querySelector("#buscar-colaboradores");
+
 let idpersona = 0;
 let idcolaboradores = 0;
 
@@ -218,8 +224,28 @@ function asignarHabilidad(){
     })  
 }
 
+function buscarColaboradores(){
+    const parametros = new URLSearchParams();
+    parametros.append("op", "buscarColaboradores");
+    parametros.append("usuario", nombreColaborador.value);
+    parametros.append("nivelacceso", buscarNivel.value);
+    parametros.append("correo", buscarCorreo.value);
+    fetch(`../controllers/persona.php`, {
+        method: 'POST',
+        body: parametros
+    })
+    .then(respuesta => respuesta.text())
+    .then(datos => {
+        tablaListar.innerHTML = datos;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
 listar();
 btnRead.addEventListener("click", quitarRead);
 btnCancelar.addEventListener("click", cancelarEditar);
 btnEditar.addEventListener("click",editarColaborardor_Persona);
 btnRegistrar.addEventListener("click",asignarHabilidad);
+btnBuscar.addEventListener("click", buscarColaboradores);

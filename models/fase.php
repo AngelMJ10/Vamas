@@ -30,8 +30,13 @@
 
         public function buscarFase($data = []){
             try {
-                $consulta = $this->conexion->prepare("CALL buscar_fase(?)");
-                $consulta->execute(array($data['idproyecto']));
+                $consulta = $this->conexion->prepare("CALL buscar_fase(?,?,?,?)");
+                $consulta->execute(array(
+                    $data['idproyecto'],
+                    $data['nombrefase'],
+                    $data['idresponsable'],
+                    $data['estado'],
+                ));
                 $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
                 return $datos;
             } catch (Exception $e) {

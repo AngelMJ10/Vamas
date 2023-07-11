@@ -27,7 +27,7 @@
         </div>
         <div class="mb-3">
           <select class="form-select" id="genero">
-            <option selected disabled>Tipo de documento</option>
+            <option selected disabled>Sexo</option>
             <option value="M">Masculino</option>
             <option value="F">Femenino</option>
           </select>

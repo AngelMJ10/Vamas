@@ -27,9 +27,9 @@
       <li class="nav-item">
         <a class="nav-link active" id="listar-tab" data-bs-toggle="tab" href="#listar" role="tab" aria-controls="listar" aria-selected="true">Listar</a>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link" id="registrar-tab" data-bs-toggle="tab" href="#registrar" role="tab" aria-controls="registrar" aria-selected="false">Registrar</a>
-      </li>
+      </li> -->
       <!-- <li class="nav-item">
         <a class="nav-link" id="editar-tab" href="empresa.php">Empresa</a>
       </li> -->
@@ -53,45 +53,31 @@
                 <div class="row mb-2 mt-2">
                     <div class="col-md-4">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="buscar-nombre" placeholder="Nombre" name="nombre">
-                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="buscar-colaborador" placeholder="Nombre" name="colaborador">
+                            <label for="colaborador" class="form-label">Nombre del Colaborador</label>
                         </div>
                     </div>
+
                     <div class="col-md-4">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="buscar-razonsocial" placeholder="Razón Social" name="razonsocial">
-                            <label for="razonsocial" class="form-label">Razón Social</label>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-floating mb-3">
-                            <select name="tipodocumento" id="buscar-tipodocumento" class="form-control form-control-sm">
-                              <label for="tipodocumento">Seleccione el tipo de Documento:</label>
+                            <select name="nivelacceso" id="buscar-nivelacceso" class="form-control form-control-sm">
+                              <label for="nivelacceso">Seleccione el nivel de acceso:</label>
                               <option value="">Seleccione</option>
-                              <option value="DNI">DNI</option>
-                              <option value="RUC">RUC</option>
-                              <option value="Pasaporte">Pasaporte</option>
+                              <option value="A">Administrador</option>
+                              <option value="S">Supervisor</option>
+                              <option value="C">Colaborador</option>
                             </select>
                         </div>
                     </div>
-                    
-                </div>
 
-                <div class="row mb-2">
                     <div class="col-md-4">
                         <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="buscar-documento" placeholder="Nro de Documento" name="documento">
-                            <label for="documento" class="form-label">Documento</label>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="buscar-documento" placeholder="Nro de Documento" name="documento">
-                            <label for="documento" class="form-label">Estado</label>
+                            <input type="text" class="form-control" id="buscar-correo" placeholder="Correo" name="correo">
+                            <label for="correo" class="form-label">Correo</label>
                         </div>
                     </div>
                 </div>
-                <button type="button" id="buscar-empresa"  class="btn btn-outline-primary">Buscar</button>
+                <button type="button" id="buscar-colaboradores"  class="btn btn-outline-primary">Buscar</button>
 
               </form>
               </div>
@@ -100,9 +86,9 @@
         </div>
         
         <div class="table-responsive mt-3" id="tabla-colaboradores">
-          <table class="table table-hover text-center"> 
+          <table class="table table-hover"> 
 
-              <thead>
+              <thead class='text-center'>
                   <th>#</th>
                   <th>Usuario</th>
                   <th>Correo</th>
@@ -115,7 +101,7 @@
                   <th>Acciones</th>
               </thead>
 
-              <tbody>
+              <tbody class='text-center'>
               </tbody>
           
             </table>

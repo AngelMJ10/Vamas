@@ -210,10 +210,16 @@ let idtarea = 0;
         const table = document.querySelector("#tabla-fase");
         const bodytable = table.querySelector("tbody");
         const selectProyecto = document.querySelector("#buscar-proyecto");
+        const nombrefase = document.querySelector("#nombre-fase-buscar");
+        const supervisor = document.querySelector("#buscar-supervisor");
+        const estadoFase = document.querySelector("#buscar-estado");
 
         const parametrosURL = new URLSearchParams();
         parametrosURL.append("op", "buscarFase");
         parametrosURL.append("idproyecto", selectProyecto.value);
+        parametrosURL.append("nombrefase", nombrefase.value);
+        parametrosURL.append("idresponsable", supervisor.value);
+        parametrosURL.append("estado", estadoFase.value);
 
         fetch('../controllers/fase.php',{
             method: 'POST',
@@ -380,6 +386,31 @@ let idtarea = 0;
         })
         .catch(error => {
         console.error('Error:', error);
+        });
+    }
+
+    // Función para listar los supervisores en los filtros
+    function listarColaboradores(){
+        const responsable = document.querySelector("#buscar-supervisor");
+        const parametrosURL = new URLSearchParams();
+        parametrosURL.append("op", "listarColaborador");
+  
+        fetch('../controllers/proyecto.php',{
+            method: 'POST',
+            body: parametrosURL
+        })
+        .then(respuesta => {
+            if(respuesta.ok){
+                return respuesta.text();
+            } else{
+                throw new Error('Error en la solicitud');
+            }
+        })
+        .then(datos =>{
+          responsable.innerHTML = datos;
+        })
+        .catch(error => {
+            console.error('Error:', error);
         });
     }
 
@@ -690,6 +721,7 @@ let idtarea = 0;
         }
     }
 
+listarColaboradores();
 listarProyectosSelect();
 list();
 

@@ -78,6 +78,22 @@
             }
         }
 
+        public function buscarColaboradores($data = []){
+            try {
+                $query = "CALL buscar_colaboradores(?,?,?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array(
+                    $data['usuario'],
+                    $data['nivelacceso'],
+                    $data['correo']
+                ));
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
         public function listarCorreo(){
             try {
                 $query = "SELECT idcolaboradores,usuario,correo FROM colaboradores WHERE nivelacceso IN ('A','S')";

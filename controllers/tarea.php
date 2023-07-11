@@ -140,13 +140,20 @@
             $idproyecto = $_POST['idproyecto'];
             $idfase = $_POST['idfase'];
             $nombretarea = $_POST['tarea'];
+            
             $estado = $_POST['estado'];
             $nivel = $_SESSION['nivelacceso'];
+            if ($_SESSION['nivelacceso'] == 'C') {
+                $idcolaboradorT = $_SESSION['idcolaboradores'];
+            }else {
+                $idcolaboradorT = $_POST['idcolaboradorT'];
+            }
             $datos = $tarea->buscar_tareas([
                 "idcolaboradores" => $idcolaboradores,
                 "idproyecto" => $idproyecto,
                 "idfase" => $idfase,
                 "tarea" => $nombretarea,
+                "idcolaboradorT" => $idcolaboradorT,
                 "estado" => $estado
             ]);
             $contador = 1;
@@ -178,7 +185,7 @@
                                 <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>{$estado}</td>
                                 <td data-label='Acciones'>
                                     <div class='btn-group' role='group'>
-                                        <button type='button' onclick='obtenerInfo({$registro['idtarea']})' title='Clic, para ver información de la tarea finalizada.' class='btn btn-outline-primary btn-sm editar-btn'><i class='fa-solid fa-circle-info'></i></button>
+                                    <button type='button' onclick='generarReporteV({$registro['idtarea']})' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
                                     </div>
                                 </td>
                             </tr>
@@ -196,7 +203,6 @@
                                 <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>{$estado}</td>
                                 <td data-label='Acciones'>
                                     <div class='btn-group' role='group'>
-                                        <button type='button' title='Clic, para editar la tarea.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
                                         <button type='button' onclick='openModal({$registro['idtarea']})' data-id='{$registro['idtarea']}' class='btn btn-outline-primary btn-sm' title='Clic, para enviar el trabajo'><i class='fas fa-paper-plane'></i></button>
                                         <button type='button' onclick='generarReporteV({$registro['idtarea']})' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
                                     </div>
@@ -375,7 +381,7 @@
             require_once '../models/Colaboradores.php';
             $colaborador = new Colaborador();
             $datos = $colaborador->listarCorreo();
-            $etiqueta = "<option value='0'>Seleccione el usuario</option>";
+            $etiqueta = "<option value=''>Seleccione el usuario</option>";
             echo $etiqueta;
             foreach ($datos as $registro) {
                 $etiqueta = "<option value='{$registro['correo']}'>{$registro['usuario']}</option>";

@@ -47,11 +47,37 @@
               <form>
                 <div class="row mb-2 mt-2">
 
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                       <div class="form-floating mb-3">
                           <select name="proyecto" id="buscar-proyecto" class="form-control form-control-sm">
-                            <label for="proyecto">Seleccione el tipo de Documento:</label>
+                            <label for="proyecto">Seleccione el proyecto:</label>
                             
+                          </select>
+                      </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="nombre-fase-buscar" placeholder="Nombre" name="nombre">
+                        <label for="nombre" class="form-label">Nombre</label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                      <div class="form-floating mb-3">
+                          <select name="proyecto" id="buscar-supervisor" class="form-control form-control-sm">
+                            <label for="proyecto">Seleccione el supervisor:</label>
+                            
+                          </select>
+                      </div>
+                  </div>
+
+                  <div class="col-md-3">
+                      <div class="form-floating mb-3">
+                          <select name="proyecto" id="buscar-estado" class="form-control form-control-sm">
+                            <option value="">Seleccion un estado</option>
+                            <option value="1">Activo</option>
+                            <option value="2">Finalizado</option>
                           </select>
                       </div>
                   </div>

@@ -202,6 +202,29 @@ DROP PROCEDURE listar_colaboradores
 CALL listar_colaboradores()
 SELECT * FROM habilidades
 
+-------------------------------------------------------------
+-- Buscar usuario
+DELIMITER $$
+CREATE PROCEDURE buscar_colaboradores(
+	IN _usuario 		VARCHAR(20),
+	IN _nivelacceso	CHAR(1),
+	IN _correo			VARCHAR(100)
+)
+BEGIN
+    SELECT col.idcolaboradores, col.usuario, col.correo, col.nivelacceso,
+        per.apellidos, per.nombres,per.genero,
+        (SELECT COUNT(DISTINCT idhabilidades) FROM habilidades WHERE idcolaboradores = col.idcolaboradores) AS Habilidades,
+        (SELECT COUNT(DISTINCT fas.idfase) FROM fases fas WHERE fas.idresponsable = col.idcolaboradores AND fas.estado = 1) AS Fases,
+        (SELECT COUNT(DISTINCT tar.idtarea) FROM tareas tar WHERE tar.idcolaboradores = col.idcolaboradores AND tar.estado = 1) AS Tareas
+    FROM colaboradores col
+    INNER JOIN personas per ON col.idpersona = per.idpersona
+    WHERE 
+			(NULLIF(_usuario, '') IS NULL OR col.usuario LIKE CONCAT('%', _usuario, '%'))
+         AND (NULLIF(_nivelacceso, '') IS NULL OR col.nivelacceso= _nivelacceso)
+         AND (NULLIF(_correo, '') IS NULL OR col.correo LIKE CONCAT('%', _correo, '%'));
+END $$
+DROP PROCEDURE buscar_colaboradores
+CALL buscar_colaboradores('A','','');
 -------------------------------------------
 -- P.A Para obtener la información de un colaborador por su ID
 
@@ -478,7 +501,12 @@ CALL listar_fase_by_Colaborador(4);
 ------------------------------------------------------------
 
 DELIMITER $$
-CREATE PROCEDURE buscar_fase(IN _idproyecto SMALLINT)
+CREATE PROCEDURE buscar_fase(
+	IN _idproyecto SMALLINT,
+	IN _nombrefase VARCHAR(40),
+	IN _idresponsable SMALLINT,
+	IN _estado CHAR(1)
+)
 BEGIN
     SELECT pro.idproyecto, fas.idfase, pro.titulo, pro.descripcion, pro.fechainicio AS 'InicioProyecto', pro.fechafin AS 'FinProyecto', 
         pro.precio, emp.nombre AS 'empresa', col.usuario, fas.nombrefase, fas.fechainicio, 
@@ -488,10 +516,13 @@ BEGIN
     INNER JOIN empresas emp ON pro.idempresa = emp.idempresa
     INNER JOIN colaboradores col ON col.idcolaboradores = fas.idresponsable
     WHERE (NULLIF(_idproyecto, '') IS NULL OR pro.idproyecto = _idproyecto)
+			AND (NULLIF(_nombrefase, '') IS NULL OR fas.nombrefase LIKE CONCAT('%', _nombrefase, '%'))
+			AND (NULLIF(_idresponsable, '') IS NULL OR fas.idresponsable = _idresponsable)
+			AND (NULLIF(_estado, '') IS NULL OR fas. = _estado)
     ORDER BY pro.idproyecto, fas.fechainicio, fas.fechafin; -- Ordenar por el idproyecto ascendente
 END $$
-
-CALL buscar_fase('');
+DROP PROCEDURE buscar_fase
+CALL buscar_fase('','','','1');
 
 ------------------------------------------------------------
 
@@ -645,6 +676,7 @@ CREATE PROCEDURE buscarTareas(
     IN _idproyecto SMALLINT,
     IN _idfase SMALLINT,
     IN _tarea VARCHAR(255),
+    IN _idcolaboradorT SMALLINT,
     IN _estado CHAR(1)
 )
 BEGIN
@@ -664,6 +696,7 @@ BEGIN
                 (NULLIF(_idproyecto, '') IS NULL OR pro.idproyecto = _idproyecto)
                 AND (NULLIF(_idfase, '') IS NULL OR fas.idfase = _idfase)
                 AND (NULLIF(_tarea, '') IS NULL OR tar.tarea LIKE CONCAT('%', _tarea, '%'))
+                AND (NULLIF(_idcolaboradores, '') IS NULL OR tar.idcolaboradores = _idcolaboradorT)
                 AND (NULLIF(_estado, '') IS NULL OR tar.estado = _estado)
                 AND col_tarea.idcolaboradores = _idcolaboradores
             ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
@@ -680,6 +713,7 @@ BEGIN
                 (NULLIF(_idproyecto, '') IS NULL OR pro.idproyecto = _idproyecto)
                 AND (NULLIF(_idfase, '') IS NULL OR fas.idfase = _idfase)
                 AND (NULLIF(_tarea, '') IS NULL OR tar.tarea LIKE CONCAT('%', _tarea, '%'))
+                AND (NULLIF(_idcolaboradorT, '') IS NULL OR tar.idcolaboradores = _idcolaboradorT)
                 AND (NULLIF(_estado, '') IS NULL OR tar.estado = _estado)
             ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
         END IF;
@@ -688,7 +722,7 @@ END $$
 DELIMITER ;
 
 DROP PROCEDURE buscarTareas;
-CALL buscarTareas('1','','6','','');
+CALL buscarTareas('1','','','','4','');
 
 -----------------------------------------------------
 -- P.A para editar una tarea
