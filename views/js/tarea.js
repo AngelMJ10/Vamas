@@ -381,13 +381,14 @@
     const proyecto = document.querySelector("#buscar-proyecto");
     const fase = document.querySelector("#buscar-fase");
     const tarea = document.querySelector("#nombre-tarea");
+    const responsable = document.querySelector("#buscar-colaborador-t");
     const estadoT = document.querySelector("#buscar-estado");
-
     const parametrosURL = new URLSearchParams();
     parametrosURL.append("op", "buscar_tareas");
     parametrosURL.append("idproyecto", proyecto.value);
     parametrosURL.append("idfase", fase.value);
     parametrosURL.append("tarea", tarea.value);
+    parametrosURL.append("idcolaboradorT", responsable.value);
     parametrosURL.append("estado", estadoT.value);
 
     fetch('../controllers/tarea.php',{
@@ -410,6 +411,31 @@
     });
   }
 
+  function listarColaboradores_A(){
+    const responsable = document.querySelector("#buscar-colaborador-t");
+    const parametrosURL = new URLSearchParams();
+    parametrosURL.append("op", "listarColaborador_A");
+
+    fetch('../controllers/proyecto.php',{
+        method: 'POST',
+        body: parametrosURL
+    })
+    .then(respuesta => {
+        if(respuesta.ok){
+            return respuesta.text();
+        } else{
+            throw new Error('Error en la solicitud');
+        }
+    })
+    .then(datos =>{
+        responsable.innerHTML = datos;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+  }
+
+listarColaboradores_A();
 listarCorreo();
 list();
 listarProyecto();

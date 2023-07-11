@@ -51,32 +51,47 @@
                             <option value="">Seleccione el proyecto</option>
                           </select>
                       </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-floating mb-3">
+                          <select name="buscar-fase" id="buscar-fase" class="form-control form-control-sm">
+                              <label for="buscar-fase">Seleccione la fase:</label>
+                              <option value="">Seleccione una fase</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="nombre-tarea" placeholder="Razón Social" name="razonsocial">
+                            <label for="nombre-tarea" class="form-label">Nombre de la tarea</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <div class="form-floating mb-3">
+                        <select name="buscar-colaborador" id="buscar-colaborador-t" class="form-control form-control-sm">
+                            <label for="buscar-colaborador">Seleccione el colaborador:</label>
+                            <option value="">Seleccione el colaborador</option>
+                          </select>
                       </div>
-                      <div class="col-md-3">
-                          <div class="form-floating mb-3">
-                            <select name="buscar-fase" id="buscar-fase" class="form-control form-control-sm">
-                                <label for="buscar-fase">Seleccione la fase:</label>
-                                <option value="">Seleccione una fase</option>
-                              </select>
-                          </div>
-                      </div>
-                      <div class="col-md-3">
-                          <div class="form-floating mb-3">
-                              <input type="text" class="form-control" id="nombre-tarea" placeholder="Razón Social" name="razonsocial">
-                              <label for="nombre-tarea" class="form-label">Nombre de la tarea</label>
-                          </div>
-                      </div>
-                      <div class="col-md-3">
-                          <div class="form-floating mb-3">
-                              <select name="buscar-estado" id="buscar-estado" class="form-control form-control-sm">
-                                <label for="buscar-estado">Seleccione el estado:</label>
-                                <option value="">Seleccione el estado</option>
-                                <option value="1">Activo</option>
-                                <option value="2">Finalizado</option>
-                              </select>
-                          </div>
-                      </div>
+                    </div>
                       
+                  </div>
+
+                  <div class="row mb-2 mt-2">
+                    <div class="col-md-3">
+                        <div class="form-floating mb-3">
+                            <select name="buscar-estado" id="buscar-estado" class="form-control form-control-sm">
+                              <label for="buscar-estado">Seleccione el estado:</label>
+                              <option value="">Seleccione el estado</option>
+                              <option value="1">Activo</option>
+                              <option value="2">Finalizado</option>
+                            </select>
+                        </div>
+                    </div>
+
                   </div>
 
                   <button type="button" id="buscar-tareas"  class="btn btn-outline-primary">Buscar</button>
@@ -89,7 +104,7 @@
         
         <div class="table-responsive mt-3" >
           <table class="table table-hover" id="tabla-tareas"> 
-            </table>
+          </table>
         </div>
       </div>
 

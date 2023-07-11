@@ -44,7 +44,7 @@
                             <th>Duración</th>
                             <th>Usuario</th>
                             <th>Avance</th>
-                            <th>Porcentaje Fase</th>
+                            <th>Fase %</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </thead>
@@ -143,11 +143,13 @@
             
             $estado = $_POST['estado'];
             $nivel = $_SESSION['nivelacceso'];
+
             if ($_SESSION['nivelacceso'] == 'C') {
                 $idcolaboradorT = $_SESSION['idcolaboradores'];
             }else {
                 $idcolaboradorT = $_POST['idcolaboradorT'];
             }
+            
             $datos = $tarea->buscar_tareas([
                 "idcolaboradores" => $idcolaboradores,
                 "idproyecto" => $idproyecto,

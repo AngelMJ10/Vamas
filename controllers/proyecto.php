@@ -447,10 +447,17 @@
             $colaborador = new Colaborador();
             $datos = $colaborador->listarColaborador_A();
             $etiqueta = "<option value=''>Seleccione el usuario a elegir</option>";
-            echo $etiqueta;
-            foreach ($datos as $registro) {
-                echo "<option value='{$registro['idcolaboradores']}'>{$registro['usuario']}</option>";
+            $idcolaboradores = $_SESSION['idcolaboradores'];
+            $usuario = $_SESSION['usuario'];
+            if ($_SESSION['nivelacceso'] == 'C') {
+                echo "<option value='{$idcolaboradores}'>{$usuario}</option>";
+            }else {
+                echo $etiqueta;
+                foreach ($datos as $registro) {
+                    echo "<option value='{$registro['idcolaboradores']}'>{$registro['usuario']}</option>";
+                }
             }
+            
         }
 
         if ($_POST['op'] == 'listProject') {

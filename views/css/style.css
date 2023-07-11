@@ -20,7 +20,7 @@
 .container{
   width: 100%;
   background: #FFF;
-  padding: 3em;
+  padding: 2em;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
   border-radius: 10px;
   transform: translateY(-100px);

@@ -194,18 +194,18 @@ SELECT * FROM fases;
 
 CREATE TABLE tareas 
 (
-	idtarea			SMALLINT AUTO_INCREMENT PRIMARY KEY,
-	idfase			SMALLINT 	NOT NULL,
+	idtarea					SMALLINT AUTO_INCREMENT PRIMARY KEY,
+	idfase					SMALLINT 	NOT NULL,
 	idcolaboradores		SMALLINT	NOT NULL,
-	roles			VARCHAR(40)	NOT NULL,
-	tarea			VARCHAR(200)	NOT NULL,
-	porcentaje_tarea	DECIMAL(5,2)	NULL DEFAULT 0,
-	porcentaje		DECIMAL(5,2)	NOT NULL,
-	evidencia		JSON		NOT NULL,
+	roles						VARCHAR(40)	NOT NULL,
+	tarea						VARCHAR(200)	NOT NULL,
+	porcentaje_tarea		DECIMAL(5,2)	NULL DEFAULT 0,
+	porcentaje				DECIMAL(5,2)	NOT NULL,
+	evidencia				JSON		NOT NULL,
 	fecha_inicio_tarea	DATE 		NOT NULL,
 	fecha_fin_tarea		DATE 		NOT NULL,
-	fecha_create		DATETIME	NOT NULL DEFAULT NOW(),
-	fecha_update		DATETIME	NULL,
+	fecha_create			DATETIME	NOT NULL DEFAULT NOW(),
+	fecha_update			DATETIME	NULL,
 	estado			CHAR(1)		NOT NULL DEFAULT '1',
 	CONSTRAINT fk_idfase_tar FOREIGN KEY (idfase) REFERENCES fases (idfase),
 	CONSTRAINT fk_idcolaboradores_tar FOREIGN KEY (idcolaboradores) REFERENCES colaboradores (idcolaboradores)

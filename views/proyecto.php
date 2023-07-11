@@ -180,7 +180,7 @@
 
 
 <!-- Modal para editar-->
-<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true" data-bs-backdrop="static">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
       <div class="modal-header text-light" style='background-color: #005478;'>
@@ -277,8 +277,8 @@
 </div>
 
 <!-- Modal para más información del proyecto -->
-<div class="modal fade" id="modal-info" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
-  <div class="modal-dialog modal-fullscreen">
+<div class="modal fade" id="modal-info" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-fullscreen" >
     <div class="modal-content">
       <div class="modal-header text-light" style='background-color: #005478;'>
         <h1 class="modal-title fs-5" id="modalEditarLabel">Información del Proyecto</h1>
@@ -309,7 +309,7 @@
 </div>
 
 <!-- !Modal para crear una Fase -->
-<div class="modal fade" id="modalFase" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+<div class="modal fade" id="modalFase" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true" data-bs-backdrop="static">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
       <div class="modal-header text-light" style='background-color: #005478;'>
@@ -402,9 +402,9 @@
 </div>
 
 <!-- !Modal para crear una Fase  V2-->
-<div class="modal fade" id="modalFaseV2" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <div class="modal-content">
+<div class="modal fade" id="modalFaseV2" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true" data-bs-backdrop="static" >
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content" style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);">
       <div class="modal-header text-light" style='background-color: #005478;'>
         <h1 class="modal-title fs-5" id="modalEditarLabel">Registrar Fase V2</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -499,7 +499,7 @@
 </div>
 
 <!-- Modal para más información de la fase -->
-<div class="modal fade" id="modal-info-fase" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+<div class="modal fade" id="modal-info-fase" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true" data-bs-backdrop="static">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
       <div class="modal-header text-light" style='background-color: #005478;'>
@@ -531,7 +531,7 @@
 </div>
 
 <!-- Modal Info de la tarea y evidencias -->
-<div class="modal fade" id="modal-info-tarea" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+<div class="modal fade" id="modal-info-tarea" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true" data-bs-backdrop="static">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
       <div class="modal-header text-light" style='background-color: #005478;'>
@@ -559,9 +559,9 @@
 </div>
 
 <!-- Modal agregar Tarea -->
-<div class="modal fade" id="modal-agregar-t" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <div class="modal-content">
+<div class="modal fade" id="modal-agregar-t" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content" style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);">
       <div class="modal-header text-light" style='background-color: #005478;'>
         <h1 class="modal-title fs-5" id="modalEditarLabel">Agregar Tarea</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
