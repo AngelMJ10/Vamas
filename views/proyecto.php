@@ -197,6 +197,7 @@
                   </select>
               </div>
             </div>
+
             <div class="col-md-4">
                 <div class="form-floating mb-3">
                     <select name="idempresa" id="idempresa-update" class="form-control form-control-sm">
@@ -204,12 +205,14 @@
                     </select>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="titulo-update" name="titulo" placeholder="Título">
                     <label for="titulo" class="form-label">Titulo</label>
                 </div>
             </div>
+
           </div>
 
           <div class="row mb-3">
@@ -265,6 +268,7 @@
             </div>
           
           </div>
+
           <button type="button" id="update-datos"  class="btn btn-outline-primary">Editar</button>
 
         </form>

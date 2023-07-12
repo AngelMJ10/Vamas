@@ -1,5 +1,6 @@
 let idfase = 0;
 let idtarea = 0;
+
     function getPhase(id) {
         const modal = document.querySelector("#modalPhase");
         const infoPhase = document.querySelector("#info-phase");
@@ -247,7 +248,30 @@ let idtarea = 0;
     function openModalAgregarTarea(){
         const modalAgregarT = document.querySelector("#modal-agregar-t");
         const bootstrapModal = new bootstrap.Modal(modalAgregarT);
+        const fecha_inicio_tarea = document.querySelector("#fecha-ini-tarea");
+        const fecha_fin_tarea = document.querySelector("#fecha-f-tarea");
         bootstrapModal.show();
+
+        const parametos = new URLSearchParams();
+        parametos.append("op", "obtenerFase");
+        parametos.append("idfase", idfase);
+        fetch('../controllers/fase.php', {
+            method: 'POST',
+            body: parametos,
+        })
+        .then(respuesta => respuesta.json())
+        .then(datos=> {
+            fecha_inicio_tarea.min = datos.fechainicio;
+            fecha_inicio_tarea.max = datos.fechafin;
+            fecha_fin_tarea.max = datos.fechafin;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+        fecha_inicio_tarea.addEventListener("change", function() {
+            fecha_fin_tarea.min = fecha_inicio_tarea.value;
+        });
 
         function listarColaboradores_A(){
             const responsable = document.querySelector("#asignar-empleado");
@@ -300,6 +324,15 @@ let idtarea = 0;
             text: 'Por favor, ingrese un porcentaje válido de 0 a 100.',
         });
         return;
+        }
+
+        if(fecha_inicio_tarea.value > fecha_fin_tarea.value){
+            Swal.fire({
+                icon: 'warning',
+                title: 'Fechas inválidas',
+                text: 'La fecha de inicio debe ser menor o igual a la fecha de fin.',
+            });
+            return;
         }
 
         Swal.fire({

@@ -157,7 +157,6 @@ let idtarea = 0;
     const precio = document.querySelector("#precio-update");
     const estado = document.querySelector("#estado-update");
     const usuario = document.querySelector("#user-create");
-    const idproyecto = id; 
   
     const parametrosURL = new URLSearchParams();
     parametrosURL.append("op", "get");
@@ -185,7 +184,6 @@ let idtarea = 0;
         estado.value = datos.estado;
         usuario.value = datos.usuario;
         idproyecto = id;
-
 
       const btnEditar = document.querySelector("#update-datos");
         btnEditar.addEventListener("click", function () {
@@ -446,15 +444,17 @@ let idtarea = 0;
 
 // Fin editar Proyecto
 
-// Agregar fase 
+// Agregar fase V2
 
-  function abriModal(){
+  function abriModal() {
     const modalFase = document.querySelector("#modalFaseV2");
     const bootstrapModal = new bootstrap.Modal(modalFase);
     bootstrapModal.show();
     const tituloP = document.querySelector("#titulo-fase");
     const tipoproyectoP = document.querySelector("#tipoProyecto-fase");
     const empresaP = document.querySelector("#idempresa-fase");
+    const fechainicio = document.querySelector("#fecha-inicio-faseV2");
+    const fechafin = document.querySelector("#fecha-fin-faseV2");
 
     const parametros = new URLSearchParams();
     parametros.append("op", "get");
@@ -463,45 +463,54 @@ let idtarea = 0;
       method: 'POST',
       body: parametros
     })
-    .then(respuesta => {
-      if (respuesta.ok) {
-        return respuesta.json();
-      } else {
-        throw new Error('Error en la solicitud');
-      }
-    })
-    .then(datos => {
-      tituloP.value = datos.titulo;
-      tipoproyectoP.value = datos.tipoproyecto;
-      empresaP.value = datos.nombre;
-    })
-    .catch(error => {
-      console.error('Error:', error);
+      .then(respuesta => {
+        if (respuesta.ok) {
+          return respuesta.json();
+        } else {
+          throw new Error('Error en la solicitud');
+        }
+      })
+      .then(datos => {
+        console.log(datos.fechaFin);
+        tituloP.value = datos.titulo;
+        tipoproyectoP.value = datos.tipoproyecto;
+        empresaP.value = datos.nombre;
+        fechainicio.min = datos.fechainicio;
+        fechainicio.max = datos.fechafin;
+        fechafin.min = datos.fechainicio;
+        fechafin.max = datos.fechafin;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+    fechainicio.addEventListener("change", function() {
+      fechafin.min = fechainicio.value;
     });
 
     // Agregamos los colaboradores al select
-    function listarSupervisores(){
+    function listarSupervisores() {
       const usuarioR = document.querySelector("#responsable-faseV2");
       const parametrosURL = new URLSearchParams();
       parametrosURL.append("op", "listarColaborador");
 
-      fetch('../controllers/proyecto.php',{
-          method: 'POST',
-          body: parametrosURL
+      fetch('../controllers/proyecto.php', {
+        method: 'POST',
+        body: parametrosURL
       })
-      .then(respuesta => {
-          if(respuesta.ok){
-              return respuesta.text();
-          } else{
-              throw new Error('Error en la solicitud');
+        .then(respuesta => {
+          if (respuesta.ok) {
+            return respuesta.text();
+          } else {
+            throw new Error('Error en la solicitud');
           }
-      })
-      .then(datos =>{
-        usuarioR.innerHTML = datos;
-      })
-      .catch(error => {
+        })
+        .then(datos => {
+          usuarioR.innerHTML = datos;
+        })
+        .catch(error => {
           console.error('Error:', error);
-      });
+        });
     }
 
     listarSupervisores();
@@ -530,6 +539,15 @@ let idtarea = 0;
         icon: 'warning',
         title: 'Porcentaje excedido',
         text: 'Por favor, ingrese un porcentaje de 0 a 100.',
+      });
+      return;
+    }
+
+    if(fechainicio.value > fechafin.value){
+      Swal.fire({
+          icon: 'warning',
+          title: 'Fechas inválidas',
+          text: 'La fecha de inicio debe ser menor o igual a la fecha de fin.',
       });
       return;
     }
@@ -593,7 +611,8 @@ let idtarea = 0;
     })
   }
 
-  function createPhase(idproyectov){
+  // V1 de agregar fase 
+  function createPhase(){
       const namephase = document.querySelector("#name-phase");
       const respnsible = document.querySelector("#responsible-phase");
       const fechainicio = document.querySelector("#fecha-inicio-phase");
@@ -924,7 +943,7 @@ let idtarea = 0;
     })
   }
 
-// Fin editar Fase
+  // Fin editar Fase
   
 // Fin de info Fase
 
@@ -932,8 +951,33 @@ let idtarea = 0;
 
 // Para abrir un miniModal de registro de tareas
   function openModalAgregarTarea(){
+    console.log(idfase);
     const modalAgregarT = document.querySelector("#modal-agregar-t");
     const bootstrapModal = new bootstrap.Modal(modalAgregarT);
+    const fecha_inicio_tarea = document.querySelector("#fecha-ini-tarea");
+    const fecha_fin_tarea = document.querySelector("#fecha-f-tarea");
+
+    const parametos = new URLSearchParams();
+    parametos.append("op", "obtenerFase");
+    parametos.append("idfase", idfase);
+    fetch('../controllers/fase.php', {
+      method: 'POST',
+      body: parametos,
+    })
+    .then(respuesta => respuesta.json())
+    .then(datos=> {
+      fecha_inicio_tarea.min = datos.fechainicio;
+      fecha_inicio_tarea.max = datos.fechafin;
+      fecha_fin_tarea.max = datos.fechafin;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
+    fecha_inicio_tarea.addEventListener("change", function() {
+      fecha_fin_tarea.min = fecha_inicio_tarea.value;
+    });
+    
 
     function listarColaboradores_A(){
       const responsable = document.querySelector("#asignar-empleado");
@@ -987,6 +1031,15 @@ let idtarea = 0;
         icon: 'warning',
         title: 'Porcentaje excedido',
         text: 'Por favor, ingrese un porcentaje válido de 0 a 100.',
+      });
+      return;
+    }
+
+    if(fecha_inicio_tarea.value > fecha_fin_tarea.value){
+      Swal.fire({
+          icon: 'warning',
+          title: 'Fechas inválidas',
+          text: 'La fecha de inicio debe ser menor o igual a la fecha de fin.',
       });
       return;
     }
@@ -1331,6 +1384,8 @@ let idtarea = 0;
   // Aquí habre el modal de para agregar fase
   function addPhase(id) {
       const modal = document.querySelector("#modalFase");
+      const fechainicio = document.querySelector("#fecha-inicio-phase");
+      const fechafin = document.querySelector("#fecha-fin-phase");
       const tipoproyecto = document.querySelector("#tipoProyecto-phase");
       const titulo = document.querySelector("#titulo-phase");
       const empresa = document.querySelector("#idempresa-phase");
@@ -1355,6 +1410,10 @@ let idtarea = 0;
           titulo.value = datos.titulo;
           tipoproyecto.value = datos.idtipoproyecto;
           empresa.value = datos.idempresa;
+          fechainicio.min = datos.fechainicio;
+          fechainicio.max = datos.fechafin;
+          fechafin.min = datos.fechainicio;
+          fechafin.max = datos.fechafin;
           const btnPhase = document.querySelector("#create-phase");
           btnPhase.addEventListener("click", function () {
               createPhase(idproyectov); // Pasar el valor de idproyecto a la función update

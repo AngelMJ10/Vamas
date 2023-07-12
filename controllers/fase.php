@@ -134,6 +134,12 @@
                 $contador++;
             }
         }
+
+        if ($_POST['op'] == 'obtenerFase') {
+            $idfase = $_POST['idfase']; 
+            $datos = $fase->getPhase($idfase);
+            echo json_encode($datos);
+        }
         
         if ($_POST['op'] == 'getPhase') {
             $idfase = $_POST['idfase']; 
@@ -141,7 +147,7 @@
             $contador = 1;
 
             function vista($datos){
-                $porcentaje = $datos[0]['porcentaje'];
+                $porcentaje = $datos['porcentaje'];
                 // If para poder quitar ".00" de los porcentajes y en caso del que porcentaje sea NULL,
                 // Se muestre como "0" 
                 if ($porcentaje) {
@@ -155,19 +161,19 @@
                         <div class='row mb-2 mt-2'>
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>
-                                <input type='text' class='form-control' value='{$datos[0]['nombrefase']}' placeholder='Nombre del proyecto' id='nombre-Fase' name='project' readonly>
+                                <input type='text' class='form-control' value='{$datos['nombrefase']}' placeholder='Nombre del proyecto' id='nombre-Fase' name='project' readonly>
                                 <label for='project' class='form-label'>Nombre de la Fase</label>
                                 </div>
                             </div>
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>
-                                    <textarea class='form-control' name='descripcion' id='comentario-Fase' placeholder='Comentario dela Fase' readonly>{$datos[0]['comentario']}</textarea>
+                                    <textarea class='form-control' name='descripcion' id='comentario-Fase' placeholder='Comentario dela Fase' readonly>{$datos['comentario']}</textarea>
                                     <label for='descripcion' class='form-label'>Comentario de la Fase</label>
                                 </div>
                             </div>
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>
-                                    <input type='date' class='form-control' id='fechainicio-fase' placeholder='Inicio de la fase' value='{$datos[0]['fechainicio']}' name='fechaini' readonly>
+                                    <input type='date' class='form-control' id='fechainicio-fase' placeholder='Inicio de la fase' value='{$datos['fechainicio']}' name='fechaini' readonly>
                                     <label for='fechaini' class='form-label'>Fecha de Inicio</label>
                                 </div>
                             </div>
@@ -175,14 +181,14 @@
                         <div class='row mb-2 mt-2'>
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>
-                                    <input type='date' class='form-control' id='fechafin-fase' placeholder='Fin de la Fase' value='{$datos[0]['fechafin']}' name='fechafin' readonly>
+                                    <input type='date' class='form-control' id='fechafin-fase' placeholder='Fin de la Fase' value='{$datos['fechafin']}' name='fechafin' readonly>
                                     <label for='fechafin' class='form-label'>Fecha de Fin</label>
                                 </div>
                             </div>
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>
                                     <select class='form-control' id='usuariore-fase' name='precio'>
-                                        <option value='{$datos[0]['idresponsable']}'>{$datos[0]['usuario']}</option>
+                                        <option value='{$datos['idresponsable']}'>{$datos['usuario']}</option>
                                     </select>
                                     <label for='usuariore' class='form-label'>Usuario Responsable</label>
                                 </div>
@@ -216,7 +222,7 @@
                 echo $inicioT;
             }
             vista($datos);
-            $dato_t = $fase->tablaFases(["idfase" => $datos[0]['idfase']]);
+            $dato_t = $fase->tablaFases(["idfase" => $datos['idfase']]);
             
             foreach ($dato_t as $registro) {
                 $estado = $registro['estado'] == 1 ? 'Activo' : ($registro['estado'] == 2 ? 'Finalizado' : $registro['estado']);

@@ -100,7 +100,7 @@
             try {
                 $consulta = $this->conexion->prepare("Call obtener_fase(?)");
                 $consulta->execute(array($idfase));
-                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                $datos = $consulta->fetch(PDO::FETCH_ASSOC);
                 return $datos;
             } catch (Exception $e) {
                 die($e->getMessage());

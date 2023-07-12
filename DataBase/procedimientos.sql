@@ -518,9 +518,10 @@ BEGIN
     WHERE (NULLIF(_idproyecto, '') IS NULL OR pro.idproyecto = _idproyecto)
 			AND (NULLIF(_nombrefase, '') IS NULL OR fas.nombrefase LIKE CONCAT('%', _nombrefase, '%'))
 			AND (NULLIF(_idresponsable, '') IS NULL OR fas.idresponsable = _idresponsable)
-			AND (NULLIF(_estado, '') IS NULL OR fas. = _estado)
+			AND (NULLIF(_estado, '') IS NULL OR fas.estado = _estado)
     ORDER BY pro.idproyecto, fas.fechainicio, fas.fechafin; -- Ordenar por el idproyecto ascendente
 END $$
+
 DROP PROCEDURE buscar_fase
 CALL buscar_fase('','','','1');
 

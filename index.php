@@ -51,13 +51,13 @@ if (isset($_SESSION['login'])){
                     <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary" autocomplete="off">       
                     <div class="form-floating mb-3">
                         <input type="email" class="form-control" id="email" placeholder="vamas@gmail.com">
-                        <label class="text-center form-label" for="email">Escriba su Correo</label>
+                        <label class="text-center form-label" for="email">Escriba su nombre de usuario</label>
                     </div>  
                     <div class="form-floating mb-3">
                         <input type="password" class="form-control" id="clave" placeholder="***">
-                        <label class="text-center form-label" for="clave">Escriba su Contraseña</label>
+                        <label class="text-center form-label" for="clave">Escriba su contraseña</label>
                     </div>        
-                    <button class="w-100 btn btn-lg btn-primary mt-2" id="acceder" type="button">Iniciar Sesión</button>
+                    <button class="w-100 btn btn-lg btn-primary mt-2" id="acceder" type="button">Iniciar sesión</button>
                     <h6 class="text-center mt-3">O</h6>
                     <a class="w-100 btn btn-lg btn-warning" id="registrar" href="../Vamas/registrar.php" type="button">Registrarme</a>
                     
