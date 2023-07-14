@@ -777,6 +777,17 @@ let idtarea = 0;
     });
   }
 
+  function cerrarModalFase() {
+    const modalInfoFase = document.querySelector("#modal-info-fase");
+    const closeButton = modalInfoFase.querySelector(".closeP");
+    closeButton.setAttribute("data-bs-dismiss", "modal");
+    closeButton.click();
+  }
+  
+  // Para buscar proyectos
+  const btnModalP = document.querySelector("#modal-fase");
+  btnModalP.addEventListener("click",cerrarModalFase);
+
   // Editar Fase
 
   // Para quitar el readOnly de los inputs
@@ -1193,7 +1204,18 @@ let idtarea = 0;
     window.open(`../reports/Tarea/reporte.php?${parametros}`, '_blank');
     }
   }
+
+  function cerrarModaltarea() {
+    const modalInfoTarea = document.querySelector("#modal-info-tarea");
+    const closeButton = modalInfoTarea.querySelector(".closeT");
+    closeButton.setAttribute("data-bs-dismiss", "modal");
+    closeButton.click();
+  }
   
+  const btnCerarModalFase = document.querySelector("#fase-modal");
+  btnCerarModalFase.addEventListener("click",cerrarModaltarea);
+
+
 // Editar Tarea
   function quitarRead() {
     const nombreTarea = document.getElementById('nombre-tarea');
@@ -1937,3 +1959,4 @@ listar();
 // Para buscar proyectos
   const btnBuscarP = document.querySelector("#buscar-proyecto");
   btnBuscarP.addEventListener("click", buscarProyecto);
+

@@ -754,6 +754,15 @@ let idtarea = 0;
         }
     }
 
+    function cerrarModaltarea() {
+        const modalInfoTarea = document.querySelector("#modal-info-tarea");
+        const closeButton = modalInfoTarea.querySelector(".closeT");
+        closeButton.setAttribute("data-bs-dismiss", "modal");
+        closeButton.click();
+    }
+    const btnModalP = document.querySelector("#tarea-modal");
+    btnModalP.addEventListener("click",cerrarModaltarea);
+
 listarColaboradores();
 listarProyectosSelect();
 list();
