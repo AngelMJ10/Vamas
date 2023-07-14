@@ -566,7 +566,6 @@
           </div>
           <div class="btn-group">
             <button class="btn btn-outline-success" id="quitar-readonly">Editar Tarea</button>
-            <button type="button" class="btn btn-outline-info" id="quitar-modal">Modal Tarea</button>
             <button class="btn btn-outline-danger" id="generar-reporteT">Ver Reporte</button>
             <button class="btn btn-outline-primary d-none" id="guardar-C-Tarea">Guardar Cambios</button>
             <button class="btn btn-outline-danger d-none" id="cancelar-E-Tarea">Cancelar Edicion</button>

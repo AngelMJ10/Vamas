@@ -534,6 +534,26 @@ let idtarea = 0;
       return;
     }
 
+    // En el caso que la fecha de inicio sea menor a la fecha de inicio de la fase
+    if (fechainicio.value < fechainicio.min) {
+      Swal.fire({
+          icon: 'warning',
+          title: 'Fecha de Inicio inválida',
+          text: 'La fecha de inicio de la fase debe ser mayor o igual a la fecha de inicio del proyecto.',
+      });
+      return;
+    }
+
+    // En el caso de la fecha de fin exceda el maximo de la fecha de fin de la fase
+    if (fechafin.value > fechafin.max) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Fecha fin inválida',
+            text: 'La fecha fin de la fase debe ser menor o igual a la fecha de cierre del proyecto.',
+        });
+        return;
+    }
+
     if (isNaN(porcentajeValor) || porcentajeValor < 0 || porcentajeValor > 100) {
       Swal.fire({
         icon: 'warning',
@@ -656,31 +676,58 @@ let idtarea = 0;
 // Modal de info de fase (está con la tabla de tareas incluida)
 
   function modalInfoFase(id) {
-      const inputs = document.querySelector("#inputs-fase");
-      const modalInfoFase = document.querySelector("#modal-info-fase");
-      const parametros = new URLSearchParams();
-      parametros.append("op" ,"getPhase");
-      parametros.append("idfase" , id);
-      fetch('../controllers/fase.php', {
-          method: 'POST',
-          body: parametros
-        })
-        .then(respuesta => {
-          if (respuesta.ok) {
-            return respuesta.text();
-          } else {
-            throw new Error('Error en la solicitud');
-          }
-        })
-        .then(datos => {
-          inputs.innerHTML = datos;
-          const bootstrapModal = new bootstrap.Modal(modalInfoFase);
-          bootstrapModal.show();
-          idfase = id;
-        })
-        .catch(error => {
-          console.error('Error:', error);
+    const inputs = document.querySelector("#inputs-fase");
+    const modalInfoFase = document.querySelector("#modal-info-fase");
+    const parametros = new URLSearchParams();
+    parametros.append("op" ,"getPhase");
+    parametros.append("idfase" , id);
+    fetch('../controllers/fase.php', {
+        method: 'POST',
+        body: parametros
+      })
+      .then(respuesta => {
+        if (respuesta.ok) {
+          return respuesta.text();
+        } else {
+          throw new Error('Error en la solicitud');
+        }
+      })
+      .then(datos => {
+        inputs.innerHTML = datos;
+        const bootstrapModal = new bootstrap.Modal(modalInfoFase);
+        bootstrapModal.show();
+        idfase = id;
+        // Function para validar las fechas de la fases
+        function validarFechasF(){
+          const fecha_inicio_fase = document.querySelector("#fechainicio-fase");
+          const fecha_fin_fase = document.querySelector("#fechafin-fase");
+          const parametosf = new URLSearchParams();
+          parametosf.append("op", "get");
+          parametosf.append("idproyecto", idproyecto);
+          fetch('../controllers/proyecto.php', {
+              method: 'POST',
+              body: parametosf,
+          })
+          .then(respuesta => respuesta.json())
+          .then(datos=> {
+            fecha_inicio_fase.min = datos.fechainicio;
+            fecha_inicio_fase.max = datos.fechafin;
+            fecha_fin_fase.max = datos.fechafin;
+          })
+          .catch(error => {
+              console.error('Error:', error);
+          });
+
+          fecha_inicio_fase.addEventListener("change", function() {
+            fecha_fin_fase.min = fecha_inicio_fase.value;
         });
+        }
+        validarFechasF();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
   }
 
   function generarReporteF(){
@@ -895,6 +942,36 @@ let idtarea = 0;
       return;
     }
 
+    // En el caso que la fecha de inicio sea menor a la fecha de inicio del proyecto
+    if (fechaInicioFase.value < fechaInicioFase.min) {
+      Swal.fire({
+          icon: 'warning',
+          title: 'Fecha de Inicio inválida',
+          text: 'La fecha de inicio de la fase debe ser mayor o igual a la fecha de inicio del proyecto.',
+      });
+      return;
+    }
+
+    // En el caso de la fecha de fin exceda el maximo de la fecha de fin del proyecto
+    if (fechaFinFase.value > fechaFinFase.max) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Fecha fin inválida',
+            text: 'La fecha fin de la fase debe ser menor o igual a la fecha de cierre del proyecto.',
+        });
+        return;
+    }
+
+    // En el caso de la fecha de inicio sea mayo a la fecha de fin
+    if(fechaInicioFase.value > fechaFinFase.value){
+      Swal.fire({
+          icon: 'warning',
+          title: 'Fechas inválidas',
+          text: 'La fecha de inicio debe ser menor o igual a la fecha de fin.',
+      });
+      return;
+    }
+
     if (isNaN(porcentajeValor) || porcentajeValor < 0 || porcentajeValor > 100) {
       Swal.fire({
         icon: 'warning',
@@ -1046,6 +1123,26 @@ let idtarea = 0;
       return;
     }
 
+    // En el caso que la fecha de inicio sea menor a la fecha de inicio de la fase
+    if (fecha_inicio_tarea.value < fecha_inicio_tarea.min) {
+      Swal.fire({
+          icon: 'warning',
+          title: 'Fecha de Inicio inválida',
+          text: 'La fecha de inicio de la tarea debe ser mayor o igual a la fecha de inicio de la fase.',
+      });
+      return;
+    }
+
+    // En el caso de la fecha de fin exceda el maximo de la fecha de fin de la fase
+    if (fecha_fin_tarea.value > fecha_fin_tarea.max) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Fecha fin inválida',
+            text: 'La fecha fin de la tarea debe ser menor o igual a la fecha de cierre de la fase.',
+        });
+        return;
+    }
+
     if(fecha_inicio_tarea.value > fecha_fin_tarea.value){
       Swal.fire({
           icon: 'warning',
@@ -1165,8 +1262,36 @@ let idtarea = 0;
         inputs.innerHTML = datos;
         const bootstrapModal = new bootstrap.Modal(modalInfoTarea);
         bootstrapModal.show();
-        verEvidenciasTarear(id)
-        idtarea = id;
+        // Función para validar las fechas 
+        function validarFechasT() {
+          const fecha_inicio_tarea = document.querySelector("#fecha-inicio-tarea");
+          const fecha_fin_tarea = document.querySelector("#fecha-fin-tarea");
+          const parametos = new URLSearchParams();
+          parametos.append("op", "obtenerFase");
+          parametos.append("idfase", idfase);
+          fetch('../controllers/fase.php', {
+              method: 'POST',
+              body: parametos,
+          })
+          .then(respuesta => respuesta.json())
+          .then(datos=> {
+              fecha_inicio_tarea.min = datos.fechainicio;
+              fecha_inicio_tarea.max = datos.fechafin;
+              fecha_fin_tarea.max = datos.fechafin;
+          })
+          .catch(error => {
+              console.error('Error:', error);
+          });
+
+          fecha_inicio_tarea.addEventListener("change", function() {
+              fecha_fin_tarea.min = fecha_inicio_tarea.value;
+          });
+
+          verEvidenciasTarear(id)
+          idtarea = id;
+        
+        }
+        validarFechasT();
       })
       .catch(error => {
         console.error('Error:', error);
@@ -1341,6 +1466,36 @@ let idtarea = 0;
         text: 'Por favor, completa todos los campos.',
       });
       return;
+    }
+
+    // En el caso que la fecha de inicio sea menor a la fecha de inicio de la fase
+    if (fechaIniTarea.value < fechaIniTarea.min) {
+      Swal.fire({
+          icon: 'warning',
+          title: 'Fecha de Inicio inválida',
+          text: 'La fecha de inicio de la tarea debe ser mayor o igual a la fecha de inicio de la fase.',
+      });
+      return;
+    }
+
+    // En el caso de la fecha de fin exceda el maximo de la fecha de fin de la fase
+    if (fechaFinTarea.value > fechaFinTarea.max) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Fecha fin inválida',
+            text: 'La fecha fin de la tarea debe ser menor o igual a la fecha de cierre de la fase.',
+        });
+        return;
+    }
+
+    // En el caso de la fecha de inicio exceda el maximo de la fecha de fin de la fase
+    if(fechaIniTarea.value > fechaFinTarea.value){
+        Swal.fire({
+            icon: 'warning',
+            title: 'Fechas inválidas',
+            text: 'La fecha de inicio debe ser menor o igual a la fecha de cierre.',
+        });
+        return;
     }
 
     if (isNaN(porcentajeTarea.value) || porcentajeTarea.value < 0 || porcentajeTarea.value > 100) {

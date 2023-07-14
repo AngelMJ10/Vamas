@@ -326,11 +326,32 @@ let idtarea = 0;
         return;
         }
 
+        // En el caso que la fecha de inicio sea menor a la fecha de inicio de la fase
+        if (fecha_inicio_tarea.value < fecha_inicio_tarea.min) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Fecha de Inicio inválida',
+                text: 'La fecha de inicio de la tarea debe ser mayor o igual a la fecha de inicio de la fase.',
+            });
+            return;
+        }
+
+        // En el caso de la fecha de fin exceda el maximo de la fecha de fin de la fase
+        if (fecha_fin_tarea.value > fecha_fin_tarea.max) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Fecha fin inválida',
+                text: 'La fecha fin de la tarea debe ser menor o igual a la fecha de cierre de la fase.',
+            });
+            return;
+        }
+
+        // En el caso de la fecha de inicio exceda el maximo de la fecha de fin de la fase
         if(fecha_inicio_tarea.value > fecha_fin_tarea.value){
             Swal.fire({
                 icon: 'warning',
                 title: 'Fechas inválidas',
-                text: 'La fecha de inicio debe ser menor o igual a la fecha de fin.',
+                text: 'La fecha de inicio debe ser menor o igual a la fecha de cierre.',
             });
             return;
         }
@@ -539,13 +560,43 @@ let idtarea = 0;
 
         if (!nombreTarea.value || !usuarioTarea.value || !fechaIniTarea.value || !fechaFinTarea.value || !porcentajeTarea.value || !rolTarea.value) {
             Swal.fire({
-              icon: 'warning',
-              title: 'Campos incompletos',
-              text: 'Por favor, completa todos los campos.',
+                icon: 'warning',
+                title: 'Campos incompletos',
+                text: 'Por favor, completa todos los campos.',
             });
             return;
         }
-      
+
+         // En el caso que la fecha de inicio sea menor a la fecha de inicio de la fase
+        if (fechaIniTarea.value < fechaIniTarea.min) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Fecha de Inicio inválida',
+                text: 'La fecha de inicio de la tarea debe ser mayor o igual a la fecha de inicio de la fase.',
+            });
+            return;
+        }
+    
+        // En el caso de la fecha de fin exceda el maximo de la fecha de fin de la fase
+        if (fechaFinTarea.value > fechaFinTarea.max) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Fecha fin inválida',
+                text: 'La fecha fin de la tarea debe ser menor o igual a la fecha de cierre de la fase.',
+            });
+            return;
+        }
+    
+        // En el caso de la fecha de inicio exceda el maximo de la fecha de fin de la fase
+        if(fechaIniTarea.value > fechaFinTarea.value){
+            Swal.fire({
+                icon: 'warning',
+                title: 'Fechas inválidas',
+                text: 'La fecha de inicio debe ser menor o igual a la fecha de cierre.',
+            });
+            return;
+        }
+
         if (isNaN(porcentajeTarea.value) || porcentajeTarea.value < 0 || porcentajeTarea.value > 100) {
         Swal.fire({
             icon: 'warning',
@@ -571,47 +622,47 @@ let idtarea = 0;
             showCancelButton: true,
             confirmButtonText: 'Si',
             cancelButtonText: 'No',
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-              const parametros = new URLSearchParams();
-              parametros.append("op", "editarTarea");
-              parametros.append("idtarea", idtarea);
-              parametros.append("idcolaboradores", usuarioTarea.value);
-              parametros.append("roles", rolTarea.value);
-              parametros.append("tarea", nombreTarea.value);
-              parametros.append("porcentaje", porcentajeTarea.value);
-              parametros.append("fecha_inicio_tarea", fechaIniTarea.value);
-              parametros.append("fecha_fin_tarea", fechaFinTarea.value);
-          
+                const parametros = new URLSearchParams();
+                parametros.append("op", "editarTarea");
+                parametros.append("idtarea", idtarea);
+                parametros.append("idcolaboradores", usuarioTarea.value);
+                parametros.append("roles", rolTarea.value);
+                parametros.append("tarea", nombreTarea.value);
+                parametros.append("porcentaje", porcentajeTarea.value);
+                parametros.append("fecha_inicio_tarea", fechaIniTarea.value);
+                parametros.append("fecha_fin_tarea", fechaFinTarea.value);
+
             fetch('../controllers/tarea.php', {
-              method: 'POST',
-              body: parametros
+                method: 'POST',
+                body: parametros
             })
-              .then(respuesta => {
-                if(respuesta.ok){
-                  obtenerPorcentajeF();
-                  obtenerPorcentajeP();
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Tarea Actualizada',
-                    text: 'La tarea ha sido actualizada correctamente.'
-                  }).then(() => {
-                    location.reload();
-                  });
-                } else{
-                  throw new Error('Error en la solicitud');
-                }
-              })
-              .catch(error => {
-                console.error('Error:', error);
-                Swal.alert({
-                  icon: 'Error',
-                  title: 'Error al editar la tarea',
-                  text: 'Ocurrió un actualizar la tarea. Por favor intentelo nuevamente.'
+                .then(respuesta => {
+                    if(respuesta.ok){
+                    obtenerPorcentajeF();
+                    obtenerPorcentajeP();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Tarea Actualizada',
+                        text: 'La tarea ha sido actualizada correctamente.'
+                    }).then(() => {
+                        location.reload();
+                    });
+                    } else{
+                    throw new Error('Error en la solicitud');
+                    }
                 })
-              });
-            }
-          })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.alert({
+                    icon: 'Error',
+                    title: 'Error al editar la tarea',
+                    text: 'Ocurrió un actualizar la tarea. Por favor intentelo nuevamente.'
+                    })
+                });
+                }
+            })
 
     }
 
@@ -669,6 +720,37 @@ let idtarea = 0;
             btnBuscarHabilidad2.addEventListener("click", listarHabilidadesEditar);
             verEvidenciasTarear(id)
             idtarea = id;
+
+            // Función para validar las fechas 
+            function validarFechasT() {
+                const fecha_inicio_tarea = document.querySelector("#fecha-inicio-tarea");
+                const fecha_fin_tarea = document.querySelector("#fecha-fin-tarea");
+                const parametos = new URLSearchParams();
+                parametos.append("op", "obtenerFase");
+                parametos.append("idfase", idfase);
+                fetch('../controllers/fase.php', {
+                    method: 'POST',
+                    body: parametos,
+                })
+                .then(respuesta => respuesta.json())
+                .then(datos=> {
+                    fecha_inicio_tarea.min = datos.fechainicio;
+                    fecha_inicio_tarea.max = datos.fechafin;
+                    fecha_fin_tarea.max = datos.fechafin;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+    
+                fecha_inicio_tarea.addEventListener("change", function() {
+                    fecha_fin_tarea.min = fecha_inicio_tarea.value;
+                });
+    
+                verEvidenciasTarear(id)
+                idtarea = id;
+            
+            }
+            validarFechasT();
         })
         .catch(error => {
             console.error('Error:', error);
@@ -760,6 +842,7 @@ let idtarea = 0;
         closeButton.setAttribute("data-bs-dismiss", "modal");
         closeButton.click();
     }
+
     const btnModalP = document.querySelector("#tarea-modal");
     btnModalP.addEventListener("click",cerrarModaltarea);
 
