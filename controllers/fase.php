@@ -161,8 +161,8 @@
                         <div class='row mb-2 mt-2'>
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>
-                                <input type='text' class='form-control' value='{$datos['nombrefase']}' placeholder='Nombre del proyecto' id='nombre-Fase' name='project' readonly>
-                                <label for='project' class='form-label'>Nombre de la Fase</label>
+                                    <input type='text' class='form-control' value='{$datos['nombrefase']}' placeholder='Nombre del proyecto' id='nombre-Fase' name='project' readonly>
+                                    <label for='project' class='form-label'>Nombre de la Fase</label>
                                 </div>
                             </div>
                             <div class='col-md-4'>
@@ -172,18 +172,20 @@
                                 </div>
                             </div>
                             <div class='col-md-4'>
-                                <div class='form-floating mb-3'>
+                                <div class='form-floating'>
                                     <input type='date' class='form-control' id='fechainicio-fase' placeholder='Inicio de la fase' value='{$datos['fechainicio']}' name='fechaini' readonly>
                                     <label for='fechaini' class='form-label'>Fecha de Inicio</label>
                                 </div>
+                                <label class='form-label text-muted h6'>Duración del proyecto: {$datos['InicioProyecto']} - {$datos['FinProyecto']}</label>
                             </div>
                         </div>
                         <div class='row mb-2 mt-2'>
                             <div class='col-md-4'>
-                                <div class='form-floating mb-3'>
+                                <div class='form-floating'>
                                     <input type='date' class='form-control' id='fechafin-fase' placeholder='Fin de la Fase' value='{$datos['fechafin']}' name='fechafin' readonly>
                                     <label for='fechafin' class='form-label'>Fecha de Fin</label>
                                 </div>
+                                <label class='form-label text-muted h6'>Duración del proyecto: {$datos['InicioProyecto']} - {$datos['FinProyecto']}</label>
                             </div>
                             <div class='col-md-4'>
                                 <div class='form-floating mb-3'>

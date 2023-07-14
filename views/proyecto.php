@@ -418,21 +418,21 @@
           <form>
             <div class="row mb-2 mt-2">
 
-              <div class="col-md-4">
+              <div class="col-md-4 mb-3">
                   <div class="form-floating mb-3">
                       <input type="text" disabled class="form-control" id="titulo-fase" name="titulo" placeholder="Título">
                       <label for="titulo" class="form-label">Titulo</label>
                   </div>
               </div>
 
-              <div class="col-md-4">
+              <div class="col-md-4 mb-3">
                 <div class="form-floating mb-3">
                     <input type="text" name="tipoProyecto" disabled id="tipoProyecto-fase" class="form-control form-control-sm" />
                     <label for="tipoProyecto">Tipo de Proyecto</label>
                 </div>
               </div>
               
-              <div class="col-md-4">
+              <div class="col-md-4 mb-3">
                   <div class="form-floating mb-3">
                     <input type="text" name="idempresa" disabled id="idempresa-fase" class="form-control form-control-sm" />
                     <label for="idempresa">Empresa</label>
@@ -442,48 +442,50 @@
               
             </div>
 
-            <div class="row mb-3">
+            <div class="row mb-2">
 
-              <div class="col-md-4">
+              <div class="col-md-4 mb-3">
                 <div class="form-floating mb-3">
                   <input type="text" class="form-control" placeholder="Nombre de la fase" id="name-faseV2" name="phase">
                   <label for="phase" class="form-label">Nombre de la fase</label>
                 </div>
               </div>
 
-              <div class="col-md-4">
+              <div class="col-md-4 mb-3">
                 <div class="form-floating mb-3">
                   <select name="responsable" id="responsable-faseV2" class="form-control form-control-sm">
                   </select>
                 </div>
               </div>
 
-              <div class="col-md-4">
+              <div class="col-md-4 mb-3">
                 <div class="form-floating mb-3">
                   <input type="date" class="form-control" placeholder="Fecha de Inicio" id="fecha-inicio-faseV2" name="fechare">
                   <label form="fecha" class="form-label">Fecha de Inicio</label>
                 </div>
+                <div id="fecha-inicio-container"></div>
               </div>
 
             </div>
 
             <div class="row mb-3">
 
-              <div class="col-md-4">
+              <div class="col-md-4 mb-3">
                 <div class="form-floating mb-3">
                   <input type="date" class="form-control" placeholder="Fecha de Fin" id="fecha-fin-faseV2" name="fechare">
                   <label form="fecha" class="form-label">Fecha de Fin</label>
                 </div>
+                <div id="fecha-fin-container"></div>
               </div>
 
-              <div class="col-md-4">
+              <div class="col-md-4 mb-3">
                 <div class="form-floating  mb-3">
                   <input name="porcentaje" type='number' class="form-control" placeholder="Porcentaje" id="porcentaje-crear-F">
                   <label form="porcentaje" class="form-label">Porcentaje</label>
                 </div>
               </div>
 
-              <div class="col-md-4">
+              <div class="col-md-4 mb-3">
                 <div class="form-floating  mb-3">
                   <textarea name="comentario" class="form-control" placeholder="Comentario" id="comentario-faseV2"></textarea>
                   <label form="comentario" class="form-label">Comentario</label>
@@ -620,11 +622,13 @@
                   <div class="col-md-6 form-floating mb-3">
                     <input type="date" class="form-control" name="fecha-ini" id="fecha-ini-tarea"  placeholder="Fecha Inicio">
                     <label for="fecha-ini" class="form-label">Fecha de inicio</label>
+                    <div id="fecha-inicio-fase"></div>
                   </div>
                 
                   <div class="col-md-6 form-floating mb-3">
                     <input type="date" name="fecha-fin" class="form-control" id="fecha-f-tarea"  placeholder="Fecha Fin">
                     <label for="fecha-fin" class="form-label">Fecha de Fin</label>
+                    <div id="fecha-fin-fase"></div>
                   </div>
 
                 </div>

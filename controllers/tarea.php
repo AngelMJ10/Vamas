@@ -571,15 +571,17 @@
                             </div>
                             <div class='col-md-3'>
                                 <div class='form-floating mb-3'>
-                                    <input type='date' class='form-control' id='fecha-inicio-tarea' readonly placeholder='Inicio de la fase' value='{$datos['fecha_inicio_tarea']}' name='fechaini'>
+                                    <input type='date' class='form-control' id='fecha-inicio-tarea' readonly placeholder='Inicio de la Tarea' value='{$datos['fecha_inicio_tarea']}' name='fechaini'>
                                     <label for='fechaini' class='form-label'>Fecha de Inicio</label>
                                 </div>
+                                <label class='form-label text-muted h6'>Duración de la fase: {$datos['fechainicio']} - {$datos['fechafin']}</label>
                             </div>
                             <div class='col-md-3'>
                                 <div class='form-floating mb-3'>
-                                    <input type='date' class='form-control' id='fecha-fin-tarea' readonly placeholder='Fin de la Fase' value='{$datos['fecha_fin_tarea']}' name='fechafin'>
-                                    <label for='fechafin' class='form-label'>Fecha de Inicio</label>
+                                    <input type='date' class='form-control' id='fecha-fin-tarea' readonly placeholder='Fin de la Tarea' value='{$datos['fecha_fin_tarea']}' name='fechafin'>
+                                    <label for='fechafin' class='form-label'>Fecha de Cierre</label>
                                 </div>
+                                <label class='form-label text-muted h6'>Duración de la fase: {$datos['fechainicio']} - {$datos['fechafin']}</label>
                             </div>
                         </div>
                         <div class='row mb-2 mt-2'>                       

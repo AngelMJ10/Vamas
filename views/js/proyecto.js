@@ -471,7 +471,7 @@ let idtarea = 0;
         }
       })
       .then(datos => {
-        console.log(datos.fechaFin);
+        console.log(datos.fechafin);
         tituloP.value = datos.titulo;
         tipoproyectoP.value = datos.tipoproyecto;
         empresaP.value = datos.nombre;
@@ -479,14 +479,31 @@ let idtarea = 0;
         fechainicio.max = datos.fechafin;
         fechafin.min = datos.fechainicio;
         fechafin.max = datos.fechafin;
+        fechainicio.addEventListener("change", function() {
+          fechafin.min = fechainicio.value;
+        });
+        function agregarLabels(){
+          // Debajo de fecha inicio
+          const fechaInicioProyecto = document.querySelector("#fecha-inicio-container");
+          fechaInicioProyecto.textContent = '';
+          const fechaIni = document.createElement("label");
+          fechaIni.classList.add("form-label", "text-muted", "h6");
+          fechaIni.textContent = "Duración: " + datos.fechainicio + " / " + datos.fechafin;
+          fechaInicioProyecto.appendChild(fechaIni);
+
+          // Debajo de fecha Fin
+          const fechaFinProyecto = document.querySelector("#fecha-fin-container");
+          fechaFinProyecto.textContent = '';
+          const fechaFinP = document.createElement("label");
+          fechaFinP.classList.add("form-label", "text-muted", "h6");
+          fechaFinP.textContent = "Duración: " + datos.fechainicio + " / " + datos.fechafin;
+          fechaFinProyecto.appendChild(fechaFinP);
+        }
+        agregarLabels();
       })
       .catch(error => {
         console.error('Error:', error);
       });
-
-    fechainicio.addEventListener("change", function() {
-      fechafin.min = fechainicio.value;
-    });
 
     // Agregamos los colaboradores al select
     function listarSupervisores() {
@@ -713,14 +730,14 @@ let idtarea = 0;
             fecha_inicio_fase.min = datos.fechainicio;
             fecha_inicio_fase.max = datos.fechafin;
             fecha_fin_fase.max = datos.fechafin;
+            fecha_inicio_fase.addEventListener("change", function() {
+              fecha_fin_fase.min = fecha_inicio_fase.value;
+            });
+            console.log(datos.fechafin);
           })
           .catch(error => {
               console.error('Error:', error);
           });
-
-          fecha_inicio_fase.addEventListener("change", function() {
-            fecha_fin_fase.min = fecha_inicio_fase.value;
-        });
         }
         validarFechasF();
       })
@@ -1057,14 +1074,33 @@ let idtarea = 0;
       fecha_inicio_tarea.min = datos.fechainicio;
       fecha_inicio_tarea.max = datos.fechafin;
       fecha_fin_tarea.max = datos.fechafin;
+      fecha_inicio_tarea.addEventListener("change", function() {
+        fecha_fin_tarea.min = fecha_inicio_tarea.value;
+      });
+      function agregarLabelsT(){
+        // Debajo de fecha inicio
+        const fechaInicioProyecto = document.querySelector("#fecha-inicio-fase");
+        fechaInicioProyecto.textContent = '';
+        const fechaIni = document.createElement("label");
+        fechaIni.classList.add("form-label", "text-muted", "h6");
+        fechaIni.textContent = "Duración: " + datos.fechainicio + " / " + datos.fechafin;
+        fechaInicioProyecto.appendChild(fechaIni);
+
+        // Debajo de fecha Fin
+        const fechaFinProyecto = document.querySelector("#fecha-fin-fase");
+        fechaFinProyecto.textContent = '';
+        const fechaFinP = document.createElement("label");
+        fechaFinP.classList.add("form-label", "text-muted", "h6");
+        fechaFinP.textContent = "Duración: " + datos.fechainicio + " / " + datos.fechafin;
+        fechaFinProyecto.appendChild(fechaFinP);
+      }
+      agregarLabelsT();
     })
     .catch(error => {
       console.error('Error:', error);
     });
 
-    fecha_inicio_tarea.addEventListener("change", function() {
-      fecha_fin_tarea.min = fecha_inicio_tarea.value;
-    });
+    
     
 
     function listarColaboradores_A(){
@@ -1275,16 +1311,15 @@ let idtarea = 0;
           })
           .then(respuesta => respuesta.json())
           .then(datos=> {
-              fecha_inicio_tarea.min = datos.fechainicio;
-              fecha_inicio_tarea.max = datos.fechafin;
-              fecha_fin_tarea.max = datos.fechafin;
+            fecha_inicio_tarea.min = datos.fechainicio;
+            fecha_inicio_tarea.max = datos.fechafin;
+            fecha_fin_tarea.max = datos.fechafin;
+            fecha_inicio_tarea.addEventListener("change", function() {
+              fecha_fin_tarea.min = fecha_inicio_tarea.value;
+            });
           })
           .catch(error => {
               console.error('Error:', error);
-          });
-
-          fecha_inicio_tarea.addEventListener("change", function() {
-              fecha_fin_tarea.min = fecha_inicio_tarea.value;
           });
 
           verEvidenciasTarear(id)

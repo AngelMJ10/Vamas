@@ -737,15 +737,14 @@ let idtarea = 0;
                     fecha_inicio_tarea.min = datos.fechainicio;
                     fecha_inicio_tarea.max = datos.fechafin;
                     fecha_fin_tarea.max = datos.fechafin;
+                    fecha_inicio_tarea.addEventListener("change", function() {
+                        fecha_fin_tarea.min = fecha_inicio_tarea.value;
+                    });
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
-    
-                fecha_inicio_tarea.addEventListener("change", function() {
-                    fecha_fin_tarea.min = fecha_inicio_tarea.value;
-                });
-    
+
                 verEvidenciasTarear(id)
                 idtarea = id;
             
