@@ -858,7 +858,7 @@ CREATE PROCEDURE ver_evidencia(IN _idtarea SMALLINT)
 BEGIN
 	SELECT pro.idproyecto, fas.idfase, tar.idtarea, pro.titulo, fas.nombrefase,tar.tarea, fas.fechainicio, fas.fechafin,
 		fas.comentario,col_fase.usuario AS 'usuario_fase', col_tarea.usuario AS 'usuario_tarea',
-		 tar.roles, tar.fecha_inicio_tarea, tar.fecha_fin_tarea, tar.porcentaje_tarea, tar.evidencia,tar.porcentaje, tar.estado
+	    tar.roles, tar.fecha_inicio_tarea, tar.fecha_fin_tarea, tar.porcentaje_tarea, tar.evidencia,tar.porcentaje, tar.estado
         FROM tareas tar
         INNER JOIN fases fas ON tar.idfase = fas.idfase
         INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
@@ -1021,18 +1021,6 @@ END $$
 SELECT * FROM tareas
 CALL finalizar_tarea;
 
--- Para finalizar tareas por su id
-DELIMITER $$
-CREATE PROCEDURE finalizar_tarea_by_id(IN _idtarea SMALLINT)
-BEGIN 
-    UPDATE tareas AS tar
-    SET tar.estado = 2, tar.fecha_update = NOW()
-    WHERE tar.idtarea = _idtarea;
-END $$
-CALL finalizar_tarea_by_id(1);
-
----------------------------------------
-
 -- Para reactivar las tareas de la fase
 DELIMITER $$
 CREATE PROCEDURE reactivar_tarea()
@@ -1045,6 +1033,18 @@ END $$
 
 CALL reactivar_tarea();
 DROP PROCEDURE reactivar_tarea;
+
+---------------------------------------
+
+-- Para finalizar tareas por su id
+DELIMITER $$
+CREATE PROCEDURE finalizar_tarea_by_id(IN _idtarea SMALLINT)
+BEGIN 
+    UPDATE tareas AS tar
+    SET tar.estado = 2, tar.fecha_update = NOW()
+    WHERE tar.idtarea = _idtarea;
+END $$
+CALL finalizar_tarea_by_id(1);
 
 -- Reactivar tareas por id de la tarea
 
