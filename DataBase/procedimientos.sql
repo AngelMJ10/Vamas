@@ -228,22 +228,24 @@ CALL buscar_colaboradores('A','','');
 -------------------------------------------
 -- P.A Para obtener la información de un colaborador por su ID
 
-DELIMITER $$ 
+DELIMITER $$
 CREATE PROCEDURE obtener_info_colaborador(IN _idcolaboradores SMALLINT)
 BEGIN
-	SELECT col.idcolaboradores,per.idpersona, col.usuario, col.correo, col.nivelacceso,
-	per.apellidos, per.nombres,per.genero,per.nrodocumento,telefono, GROUP_CONCAT(hab.habilidad SEPARATOR ', ') AS habilidades,
-	(SELECT COUNT(DISTINCT idfase) FROM fases WHERE idresponsable = col.idcolaboradores) AS Fases,
-	(SELECT COUNT(DISTINCT idtarea) FROM tareas WHERE idcolaboradores = col.idcolaboradores) AS Tareas
-	FROM colaboradores col
-	INNER JOIN personas per ON col.idpersona = per.idpersona
-	LEFT JOIN habilidades hab ON col.idcolaboradores = hab.idcolaboradores
-	WHERE col.idcolaboradores = _idcolaboradores AND col.estado = '1'
-	GROUP BY col.idcolaboradores;
+    SELECT col.idcolaboradores, per.idpersona, col.usuario, col.correo, col.nivelacceso,
+        per.apellidos, per.nombres, per.genero, per.nrodocumento, telefono,
+        CONCAT('[', GROUP_CONCAT(CONCAT('{"habilidad": "', hab.habilidad, '"}')), ']') AS habilidades,
+        (SELECT COUNT(DISTINCT idfase) FROM fases WHERE idresponsable = col.idcolaboradores) AS Fases,
+        (SELECT COUNT(DISTINCT idtarea) FROM tareas WHERE idcolaboradores = col.idcolaboradores) AS Tareas
+    FROM colaboradores col
+    INNER JOIN personas per ON col.idpersona = per.idpersona
+    LEFT JOIN habilidades hab ON col.idcolaboradores = hab.idcolaboradores
+    WHERE col.idcolaboradores = _idcolaboradores AND col.estado = '1'
+    GROUP BY col.idcolaboradores;
 END $$
 
+
 DROP PROCEDURE obtener_info_colaborador
-CALL obtener_info_colaborador(1)
+CALL obtener_info_colaborador(2)
 
 ------------------------------------
 -- Para editar al colaborador

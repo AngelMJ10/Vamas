@@ -173,98 +173,106 @@
         <div class="modal-body">
           <form>
             <div class="row mb-2 mt-2">
-                <div class="col-md-3">
+              <div class="col-md-9">
+
+                <div class="row mb-2">
+                  <div class="col-md-4">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" readonly id="usuario-editar" placeholder="Nombre" name="nombre">
                         <label for="nombre" class="form-label">Usuario</label>
                     </div>
+                  </div>
+
+                  <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                          <input type="text" class="form-control" readonly id="correo-editar" placeholder="Razón Social" name="razonsocial">
+                          <label for="razonsocial" class="form-label">Correo</label>
+                      </div>
+                  </div>
+
+                  <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                        <select name="nivel" id="nivel-editar" readonly class="form-control form-control-sm">
+                          <label for="nivel">Seleccione el nivel de acceso:</label>
+                          <option value="">Seleccione</option>
+                          <option value="A">Administrador</option>
+                          <option value="S">Supervisor</option>
+                          <option value="C">Colaborador</option>
+                        </select>
+                      </div>
+                  </div>
+
                 </div>
 
-                <div class="col-md-3">
+                <div class="row mb-2">
+
+                  <div class="col-md-4">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" readonly id="correo-editar" placeholder="Razón Social" name="razonsocial">
-                        <label for="razonsocial" class="form-label">Correo</label>
+                        <input type="text" class="form-control"  readonly id="fases-editar" placeholder="Razón Social" name="razonsocial">
+                        <label for="razonsocial" class="form-label">Fases encargadas</label>
                     </div>
+                  </div>
+
+                  <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                          <input type="text" class="form-control" readonly id="nombres-editar" placeholder="Razón Social" name="razonsocial">
+                          <label for="razonsocial" class="form-label">Nombres</label>
+                      </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" readonly id="apellidos-editar" placeholder="Razón Social" name="razonsocial">
+                        <label for="razonsocial" class="form-label">Apellidos</label>
+                    </div>
+                  </div>
+
                 </div>
 
-                <div class="col-md-3">
+                <div class="row mb-2">
+
+                  <div class="col-md-4">
                     <div class="form-floating mb-3">
-                      <select name="nivel" id="nivel-editar" readonly class="form-control form-control-sm">
-                        <label for="nivel">Seleccione el nivel de acceso:</label>
+                      <select name="genero" id="genero-editar" readonly class="form-control form-control-sm">
+                        <label for="genero">Seleccione el género:</label>
                         <option value="">Seleccione</option>
-                        <option value="A">Administrador</option>
-                        <option value="S">Supervisor</option>
-                        <option value="C">Colaborador</option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
                       </select>
                     </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" readonly id="tareas-editar" placeholder="Razón Social" name="razonsocial">
+                      <label for="razonsocial" class="form-label">Tareas Asignadas</label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" readonly id="documento-cola" placeholder="N° Documento" name="nrodocumento">
+                        <label for="nrodocumento" class="form-label">N° Documento</label>
+                      </div>
+                  </div>
+
                 </div>
 
-                <div class="col-md-3">
-                  <div class="form-floating mb-3">
-                      <input type="text" class="form-control"  readonly id="fases-editar" placeholder="Razón Social" name="razonsocial">
-                      <label for="razonsocial" class="form-label">Fases encargadas</label>
+                <div class="row mb-2">
+                  <div class="col-md-4">
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" readonly id="telefono-cola" placeholder="Teléfono" name="telefono">
+                      <label for="telefono" class="form-label">Teléfono</label>
+                    </div>
                   </div>
                 </div>
-                
-            </div>
 
-            <div class="row">
-
-              <div class="col-md-3">
-                  <div class="form-floating mb-3">
-                      <input type="text" class="form-control" readonly id="nombres-editar" placeholder="Razón Social" name="razonsocial">
-                      <label for="razonsocial" class="form-label">Nombres</label>
-                  </div>
               </div>
 
               <div class="col-md-3">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" readonly id="apellidos-editar" placeholder="Razón Social" name="razonsocial">
-                    <label for="razonsocial" class="form-label">Apellidos</label>
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="form-floating mb-3">
-                  <select name="genero" id="genero-editar" readonly class="form-control form-control-sm">
-                    <label for="genero">Seleccione el género:</label>
-                    <option value="">Seleccione</option>
-                    <option value="M">Masculino</option>
-                    <option value="F">Femenino</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="form-floating mb-3">
-                    <textarea type="text" class="form-control" readonly id="habilidades-editar" placeholder="Razón Social" name="razonsocial"></textarea>
-                    <label for="razonsocial" class="form-label">Habilidades</label>
-                </div>
-              </div>
-
-
-            </div>
-
-            <div class="row mb-2">
-
-              <div class="col-md-3">
-                <div class="form-floating mb-3">
-                  <input type="text" class="form-control" readonly id="tareas-editar" placeholder="Razón Social" name="razonsocial">
-                  <label for="razonsocial" class="form-label">Tareas Asignadas</label>
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                  <div class="form-floating mb-3">
-                    <input type="text" class="form-control" readonly id="documento-cola" placeholder="N° Documento" name="nrodocumento">
-                    <label for="nrodocumento" class="form-label">N° Documento</label>
-                  </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-floating mb-3">
-                  <input type="text" class="form-control" readonly id="telefono-cola" placeholder="Teléfono" name="telefono">
-                  <label for="telefono" class="form-label">Teléfono</label>
-                </div>
+                <h5>Habilidades asignadas</h5>
+                <ol class="list-group list-group-numbered" id="habilidades-colaboradores">
+                </ol>
               </div>
             </div>
 
@@ -278,8 +286,7 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
@@ -295,7 +302,7 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-6">
               <select name="so" id="habilidadesCol" class="form-select">
                 <option value="">Seleccione las habilidades</option>
                 <option value="Front-end Básico">Front-end Básico</option>
@@ -316,6 +323,12 @@
                 <button type="button" id="registrar-habilidad" class="btn btn-outline-success">Asignar Habilidad</button>
               </div>
             </div>
+
+            <div class="col-md-4">
+                <ol class="list-group list-group-numbered" id="habilidades-colaboradores-editar">
+                </ol>
+              </div>
+
           </div>
         </div>
 

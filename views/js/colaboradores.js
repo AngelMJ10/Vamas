@@ -27,6 +27,7 @@ const nombreColaborador = document.querySelector("#buscar-colaborador");
 const buscarNivel = document.querySelector("#buscar-nivelacceso");
 const buscarCorreo = document.querySelector("#buscar-correo");
 const btnBuscar = document.querySelector("#buscar-colaboradores");
+const listHabilidades = document.querySelector("#habilidades-colaboradores");;
 
 let idpersona = 0;
 let idcolaboradores = 0;
@@ -51,7 +52,22 @@ function obtenerInfo(id){
         txtDocumento.value = datos.nrodocumento;
         NTelefono.value = datos.telefono;
         txtTarea.value = datos.Tareas;
-        txtxHabilidad.value = datos.habilidades;
+        if (datos.habilidades) {
+            listHabilidades.innerHTML = "";
+            datos.habilidades.forEach((element, index) => {
+                const li = document.createElement("li");
+                li.classList.add("list-group-item");
+                li.textContent = element.habilidad;
+                listHabilidades.appendChild(li);
+            });
+        }else {
+            listHabilidades.innerHTML = "";
+            const li = document.createElement("li");
+            li.classList.add("list-group-item");
+            li.textContent = "No tiene habilidades asignadas";
+            listHabilidades.appendChild(li);
+        }
+
         idpersona = datos.idpersona;
         const bootstrapModal = new bootstrap.Modal(modalInfo);
         bootstrapModal.show();
@@ -108,11 +124,12 @@ function cancelarEditar(){
 }
 
 function editarColaborardor_Persona(){
+
     if (!txtusu.value || !txtCorreo.value || !txtNivel.value || !txtFases.value || !txtApellido.value || !txtNombre.value || !txtGenero.value || !txtDocumento.value || !NTelefono.value) {
         Swal.fire({
-          icon: 'warning',
-          title: 'Campos incompletos',
-          text: 'Por favor, completa todos los campos.',
+            icon: 'warning',
+            title: 'Campos incompletos',
+            text: 'Por favor, completa todos los campos.',
         });
         return;
     }
@@ -166,18 +183,70 @@ function editarColaborardor_Persona(){
     })  
 }
 
-function abrirModalH(id){
+// Abrir modela de habilidades
+function abrirModalH(id) {
     const bootstrapModal = new bootstrap.Modal(modalH);
-    bootstrapModal.show();
+    const listHabilidadesAsi = document.querySelector("#habilidades-colaboradores-editar");;
+    const habilidadesCol = document.querySelector("#habilidadesCol");
     idcolaboradores = id;
+
+    // Mostrar el modal
+    bootstrapModal.show();
+
+    const parametros = new URLSearchParams();
+    parametros.append("op", "infoColaboradores");
+    parametros.append("idcolaboradores", id);
+    fetch('../controllers/persona.php', {
+        method: 'POST',
+        body: parametros
+    })
+    .then(respuesta => respuesta.json())
+    .then(datos => {
+        console.log(datos.idcolaboradores);
+        const habilidadesOptions = habilidadesCol.options;
+        // Restablecer el estado inicial del select eliminando la clase d-none de todas las opciones
+        for (let i = 0; i < habilidadesOptions.length; i++) {
+            habilidadesOptions[i].classList.remove("d-none");
+        }
+        // Verificar si la habilidad seleccionada ya existe en el usuario
+        if (datos.habilidades) {
+
+            listHabilidadesAsi.innerHTML = "";
+            datos.habilidades.forEach((element, index) => {
+                const li = document.createElement("li");
+                li.classList.add("list-group-item");
+                li.textContent = element.habilidad;
+                listHabilidadesAsi.appendChild(li);
+            });
+            const habilidadesUsuario = datos.habilidades.map(habilidad => habilidad.habilidad);
+
+            // Iterar sobre las opciones del select y ocultar las que coinciden con las habilidades del usuario
+            for (let i = 0; i < habilidadesOptions.length; i++) {
+                const option = habilidadesOptions[i];
+                if (habilidadesUsuario.includes(option.value)) {
+                    option.classList.add("d-none");
+                }
+            }
+        } else{
+            listHabilidadesAsi.innerHTML = "";
+            const li = document.createElement("li");
+            li.classList.add("list-group-item");
+            li.textContent = "No tiene habilidades asignadas";
+            listHabilidadesAsi.appendChild(li);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 }
 
+// Asiganar habilidades 
 function asignarHabilidad(){
     if (!habilidadesCol.value) {
         Swal.fire({
-          icon: 'warning',
-          title: 'Campo incompleto',
-          text: 'Por favor, completa todos los campos.',
+            icon: 'warning',
+            title: 'Campo incompleto',
+            text: 'Por favor, completa todos los campos.',
         });
         return;
     }
@@ -208,6 +277,8 @@ function asignarHabilidad(){
                     }).then(() =>{
                         location.reload();
                     });
+                    console.log(habilidadesCol.value);
+                    console.log(idcolaboradores);
                 } else{
                     throw new Error('Error en la solicitud');
                 }
@@ -242,6 +313,7 @@ function buscarColaboradores(){
         console.error('Error:', error);
     });
 }
+
 
 listar();
 btnRead.addEventListener("click", quitarRead);

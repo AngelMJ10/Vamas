@@ -108,17 +108,17 @@
 
         public function searchUser($usuario = ''){
             try{
-              $query = "CALL buscar(?)";
-              $consulta = $this->conexion->prepare($query);
-              $consulta->execute(array($usuario));
+                $query = "CALL buscar(?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array($usuario));
         
-              return $consulta->fetch(PDO::FETCH_ASSOC);
+                return $consulta->fetch(PDO::FETCH_ASSOC);
             }
             catch(Exception $e){
-              die($e->getMessage());
+                die($e->getMessage());
             }
         }
-  
+
         public function restoure($data = []){
             try{
                 $query = "CALL recuperar_clave(?,?,?)";
@@ -162,7 +162,7 @@
                 die($e->getMessage());
             }
         }
-  
+
         public function actualizarClave($data = []){
             $resultado = ["status" => false];
             try{
