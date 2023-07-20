@@ -6,7 +6,7 @@ DELIMITER $$
 CREATE PROCEDURE registrarColaboradores(
 	IN _idpersona SMALLINT,
 	IN _usuario VARCHAR(20),
-	IN _correo VARCHAR(20),
+	IN _correo VARCHAR(100),
 	IN _clave VARCHAR(200)
 )
 BEGIN

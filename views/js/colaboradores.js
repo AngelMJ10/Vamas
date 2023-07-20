@@ -73,7 +73,7 @@ function obtenerInfo(id){
                      // Crear el botón de deshabilitar
                     const btnEliminar = document.createElement("button");
                     btnEliminar.setAttribute("type", "button");
-                    btnEliminar.classList.add("btn", "btn-danger", "btn-sm", "ms-2");
+                    btnEliminar.classList.add("btn", "btn-outline-danger", "btn-sm", "ms-2");
                     btnEliminar.textContent = "Eliminar";
                     btnEliminar.addEventListener("click", () => deshabilitar_habilidad(element.idhabilidades)); // Agregar evento para eliminar
 
@@ -285,7 +285,7 @@ function abrirModalH(id) {
 }
 
 // Asiganar habilidades 
-async function asignarHabilidad() {
+function asignarHabilidad() {
     if (!habilidadesCol.value) {
         Swal.fire({
             icon: 'warning',
@@ -295,97 +295,86 @@ async function asignarHabilidad() {
         return;
     }
 
-    const confirmacion = await Swal.fire({
+    Swal.fire({
         icon: 'question',
         title: 'Confirmacion',
         text: '¿Está seguro de la habilidad asignada?',
         showCancelButton: true,
         confirmButtonText: 'Si',
         cancelButtonText: 'No',
-    });
-
-    if (confirmacion.isConfirmed) {
-        try {
+    }).then((result) => {
+        if (result.isConfirmed) {
             const parametrosH = new URLSearchParams();
             parametrosH.append("op", "listar_Habilidades_inactivas");
             parametrosH.append("idcolaboradores", idcolaboradores);
-            const respuestaH = await fetch('../controllers/persona.php', {
+            fetch('../controllers/persona.php', {
                 method: 'POST',
                 body: parametrosH,
-            });
-            const datos = await respuestaH.json();
-
-            if (datos.length === 0) {
-                const parametros = new URLSearchParams();
-                parametros.append("op", "asignarHabilidad");
-                parametros.append("idcolaboradores", idcolaboradores);
-                parametros.append("habilidad", habilidadesCol.value);
-                const respuesta = await fetch('../controllers/persona.php', {
-                    method: 'POST',
-                    body: parametros,
-                });
-
-                if (respuesta.ok) {
-                    await Swal.fire({
-                        icon: 'success',
-                        title: 'Habilidad asignada',
-                        text: 'Se ha agregado una nueva habilidad correctamente.'
+            })
+            .then(respuestaH => respuestaH.json())
+            .then(datos => {
+                console.log(datos);
+                if (datos.length === 0) {
+                    console.log("Caso cuando no hay habilidades inactivas");
+                    // Caso cuando no hay habilidades inactivas
+                    const parametros = new URLSearchParams();
+                    parametros.append("op", "asignarHabilidad");
+                    parametros.append("idcolaboradores", idcolaboradores);
+                    parametros.append("habilidad", habilidadesCol.value);
+                    return fetch('../controllers/persona.php', {
+                        method: 'POST',
+                        body: parametros,
                     });
-                    location.reload();
                 } else {
-                    throw new Error('Error en la solicitud');
-                }
-            } else {
-                for (const element of datos) {
-                    if (element.habilidad !== habilidadesCol.value) {
+                    console.log("Caso cuando hay habilidades inactivas o diferentes");
+                    // Caso cuando hay habilidades inactivas o diferentes
+                    const habilidadesDiferentes = datos.filter(element => element.habilidad !== habilidadesCol.value);
+                    if (habilidadesDiferentes.length > 0) {
+                        const primeraHabilidad = habilidadesDiferentes[0];
                         const parametros = new URLSearchParams();
                         parametros.append("op", "asignarHabilidad");
                         parametros.append("idcolaboradores", idcolaboradores);
                         parametros.append("habilidad", habilidadesCol.value);
-                        const respuesta = await fetch('../controllers/persona.php', {
+                        return fetch('../controllers/persona.php', {
                             method: 'POST',
                             body: parametros,
                         });
-
-                        if (respuesta.ok) {
-                            await Swal.fire({
-                                icon: 'success',
-                                title: 'Habilidad asignada',
-                                text: 'Se ha agregado una nueva habilidad correctamente.'
-                            });
-                            location.reload();
-                        } else {
-                            throw new Error('Error en la solicitud');
-                        }
                     } else {
+                        console.log("Caso cuando todas las habilidades inactivas son iguales");
+                        // Caso cuando todas las habilidades inactivas son iguales
                         const parametrosI = new URLSearchParams();
                         parametrosI.append("op", "activar_habilidad");
-                        parametrosI.append("idhabilidades", element.idhabilidades);
-                        const respuestaI = await fetch('../controllers/persona.php', {
+                        parametrosI.append("idhabilidades", datos[0].idhabilidades);
+                        return fetch('../controllers/persona.php', {
                             method: 'POST',
                             body: parametrosI,
                         });
-
-                        if (respuestaI.ok) {
-                            await Swal.fire({
-                                icon: 'success',
-                                title: 'Habilidad asignada V2',
-                                text: 'Se ha agregado una nueva habilidad correctamente.'
-                            });
-                            location.reload();
-                        }
                     }
                 }
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            Swal.alert({
-                icon: 'error',
-                title: 'Error al asignar la habilidad',
-                text: 'Ocurrió un error al asignar la habilidad. Por favor, inténtelo de nuevo.'
+            })
+            .then(respuesta => {
+                if (respuesta.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Habilidad asignada',
+                        text: 'Se ha agregado una nueva habilidad correctamente.'
+                    }).then(() => {
+                        location.reload();
+                    });
+                } else {
+                    throw new Error('Error en la solicitud');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.alert({
+                    icon: 'error',
+                    title: 'Error al asignar la habilidad',
+                    text: 'Ocurrió un error al asignar la habilidad. Por favor, inténtelo de nuevo.'
+                });
             });
         }
-    }
+    });
 }
 
 
