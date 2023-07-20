@@ -51,30 +51,88 @@ function obtenerInfo(id){
         txtGenero.value = datos.genero;
         txtDocumento.value = datos.nrodocumento;
         NTelefono.value = datos.telefono;
-        txtTarea.value = datos.Tareas;
-        if (datos.habilidades) {
-            listHabilidades.innerHTML = "";
-            datos.habilidades.forEach((element, index) => {
-                const li = document.createElement("li");
-                li.classList.add("list-group-item");
-                li.textContent = element.habilidad;
-                listHabilidades.appendChild(li);
-            });
-        }else {
-            listHabilidades.innerHTML = "";
-            const li = document.createElement("li");
-            li.classList.add("list-group-item");
-            li.textContent = "No tiene habilidades asignadas";
-            listHabilidades.appendChild(li);
-        }
-
         idpersona = datos.idpersona;
+        idcolaboradores = id;
         const bootstrapModal = new bootstrap.Modal(modalInfo);
         bootstrapModal.show();
+        function listarHabilidades() {
+            listHabilidades.innerHTML = "";
+            const parametrosURL = new URLSearchParams();
+            parametrosURL.append("op", "listarHabilidades");
+            parametrosURL.append("idcolaboradores", idcolaboradores);
+            fetch('../controllers/persona.php', {
+                method: 'POST',
+                body: parametrosURL
+            })
+            .then(respuesta => respuesta.json())
+            .then(datos => {
+                datos.forEach(element => {
+                    const li = document.createElement("li");
+                    li.classList.add("list-group-item");
+                    li.textContent = element.habilidad;
+                     // Crear el botón de deshabilitar
+                    const btnEliminar = document.createElement("button");
+                    btnEliminar.setAttribute("type", "button");
+                    btnEliminar.classList.add("btn", "btn-danger", "btn-sm", "ms-2");
+                    btnEliminar.textContent = "Eliminar";
+                    btnEliminar.addEventListener("click", () => deshabilitar_habilidad(element.idhabilidades)); // Agregar evento para eliminar
+
+                    // Agregar el botón de eliminar al final del elemento li
+                    li.appendChild(btnEliminar);
+                    listHabilidades.appendChild(li);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+        listarHabilidades();
     })
     .catch(error => {
         console.error('Error:', error);
     });
+}
+
+function deshabilitar_habilidad(idhabilidad){
+    const parametros = new URLSearchParams();
+    parametros.append("op", "deshabilitar_habilidad");
+    parametros.append("idhabilidades", idhabilidad);
+    Swal.fire({
+        icon: 'question',
+        title: 'Confirmacion',
+        text: '¿Está seguro de deshabilitar la habilidad?',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch('../controllers/persona.php', {
+            method: 'POST',
+            body: parametros
+            })
+            .then(respuesta => {
+                if (respuesta.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Habilidad deshabilitada',
+                        text: 'La habilidad ha sido deshabilitada.'
+                    }).then(() =>{
+                        location.reload();
+                    });
+                }else{
+                    console.error('Error:', error);
+                    Swal.alert({
+                        icon: 'Error',
+                        title: 'Error al deshabilitar la habilidad',
+                        text: 'Ocurrió un error al deshabilitar la habilidad. Por favor intentelo de nuevo.'
+                    })
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    })
 }
 
 function listar(){
@@ -194,7 +252,7 @@ function abrirModalH(id) {
     bootstrapModal.show();
 
     const parametros = new URLSearchParams();
-    parametros.append("op", "infoColaboradores");
+    parametros.append("op", "listarHabilidades");
     parametros.append("idcolaboradores", id);
     fetch('../controllers/persona.php', {
         method: 'POST',
@@ -202,38 +260,24 @@ function abrirModalH(id) {
     })
     .then(respuesta => respuesta.json())
     .then(datos => {
-        console.log(datos.idcolaboradores);
         const habilidadesOptions = habilidadesCol.options;
         // Restablecer el estado inicial del select eliminando la clase d-none de todas las opciones
         for (let i = 0; i < habilidadesOptions.length; i++) {
             habilidadesOptions[i].classList.remove("d-none");
         }
-        // Verificar si la habilidad seleccionada ya existe en el usuario
-        if (datos.habilidades) {
-
-            listHabilidadesAsi.innerHTML = "";
-            datos.habilidades.forEach((element, index) => {
-                const li = document.createElement("li");
-                li.classList.add("list-group-item");
-                li.textContent = element.habilidad;
-                listHabilidadesAsi.appendChild(li);
-            });
-            const habilidadesUsuario = datos.habilidades.map(habilidad => habilidad.habilidad);
-
-            // Iterar sobre las opciones del select y ocultar las que coinciden con las habilidades del usuario
-            for (let i = 0; i < habilidadesOptions.length; i++) {
-                const option = habilidadesOptions[i];
-                if (habilidadesUsuario.includes(option.value)) {
-                    option.classList.add("d-none");
-                }
-            }
-        } else{
-            listHabilidadesAsi.innerHTML = "";
+        listHabilidadesAsi.innerHTML = "";
+        datos.forEach(element => {
             const li = document.createElement("li");
             li.classList.add("list-group-item");
-            li.textContent = "No tiene habilidades asignadas";
+            li.textContent = element.habilidad;
             listHabilidadesAsi.appendChild(li);
-        }
+            for (let i = 0; i < habilidadesOptions.length; i++) {
+                if (habilidadesOptions[i].value === element.habilidad) {
+                    habilidadesOptions[i].classList.add("d-none");
+                }
+                
+            }
+        });
     })
     .catch(error => {
         console.error('Error:', error);
@@ -241,7 +285,7 @@ function abrirModalH(id) {
 }
 
 // Asiganar habilidades 
-function asignarHabilidad(){
+async function asignarHabilidad() {
     if (!habilidadesCol.value) {
         Swal.fire({
             icon: 'warning',
@@ -251,49 +295,99 @@ function asignarHabilidad(){
         return;
     }
 
-    Swal.fire({
+    const confirmacion = await Swal.fire({
         icon: 'question',
         title: 'Confirmacion',
         text: '¿Está seguro de la habilidad asignada?',
         showCancelButton: true,
         confirmButtonText: 'Si',
         cancelButtonText: 'No',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const parametros = new URLSearchParams();
-            parametros.append("op", "asignarHabilidad");
-            parametros.append("idcolaboradores", idcolaboradores);
-            parametros.append("habilidad", habilidadesCol.value);
-            fetch('../controllers/persona.php', {
+    });
+
+    if (confirmacion.isConfirmed) {
+        try {
+            const parametrosH = new URLSearchParams();
+            parametrosH.append("op", "listar_Habilidades_inactivas");
+            parametrosH.append("idcolaboradores", idcolaboradores);
+            const respuestaH = await fetch('../controllers/persona.php', {
                 method: 'POST',
-                body: parametros,
-            })
-            .then(respuesta =>{
+                body: parametrosH,
+            });
+            const datos = await respuestaH.json();
+
+            if (datos.length === 0) {
+                const parametros = new URLSearchParams();
+                parametros.append("op", "asignarHabilidad");
+                parametros.append("idcolaboradores", idcolaboradores);
+                parametros.append("habilidad", habilidadesCol.value);
+                const respuesta = await fetch('../controllers/persona.php', {
+                    method: 'POST',
+                    body: parametros,
+                });
+
                 if (respuesta.ok) {
-                    Swal.fire({
+                    await Swal.fire({
                         icon: 'success',
                         title: 'Habilidad asignada',
                         text: 'Se ha agregado una nueva habilidad correctamente.'
-                    }).then(() =>{
-                        location.reload();
                     });
-                    console.log(habilidadesCol.value);
-                    console.log(idcolaboradores);
-                } else{
+                    location.reload();
+                } else {
                     throw new Error('Error en la solicitud');
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                Swal.alert({
-                    icon: 'Error',
-                    title: 'Error al asignar la habilidad',
-                    text: 'Ocurrió un error al asignar la habilidad. Por favor intentelo de nuevo.'
-                })
+            } else {
+                for (const element of datos) {
+                    if (element.habilidad !== habilidadesCol.value) {
+                        const parametros = new URLSearchParams();
+                        parametros.append("op", "asignarHabilidad");
+                        parametros.append("idcolaboradores", idcolaboradores);
+                        parametros.append("habilidad", habilidadesCol.value);
+                        const respuesta = await fetch('../controllers/persona.php', {
+                            method: 'POST',
+                            body: parametros,
+                        });
+
+                        if (respuesta.ok) {
+                            await Swal.fire({
+                                icon: 'success',
+                                title: 'Habilidad asignada',
+                                text: 'Se ha agregado una nueva habilidad correctamente.'
+                            });
+                            location.reload();
+                        } else {
+                            throw new Error('Error en la solicitud');
+                        }
+                    } else {
+                        const parametrosI = new URLSearchParams();
+                        parametrosI.append("op", "activar_habilidad");
+                        parametrosI.append("idhabilidades", element.idhabilidades);
+                        const respuestaI = await fetch('../controllers/persona.php', {
+                            method: 'POST',
+                            body: parametrosI,
+                        });
+
+                        if (respuestaI.ok) {
+                            await Swal.fire({
+                                icon: 'success',
+                                title: 'Habilidad asignada V2',
+                                text: 'Se ha agregado una nueva habilidad correctamente.'
+                            });
+                            location.reload();
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            Swal.alert({
+                icon: 'error',
+                title: 'Error al asignar la habilidad',
+                text: 'Ocurrió un error al asignar la habilidad. Por favor, inténtelo de nuevo.'
             });
         }
-    })  
+    }
 }
+
 
 function buscarColaboradores(){
     const parametros = new URLSearchParams();
@@ -313,7 +407,6 @@ function buscarColaboradores(){
         console.error('Error:', error);
     });
 }
-
 
 listar();
 btnRead.addEventListener("click", quitarRead);

@@ -46,20 +46,6 @@ END $$
 
 CALL listar_habilidades();
 
------------------------------------------------------------------
--- Listar Habilidad por ID del colaborador
-DELIMITER $$
-CREATE PROCEDURE listar_habilidades_by_Col(IN _idcolaboradores SMALLINT)
-BEGIN
-	SELECT hab.idhabilidades,col.idcolaboradores,per.apellidos,per.nombres,per.genero,col.usuario,col.nivelacceso,hab.habilidad
-	FROM habilidades hab
-	INNER JOIN colaboradores col ON hab.idcolaboradores = col.idcolaboradores
-	INNER JOIN personas per ON col.idpersona = per.idpersona
-	WHERE col.idcolaboradores = _idcolaboradores AND hab.estado = 1
-	ORDER BY hab.habilidad;
-END $$
-CALL listar_habilidades_by_Col(3);
-
 ----------------------------------------- RESTAURAR CONTRASEÑA -----------------------------------
 
 DELIMITER $$
@@ -190,7 +176,7 @@ CREATE PROCEDURE listar_colaboradores()
 BEGIN
     SELECT col.idcolaboradores, col.usuario, col.correo, col.nivelacceso,
         per.apellidos, per.nombres,per.genero,
-        (SELECT COUNT(DISTINCT idhabilidades) FROM habilidades WHERE idcolaboradores = col.idcolaboradores) AS Habilidades,
+        (SELECT COUNT(DISTINCT idhabilidades) FROM habilidades WHERE idcolaboradores = col.idcolaboradores AND estado = 1) AS Habilidades,
         (SELECT COUNT(DISTINCT fas.idfase) FROM fases fas WHERE fas.idresponsable = col.idcolaboradores AND fas.estado = 1) AS Fases,
         (SELECT COUNT(DISTINCT tar.idtarea) FROM tareas tar WHERE tar.idcolaboradores = col.idcolaboradores AND tar.estado = 1) AS Tareas
     FROM colaboradores col
@@ -233,12 +219,10 @@ CREATE PROCEDURE obtener_info_colaborador(IN _idcolaboradores SMALLINT)
 BEGIN
     SELECT col.idcolaboradores, per.idpersona, col.usuario, col.correo, col.nivelacceso,
         per.apellidos, per.nombres, per.genero, per.nrodocumento, telefono,
-        CONCAT('[', GROUP_CONCAT(CONCAT('{"habilidad": "', hab.habilidad, '"}')), ']') AS habilidades,
         (SELECT COUNT(DISTINCT idfase) FROM fases WHERE idresponsable = col.idcolaboradores) AS Fases,
         (SELECT COUNT(DISTINCT idtarea) FROM tareas WHERE idcolaboradores = col.idcolaboradores) AS Tareas
     FROM colaboradores col
     INNER JOIN personas per ON col.idpersona = per.idpersona
-    LEFT JOIN habilidades hab ON col.idcolaboradores = hab.idcolaboradores
     WHERE col.idcolaboradores = _idcolaboradores AND col.estado = '1'
     GROUP BY col.idcolaboradores;
 END $$
@@ -273,6 +257,32 @@ END $$
 CALL editar_Colaborador(1,'AngelMJ','1342364@senati.pe','A','Marquina Jaime','Ángel Eduardo','M',72745028,951531166);
 
 -----------------------------------------------
+-- Para listar las habilidades del colaborador
+DELIMITER $$
+CREATE PROCEDURE listar_habilidades_by_col(IN _idcolaboradores SMALLINT)
+BEGIN
+	SELECT idhabilidades,idcolaboradores,habilidad,estado
+	FROM habilidades
+	WHERE idcolaboradores = _idcolaboradores AND estado = 1;
+END $$
+DROP PROCEDURE listar_habilidades_by_col
+CALL listar_habilidades_by_col(2);
+
+-----------------------------------
+-- Listar las habilidades inactivas
+
+DELIMITER $$
+CREATE PROCEDURE listar_habilidades_inac_by_col(IN _idcolaboradores SMALLINT)
+BEGIN
+	SELECT idhabilidades,idcolaboradores,habilidad,estado
+	FROM habilidades
+	WHERE idcolaboradores = _idcolaboradores AND estado = 2;
+END $$
+
+CALL listar_habilidades_inac_by_col(2);
+
+-------------------------------------------
+
 -- Para registrar habilidades con usuario
 
 DELIMITER $$
@@ -287,3 +297,37 @@ BEGIN
 END $$
 
 CALL registrar_habilidades(1,'Back-end Básico');
+
+-------------------------------------------------
+-- Para deshabilitar las habilidades
+
+DELIMITER $$
+CREATE PROCEDURE deshabilitar_habilidad
+(
+	IN _idhabilidades SMALLINT
+)
+BEGIN
+	UPDATE habilidades
+	SET estado = 2
+	WHERE idhabilidades = _idhabilidades;
+END $$
+
+CALL deshabilitar_habilidad(14);
+SELECT * FROM habilidades;
+
+--------------------------------------------
+-- Para reactivar Habilidades
+
+DELIMITER $$
+CREATE PROCEDURE activar_habilidad
+(
+	IN _idhabilidades SMALLINT
+)
+BEGIN
+	UPDATE habilidades
+	SET estado = 1
+	WHERE idhabilidades = _idhabilidades;
+END $$
+
+CALL activar_habilidad(14);
+

@@ -236,6 +236,38 @@
             }
         }
 
+        public function listar_Habilidades_inactivas($data = []){
+            try {
+                $query = "call listar_habilidades_inac_by_col(?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array($data['idcolaboradores']));
+                $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                return $datos;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
+        public function deshabilitar_habilidad($data = []){
+            try {
+                $query = "CALL deshabilitar_habilidad(?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array($data['idhabilidades']));
+            } catch (Exception $e) {
+                //throw $th;
+            }
+        }
+
+        public function activar_habilidad($data = []){
+            try {
+                $query = "CALL activar_habilidad(?)";
+                $consulta = $this->conexion->prepare($query);
+                $consulta->execute(array($data['idhabilidades']));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
     }
 
 ?>

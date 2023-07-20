@@ -123,15 +123,33 @@
         }
 
         if ($_POST['op'] == 'infoColaboradores') {
-          require_once '../models/Colaboradores.php';
           $colaborador = new Colaborador();
           $idcolaboradores = ["idcolaboradores" => $_POST['idcolaboradores']];
           $datos = $colaborador->obtener_info_Colaborador($idcolaboradores);
-          $habilidades = json_decode($datos['habilidades'], true);
-          $datos['habilidades'] = $habilidades;
           echo json_encode($datos);
         }
-      
+
+        if ($_POST['op'] == 'listarHabilidades') {
+          $idcolaboradores = ["idcolaboradores" => $_POST['idcolaboradores']];
+          $datos = $colaborador->listar_Habilidades($idcolaboradores);
+          echo json_encode($datos);
+        }
+
+        if ($_POST['op'] == 'listar_Habilidades_inactivas'){
+          $idcolaboradores = ["idcolaboradores" => $_POST['idcolaboradores']];
+          $datos = $colaborador->listar_Habilidades_inactivas($idcolaboradores);
+          echo json_encode($datos);
+        }
+
+        if ($_POST['op'] == 'deshabilitar_habilidad') {
+          $idhabilidades = ["idhabilidades" => $_POST['idhabilidades']];
+          $colaborador->deshabilitar_habilidad($idhabilidades);
+        }
+
+        if ($_POST['op'] == 'activar_habilidad') {
+          $idhabilidades = ["idhabilidades" => $_POST['idhabilidades']];
+          $colaborador->activar_habilidad($idhabilidades);
+        }
       
         // Editar persona y colaborador
         if ($_POST['op'] == 'editarPersona') {
