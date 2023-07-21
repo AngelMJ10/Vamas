@@ -1,16 +1,10 @@
 USE vamas2;
 ------------------------------------------------------------------ -- P.A DE LAS TAREAS ------------------------------------------------
-
--- P.A para listar las tareas con info del proyecto y fase del colaborador
-
+-- Para listar las tareas
 DELIMITER $$
-CREATE PROCEDURE listar_tarea_colaboradores(IN _idcolaboradores SMALLINT)
+CREATE PROCEDURE listar_tarea()
 BEGIN
-    IF EXISTS (
-        SELECT 1 FROM colaboradores WHERE idcolaboradores = _idcolaboradores 
-        AND nivelacceso IN ('A', 'S')
-    ) THEN
-        SELECT pro.idproyecto, fas.idfase, tar.idtarea, pro.titulo, fas.nombrefase,tar.tarea, fas.fechainicio, fas.fechafin,
+	 SELECT pro.idproyecto, fas.idfase, tar.idtarea, pro.titulo, fas.nombrefase,tar.tarea, fas.fechainicio, fas.fechafin,
 		fas.comentario,col_fase.usuario AS 'usuario_fase', col_tarea.usuario AS 'usuario_tarea',
 		 tar.roles, tar.fecha_inicio_tarea, tar.fecha_fin_tarea, tar.porcentaje_tarea, tar.evidencia,tar.porcentaje, tar.estado
         FROM tareas tar
@@ -20,27 +14,14 @@ BEGIN
         INNER JOIN colaboradores col_fase ON fas.idresponsable = col_fase.idcolaboradores
         WHERE tar.estado = 1
         ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
-    ELSE
-        SELECT pro.idproyecto, fas.idfase, tar.idtarea, pro.titulo, fas.nombrefase,tar.tarea, fas.fechainicio, fas.fechafin,
-		fas.comentario, col_fase.usuario AS 'usuario_fase', col_tarea.usuario AS 'usuario_tarea', tar.roles,
-		tar.fecha_inicio_tarea, tar.fecha_fin_tarea,tar.porcentaje_tarea,tar.evidencia, tar.estado
-        FROM tareas tar
-        INNER JOIN fases fas ON tar.idfase = fas.idfase
-        INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
-        INNER JOIN colaboradores col_tarea ON tar.idcolaboradores = col_tarea.idcolaboradores
-        INNER JOIN colaboradores col_fase ON fas.idresponsable = col_fase.idcolaboradores
-        WHERE col_tarea.idcolaboradores = _idcolaboradores AND tar.estado = 1	
-        ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
-    END IF;
 END $$
 
-CALL listar_tarea_colaboradores(1);
+CALL listar_tarea();
 
 ------------------------------------------
 -- P.A para buscar tareas por la fase,nombre de la tarea y estado
 DELIMITER $$
-CREATE PROCEDURE buscarTareas(
-    IN _idcolaboradores SMALLINT,
+CREATE PROCEDURE buscar_tareas(
     IN _idproyecto SMALLINT,
     IN _idfase SMALLINT,
     IN _tarea VARCHAR(255),
@@ -48,49 +29,24 @@ CREATE PROCEDURE buscarTareas(
     IN _estado CHAR(1)
 )
 BEGIN
-    IF EXISTS (
-        SELECT 1 FROM colaboradores WHERE idcolaboradores = _idcolaboradores AND (nivelacceso = 'A' OR nivelacceso = 'S' OR nivelacceso = 'C')
-    ) THEN
-        IF (SELECT nivelacceso FROM colaboradores WHERE idcolaboradores = _idcolaboradores) = 'C' THEN
-            SELECT pro.idproyecto, fas.idfase, tar.idtarea, pro.titulo, fas.nombrefase, tar.tarea, fas.fechainicio, fas.fechafin,
-                fas.comentario, col_fase.usuario AS 'usuario_fase', col_tarea.usuario AS 'usuario_tarea',
-                tar.roles, tar.fecha_inicio_tarea, tar.fecha_fin_tarea, tar.porcentaje_tarea, tar.evidencia, tar.porcentaje, tar.estado
-            FROM tareas tar
-            INNER JOIN fases fas ON tar.idfase = fas.idfase
-            INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
-            INNER JOIN colaboradores col_tarea ON tar.idcolaboradores = col_tarea.idcolaboradores
-            INNER JOIN colaboradores col_fase ON fas.idresponsable = col_fase.idcolaboradores
-            WHERE
-                (NULLIF(_idproyecto, '') IS NULL OR pro.idproyecto = _idproyecto)
-                AND (NULLIF(_idfase, '') IS NULL OR fas.idfase = _idfase)
-                AND (NULLIF(_tarea, '') IS NULL OR tar.tarea LIKE CONCAT('%', _tarea, '%'))
-                AND (NULLIF(_idcolaboradores, '') IS NULL OR tar.idcolaboradores = _idcolaboradorT)
-                AND (NULLIF(_estado, '') IS NULL OR tar.estado = _estado)
-                AND col_tarea.idcolaboradores = _idcolaboradores
-            ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
-        ELSE
-            SELECT pro.idproyecto, fas.idfase, tar.idtarea, pro.titulo, fas.nombrefase, tar.tarea, fas.fechainicio, fas.fechafin,
-                fas.comentario, col_fase.usuario AS 'usuario_fase', col_tarea.usuario AS 'usuario_tarea', tar.roles,
-                tar.fecha_inicio_tarea, tar.fecha_fin_tarea, tar.porcentaje_tarea, tar.evidencia,tar.porcentaje, tar.estado
-            FROM tareas tar
-            INNER JOIN fases fas ON tar.idfase = fas.idfase
-            INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
-            INNER JOIN colaboradores col_tarea ON tar.idcolaboradores = col_tarea.idcolaboradores
-            INNER JOIN colaboradores col_fase ON fas.idresponsable = col_fase.idcolaboradores
-            WHERE
-                (NULLIF(_idproyecto, '') IS NULL OR pro.idproyecto = _idproyecto)
-                AND (NULLIF(_idfase, '') IS NULL OR fas.idfase = _idfase)
-                AND (NULLIF(_tarea, '') IS NULL OR tar.tarea LIKE CONCAT('%', _tarea, '%'))
-                AND (NULLIF(_idcolaboradorT, '') IS NULL OR tar.idcolaboradores = _idcolaboradorT)
-                AND (NULLIF(_estado, '') IS NULL OR tar.estado = _estado)
-            ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
-        END IF;
-    END IF;
+    SELECT pro.idproyecto, fas.idfase, tar.idtarea, pro.titulo, fas.nombrefase, tar.tarea, fas.fechainicio, fas.fechafin,
+	fas.comentario, col_fase.usuario AS 'usuario_fase', col_tarea.usuario AS 'usuario_tarea', tar.roles,
+	tar.fecha_inicio_tarea, tar.fecha_fin_tarea, tar.porcentaje_tarea, tar.evidencia,tar.porcentaje, tar.estado
+    FROM tareas tar
+    INNER JOIN fases fas ON tar.idfase = fas.idfase
+    INNER JOIN proyecto pro ON fas.idproyecto = pro.idproyecto
+    INNER JOIN colaboradores col_tarea ON tar.idcolaboradores = col_tarea.idcolaboradores
+    INNER JOIN colaboradores col_fase ON fas.idresponsable = col_fase.idcolaboradores
+    WHERE
+	(NULLIF(_idproyecto, '') IS NULL OR pro.idproyecto = _idproyecto)
+	AND (NULLIF(_idfase, '') IS NULL OR fas.idfase = _idfase)
+	AND (NULLIF(_tarea, '') IS NULL OR tar.tarea LIKE CONCAT('%', _tarea, '%'))
+	AND (NULLIF(_idcolaboradorT, '') IS NULL OR tar.idcolaboradores = _idcolaboradorT)
+	AND (NULLIF(_estado, '') IS NULL OR tar.estado = _estado)
+    ORDER BY fas.idfase, fas.fechainicio, fas.fechafin;
 END $$
-DELIMITER ;
 
-DROP PROCEDURE buscarTareas;
-CALL buscarTareas('1','','','','4','');
+CALL buscar_tareas('','1','','','');
 
 -----------------------------------------------------
 -- P.A para editar una tarea
@@ -157,7 +113,7 @@ BEGIN
         INNER JOIN colaboradores col_fase ON fas.idresponsable = col_fase.idcolaboradores
         WHERE tar.idtarea = _idtarea;
 END $$
-DROP PROCEDURE obtener_tarea
+
 CALL obtener_tarea(1);
 
 --------------------------------------------------
@@ -271,7 +227,5 @@ BEGIN
 END $$
 
 CALL reactivar_tarea_by_id(1)
-
--------------------------------------------- PORCENTAJES ------------------------------------------------------
 
 

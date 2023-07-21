@@ -386,7 +386,7 @@
                             <td class='p-3' data-label='Estado'><span class='badge rounded-pill' style='background-color: #005478'>$estado</span></td>
                             <td data-label='Acciones'>
                                 <div class='btn-group' role='group'>
-                                <button type='button' onclick='reactivarFase({$registro['idfase']})' class='btn btn-outline-success btn-sm' title='Clic, para ver reactivar la fase.'><i class='fa-solid fa-arrows-rotate'></i></button>
+                                    <button type='button' onclick='reactivarFase({$registro['idfase']})' class='btn btn-outline-success btn-sm' title='Clic, para ver reactivar la fase.'><i class='fa-solid fa-arrows-rotate'></i></button>
                                 </div>
                             </td>
                         </tr>

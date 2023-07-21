@@ -6,11 +6,11 @@
             $this->conexion = parent::getConexion();
         }
     
-        public function list($idcolaboradores){
+        public function list(){
             try {
-                $query = "CALL listar_tarea_colaboradores(?)";
+                $query = "CALL listar_tarea()";
                 $consulta = $this->conexion->prepare($query);
-                $consulta->execute(array($idcolaboradores));
+                $consulta->execute();
                 $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
                 return $datos;
             } catch (Exception $e) {
@@ -185,10 +185,9 @@
 
         public function buscar_tareas($data = []){
             try {
-                $query = "CALL buscarTareas(?,?,?,?,?,?)";
+                $query = "CALL buscar_tareas(?,?,?,?,?)";
                 $consulta = $this->conexion->prepare($query);
                 $consulta->execute(array(
-                    $data['idcolaboradores'],
                     $data['idproyecto'],
                     $data['idfase'],
                     $data['tarea'],

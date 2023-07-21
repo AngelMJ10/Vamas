@@ -76,7 +76,7 @@ let idtarea = 0;
         })
     }
 
-    // Finalizar una fase por su ID
+    // Reactivar una tarea por su ID
     function reactivarTarea(id){
         Swal.fire({
         icon: 'question',

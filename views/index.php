@@ -68,31 +68,6 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                 Sección A
             </div>
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Opciones generales</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Lista de opciones:</h6>
-                        <a class="collapse-item" href="#">Opción 1</a>
-                        <a class="collapse-item" href="#">Opción 2</a>
-                        <a class="collapse-item" href="#">Opción 3</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Sección B
-            </div>
-
             <!-- OPCIONES QUE DEBEN SER FILTRADAS DE ACUERD AL PERFIL -->
             <?php require_once './opciones.php' ?>
             <!-- FIN OPCIONES DEL SIDEBAR -->

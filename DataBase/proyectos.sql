@@ -62,7 +62,7 @@ BEGIN
 	WHERE pro.idproyecto = _idproyecto
 	GROUP BY pro.idproyecto;
 END $$
-DROP PROCEDURE obtener_proyecto
+
 CALL obtener_proyecto(1);
 
 --------------------------------------
@@ -88,7 +88,6 @@ BEGIN
 END $$
 DELIMITER ;
 
-DROP PROCEDURE listar_proyecto_by_Colaborador
 CALL listar_proyecto_by_Colaborador(1);
 --------------------------------------------------------------------
 -- Para contar los usuario en los proyectos
@@ -111,7 +110,6 @@ BEGIN
 	) AS subquery;
 END $$
 
-DROP PROCEDURE contar_total_colaboradores;
 CALL contar_total_colaboradores(2);
 
 ---------------------------------------------------------
@@ -139,7 +137,6 @@ BEGIN
     GROUP BY col.idcolaboradores, col.usuario, col.nivelacceso, col.correo;
 END $$
 
-DROP PROCEDURE contar_colaboradores
 CALL contar_colaboradores(1);
 
 --------------------------------------------------------------
@@ -180,8 +177,7 @@ BEGIN
 END $$
 
 CALL finalizar_proyecto(2);
-SELECT * FROM proyecto;
-DROP PROCEDURE finalizar_proyecto;
+
 ----------------------------------------------
 
 -- Para reactivar un proyecto 
@@ -207,7 +203,6 @@ BEGIN
 END $$
 
 CALL finalizar_fase();
-SELECT * FROM fases
 
 ------------------------------------------
 

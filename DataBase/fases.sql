@@ -67,7 +67,6 @@ BEGIN
     ORDER BY pro.idproyecto, fas.fechainicio, fas.fechafin; -- Ordenar por el idproyecto ascendente
 END $$
 
-DROP PROCEDURE buscar_fase
 CALL buscar_fase('','','','1');
 
 ------------------------------------------------------------
@@ -89,11 +88,11 @@ BEGIN
     ORDER BY fas.fechainicio;
 END $$
 
-DROP PROCEDURE listar_fase_proyecto
 CALL listar_fase_proyecto(1);
 
 ------------------------------------------------------------------
 -- Para listar las fases de un proyecto con el ID del proyecto y el ID del colaborador
+
 DELIMITER $$
 CREATE PROCEDURE listar_fase_proyecto_by_C(IN _idproyecto SMALLINT, IN _idcolaboradores SMALLINT)
 BEGIN
@@ -124,9 +123,7 @@ BEGIN
         ORDER BY fas.fechainicio;
     END IF;
 END $$
-DELIMITER ;
 
-DROP PROCEDURE listar_fase_proyecto_by_C
 CALL listar_fase_proyecto_by_C('',4);
 
 
@@ -212,7 +209,6 @@ BEGIN
     WHERE fas.estado = 2;
 END $$
 
-SELECT * FROM tareas
 CALL finalizar_tarea;
 
 -- Para reactivar las tareas de la fase

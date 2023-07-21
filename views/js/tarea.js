@@ -375,7 +375,7 @@
     });
   }
 
-  function buscarTarea() {
+  function buscarTarea(){
     const table = document.querySelector("#tabla-tareas");
     const bodytable = table.querySelector("tbody");
     const proyecto = document.querySelector("#buscar-proyecto");
@@ -409,6 +409,92 @@
     .catch(error => {
         console.error('Error:', error);
     });
+  }
+
+  // Finalizar una tarea por su ID
+  function finalizarTarea(id){
+    Swal.fire({
+    icon: 'question',
+    title: 'Confirmación',
+    text: '¿Está seguro de finalizar esta tarea?',
+    showCancelButton: true,
+    confirmButtonText: 'Si',
+    cancelButtonText: 'No',
+    }).then((result) => {
+    if (result.isConfirmed) {
+        const parametrosURL = new URLSearchParams();
+        parametrosURL.append("op" ,"finalizar_tarea_by_id");
+        parametrosURL.append("idtarea" ,id);
+        fetch('../controllers/tarea.php', {
+        method: 'POST',
+        body: parametrosURL
+        })
+        .then(respuesta =>{
+            if(respuesta.ok){
+            Swal.fire({
+                icon: 'success',
+                title: 'Tarea Finalizada',
+                text: 'La tarea ha sido finalizada con éxito.'
+            }).then(() => {
+                location.reload();
+            });
+            } else{
+            throw new Error('Error en la solicitud');
+            }
+        })
+        .catch(error => {
+        console.error('Error:', error);
+        Swal.alert({
+            icon: 'Error',
+            title: 'Error al finalizar la tarea',
+            text: 'Ocurrió un error al finalizar la tarea. Por favor intentelo nuevamente.'
+        })
+        });
+    }
+    })
+}
+
+// Reactivar una tarea por su ID
+  function reactivarTarea(id){
+      Swal.fire({
+      icon: 'question',
+      title: 'Confirmación',
+      text: '¿Está seguro de reactivar esta tarea?',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+      }).then((result) => {
+      if (result.isConfirmed) {
+          const parametrosURL = new URLSearchParams();
+          parametrosURL.append("op" ,"reactivar_tarea_by_id");
+          parametrosURL.append("idtarea" ,id);
+          fetch('../controllers/tarea.php', {
+          method: 'POST',
+          body: parametrosURL
+          })
+          .then(respuesta =>{
+              if(respuesta.ok){
+              Swal.fire({
+                  icon: 'success',
+                  title: 'Tarea reactivada',
+                  text: 'La tarea ha sido reactivada con éxito.'
+              }).then(() => {
+                  location.reload();
+              });
+              } else{
+              throw new Error('Error en la solicitud');
+              }
+          })
+          .catch(error => {
+          console.error('Error:', error);
+          Swal.alert({
+              icon: 'Error',
+              title: 'Error al reactivar la tarea',
+              text: 'Ocurrió un error al reactivar la tarea. Por favor intentelo nuevamente.'
+          })
+          });
+      }
+      })
   }
 
   function listarColaboradores_A(){

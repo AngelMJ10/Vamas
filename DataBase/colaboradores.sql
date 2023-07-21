@@ -265,6 +265,7 @@ BEGIN
 	FROM habilidades
 	WHERE idcolaboradores = _idcolaboradores AND estado = 1;
 END $$
+
 DROP PROCEDURE listar_habilidades_by_col
 CALL listar_habilidades_by_col(2);
 
