@@ -367,6 +367,7 @@
                 <div class="form-floating mb-3">
                   <input type="date" class="form-control" placeholder="Fecha de Inicio" id="fecha-inicio-phase" name="fechare">
                   <label form="fecha" class="form-label">Fecha de Inicio</label>
+                  <div id="fecha-inicio-fasev1"></div>
                 </div>
               </div>
 
@@ -374,6 +375,7 @@
                 <div class="form-floating mb-3">
                   <input type="date" class="form-control" placeholder="Fecha de Fin" id="fecha-fin-phase" name="fechare">
                   <label form="fecha" class="form-label">Fecha de Fin</label>
+                  <div id="fecha-inicio-fasev2"></div>
                 </div>
               </div>
 

@@ -264,15 +264,32 @@ let idtarea = 0;
             fecha_inicio_tarea.min = datos.fechainicio;
             fecha_inicio_tarea.max = datos.fechafin;
             fecha_fin_tarea.max = datos.fechafin;
+            fecha_inicio_tarea.addEventListener("change", function() {
+                fecha_fin_tarea.min = fecha_inicio_tarea.value;
+            });    
+            function agregarLabelsT(){
+                // Debajo de fecha inicio
+                const fechaInicioProyecto = document.querySelector("#fecha-inicio-fase");
+                fechaInicioProyecto.textContent = '';
+                const fechaIni = document.createElement("label");
+                fechaIni.classList.add("form-label", "text-muted", "h6");
+                fechaIni.textContent = "Duración: " + datos.fechainicio + " / " + datos.fechafin;
+                fechaInicioProyecto.appendChild(fechaIni);
+        
+                // Debajo de fecha Fin
+                const fechaFinProyecto = document.querySelector("#fecha-fin-fase");
+                fechaFinProyecto.textContent = '';
+                const fechaFinP = document.createElement("label");
+                fechaFinP.classList.add("form-label", "text-muted", "h6");
+                fechaFinP.textContent = "Duración: " + datos.fechainicio + " / " + datos.fechafin;
+                fechaFinProyecto.appendChild(fechaFinP);
+            }
+            agregarLabelsT();
         })
         .catch(error => {
             console.error('Error:', error);
         });
-
-        fecha_inicio_tarea.addEventListener("change", function() {
-            fecha_fin_tarea.min = fecha_inicio_tarea.value;
-        });
-
+        
         function listarColaboradores_A(){
             const responsable = document.querySelector("#asignar-empleado");
             const parametrosURL = new URLSearchParams();

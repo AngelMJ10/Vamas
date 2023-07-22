@@ -244,11 +244,13 @@
                 <div class="col-md-6 form-floating mb-3">
                   <input type="date" class="form-control" name="fecha-ini" id="fecha-ini-tarea"  placeholder="Fecha Inicio">
                   <label for="fecha-ini" class="form-label">Fecha de inicio</label>
+                  <div id="fecha-inicio-fase"></div>
                 </div>
               
                 <div class="col-md-6 form-floating mb-3">
                   <input type="date" name="fecha-fin" class="form-control" id="fecha-f-tarea"  placeholder="Fecha Fin">
                   <label for="fecha-fin" class="form-label">Fecha de Fin</label>
+                  <div id="fecha-fin-fase"></div>
                 </div>
 
               </div>

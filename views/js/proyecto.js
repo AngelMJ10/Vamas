@@ -648,44 +648,188 @@ let idtarea = 0;
     })
   }
 
+  // Aquí habre el modal de para agregar fase
+  function addPhase(id) {
+    const modal = document.querySelector("#modalFase");
+    const fechainicio = document.querySelector("#fecha-inicio-phase");
+    const fechafin = document.querySelector("#fecha-fin-phase");
+    const tipoproyecto = document.querySelector("#tipoProyecto-phase");
+    const titulo = document.querySelector("#titulo-phase");
+    const empresa = document.querySelector("#idempresa-phase");
+    idproyecto = id;
+  
+    const parametrosURL = new URLSearchParams();
+    parametrosURL.append("op", "get");
+    parametrosURL.append("idproyecto", id);
+  
+    fetch('../controllers/proyecto.php', {
+      method: 'POST',
+      body: parametrosURL
+    })
+      .then(respuesta => {
+        if (respuesta.ok) {
+          return respuesta.json();
+        } else {
+          throw new Error('Error en la solicitud');
+        }
+      })
+      .then(datos => {
+        titulo.value = datos.titulo;
+        tipoproyecto.value = datos.idtipoproyecto;
+        empresa.value = datos.idempresa;
+        fechainicio.min = datos.fechainicio;
+        fechainicio.max = datos.fechafin;
+        fechafin.min = datos.fechainicio;
+        fechafin.max = datos.fechafin;
+        const btnPhase = document.querySelector("#create-phase");
+        fechainicio.addEventListener("change", function() {
+          fechafin.min = fechainicio.value;
+        });
+        function agregarLabels(){
+          // Debajo de fecha inicio
+          const fechaInicioProyecto = document.querySelector("#fecha-inicio-fasev1");
+          fechaInicioProyecto.textContent = '';
+          const fechaIni = document.createElement("label");
+          fechaIni.classList.add("form-label", "text-muted", "h6");
+          fechaIni.textContent = "Duración: " + datos.fechainicio + " / " + datos.fechafin;
+          fechaInicioProyecto.appendChild(fechaIni);
+
+          // Debajo de fecha Fin
+          const fechaFinProyecto = document.querySelector("#fecha-inicio-fasev2");
+          fechaFinProyecto.textContent = '';
+          const fechaFinP = document.createElement("label");
+          fechaFinP.classList.add("form-label", "text-muted", "h6");
+          fechaFinP.textContent = "Duración: " + datos.fechainicio + " / " + datos.fechafin;
+          fechaFinProyecto.appendChild(fechaFinP);
+        }
+        agregarLabels();
+        btnPhase.addEventListener("click", function () {
+            createPhase(idproyecto); // Pasar el valor de idproyecto a la función update
+        });
+  
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+
   // V1 de agregar fase 
   function createPhase(){
       const namephase = document.querySelector("#name-phase");
-      const respnsible = document.querySelector("#responsible-phase");
+      const responsable = document.querySelector("#responsible-phase");
       const fechainicio = document.querySelector("#fecha-inicio-phase");
       const fechafin = document.querySelector("#fecha-fin-phase");
       const comentario = document.querySelector("#comentario");
       const porcentaje = document.querySelector("#porcentaje");
+      const porcentajeValor = porcentaje.value;
 
-      const confirmacion = confirm("¿Estás seguro de los datos ingresados para la fase?");
+      if (!namephase.value || !responsable.value || !fechainicio.value || !fechafin.value || !comentario.value || !porcentaje.value ) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Campos incompletos',
+          text: 'Por favor, completa todos los campos.',
+        });
+        return;
+      }
+  
+      // En el caso que la fecha de inicio sea menor a la fecha de inicio de la fase
+      if (fechainicio.value < fechainicio.min) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Fecha de Inicio inválida',
+            text: 'La fecha de inicio de la fase debe ser mayor o igual a la fecha de inicio del proyecto.',
+        });
+        return;
+      }
+  
+      // En el caso de la fecha de fin exceda el maximo de la fecha de fin de la fase
+      if (fechafin.value > fechafin.max) {
+          Swal.fire({
+              icon: 'warning',
+              title: 'Fecha fin inválida',
+              text: 'La fecha fin de la fase debe ser menor o igual a la fecha de cierre del proyecto.',
+          });
+          return;
+      }
+  
+      if (isNaN(porcentajeValor) || porcentajeValor < 0 || porcentajeValor > 100) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Porcentaje excedido',
+          text: 'Por favor, ingrese un porcentaje de 0 a 100.',
+        });
+        return;
+      }
+  
+      if(fechainicio.value > fechafin.value){
+        Swal.fire({
+            icon: 'warning',
+            title: 'Fechas inválidas',
+            text: 'La fecha de inicio debe ser menor o igual a la fecha de fin.',
+        });
+        return;
+      }
 
-      if (confirmacion) {
+      Swal.fire({
+        icon: 'question',
+        title: 'Confirmación',
+        text: '¿Está seguro de los datos ingresados?',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: 'Creando la fase...',
+            allowOutsideClick: false,
+            showCancelButton: false,
+            showConfirmButton: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
           const parametrosURL = new URLSearchParams();
-          parametrosURL.append("op", "registerPhase");
-          parametrosURL.append("idproyecto", idproyectov);
-          parametrosURL.append("idresponsable", respnsible.value);
+          parametrosURL.append("op", "registerPhaseV2");
+          parametrosURL.append("idproyecto", idproyecto);
+          parametrosURL.append("idresponsable", responsable.value);
           parametrosURL.append("nombrefase", namephase.value);
           parametrosURL.append("fechainicio", fechainicio.value);
           parametrosURL.append("fechafin", fechafin.value);
           parametrosURL.append("porcentaje", porcentaje.value);
           parametrosURL.append("comentario", comentario.value);
           
-
           fetch('../controllers/fase.php', {
               method: 'POST',
               body: parametrosURL
           })
           .then(respuesta =>{
               if(respuesta.ok){
-                  obtenerPorcentajeF();
-                  obtenerPorcentajeP();
-                  alert('Fase registrado correctamente');
-                  location.reload();
+                obtenerPorcentajeF();
+                obtenerPorcentajeP();
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Fase registrada',
+                  text: 'La fase se ha registrado correctamente.'
+              }).then(() => {
+                location.reload();
+              });
               } else{
-                  alert('Error en la solicitud');
+                
               }
           })
-      }
+          .catch(error => {
+            console.error('Error:', error);
+            Swal.alert({
+              icon: 'Error',
+              title: 'Error al registrar la fase',
+              text: 'Ocurrió un error al registrar la fase. Por favor intentelo nuevamente.'
+            })
+          });
+        }
+      })
   }
 
 // Fin de agregar Fase
@@ -1592,52 +1736,6 @@ let idtarea = 0;
   }
 
 // Fin de modal tareas
-
-  // Aquí habre el modal de para agregar fase
-  function addPhase(id) {
-      const modal = document.querySelector("#modalFase");
-      const fechainicio = document.querySelector("#fecha-inicio-phase");
-      const fechafin = document.querySelector("#fecha-fin-phase");
-      const tipoproyecto = document.querySelector("#tipoProyecto-phase");
-      const titulo = document.querySelector("#titulo-phase");
-      const empresa = document.querySelector("#idempresa-phase");
-      const idproyectov = id;
-    
-      const parametrosURL = new URLSearchParams();
-      parametrosURL.append("op", "get");
-      parametrosURL.append("idproyecto", id);
-    
-      fetch('../controllers/proyecto.php', {
-        method: 'POST',
-        body: parametrosURL
-      })
-        .then(respuesta => {
-          if (respuesta.ok) {
-            return respuesta.json();
-          } else {
-            throw new Error('Error en la solicitud');
-          }
-        })
-        .then(datos => {
-          titulo.value = datos.titulo;
-          tipoproyecto.value = datos.idtipoproyecto;
-          empresa.value = datos.idempresa;
-          fechainicio.min = datos.fechainicio;
-          fechainicio.max = datos.fechafin;
-          fechafin.min = datos.fechainicio;
-          fechafin.max = datos.fechafin;
-          const btnPhase = document.querySelector("#create-phase");
-          btnPhase.addEventListener("click", function () {
-              createPhase(idproyectov); // Pasar el valor de idproyecto a la función update
-          });
-    
-          const bootstrapModal = new bootstrap.Modal(modal);
-          bootstrapModal.show();
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-  }
 
   function listar(){
       const table = document.querySelector("#tabla-proyecto");
