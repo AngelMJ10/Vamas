@@ -24,6 +24,7 @@
     <p class="mb-3"><b>Usuarios involucrados:</b> <?= $datosC['TotalUsuarios'] ?>  .</p>
     <p class="mb-3"><b>Está cotizado en</b> S/.<?= $datosP['precio'] ?> .</p>
     <p class="mb-3"><b>Porcentaje:</b> <?= $porcentaje ?>%  .</p>
+    <p class="mb-3"><b>Reporte generado: </b><?= $fechaActual ?></p>
   </div>
 
   <div class="page-break"></div>

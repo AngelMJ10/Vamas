@@ -1,3 +1,7 @@
+<page_footer>
+        <p class='center italic t-l'>Reporte generado <?= $fechaActual ?></p>
+        <p class='italic'>Pag. [[page_cu]]</p>
+</page_footer>
 <div class="mb-3">
   <h2 class="center text-md mb-3">Fase :<?= $datosE[0]['nombrefase'] ?></h2>
 </div>

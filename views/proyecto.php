@@ -249,18 +249,6 @@
               </div>
 
               <div class="col-md-2">
-                <div class="form-floating mb-3">
-                  <select name="tipoProyecto" id="estado-update" class="form-control form-control-sm">
-                    <label for="tipoProyecto">Seleccione el tipo de Estado:</label>
-                    <option value="">Seleccione</option>
-                    <option value="0">Inactivo</option>
-                    <option value="1">Activo</option>
-                    <option value="2">Finalizado</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-2">
                 <div class="form-floating">
                   <input type="text" disabled class="form-control" placeholder="Usuario" id="user-create" name="user">
                   <label for="user" class="form-label">Creado por el usuario:</label>

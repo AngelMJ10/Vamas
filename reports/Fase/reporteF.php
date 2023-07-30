@@ -12,7 +12,7 @@ use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 
 try {
   $fase = new Fase();
-
+  $fechaActual = date('d-m-Y');
   $datosE = $fase->infoFases(["idfase" => $_GET["idfase"]]);
   $datosF = $fase->tablaFases(["idfase" => $_GET["idfase"]]);
 

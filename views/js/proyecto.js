@@ -155,7 +155,6 @@ let idtarea = 0;
     const fechainicio = document.querySelector("#fecha-inicio-update");
     const fechafin = document.querySelector("#fecha-fin-update");
     const precio = document.querySelector("#precio-update");
-    const estado = document.querySelector("#estado-update");
     const usuario = document.querySelector("#user-create");
   
     const parametrosURL = new URLSearchParams();
@@ -181,7 +180,6 @@ let idtarea = 0;
         fechainicio.value = datos.fechainicio;
         fechafin.value = datos.fechafin;
         precio.value = datos.precio;
-        estado.value = datos.estado;
         usuario.value = datos.usuario;
         idproyecto = id;
 

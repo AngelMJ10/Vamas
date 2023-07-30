@@ -12,6 +12,7 @@ use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 
 try {
+  $fechaActual = date('d-m-Y');
   // Paso 2: Instanciar la clase
   $tarea = new Tarea();
 
