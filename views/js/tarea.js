@@ -97,6 +97,7 @@
     })
   }
   
+  // Función para calcular el porcentaje de la fase
   function obtenerPorcentajeF() {
     const formData = new FormData();
     formData.append("op", "obtenerPorcentajeF");
@@ -116,6 +117,7 @@
     });
   }
   
+  // Función para calcular el porcentaje del proyecto
   function obtenerPorcentajeP() {
     const formData = new FormData();
     formData.append("op", "obtenerPorcentajeP");
@@ -281,6 +283,7 @@
     });
   }
 
+  // Función para generar el reporte
   function generarReporte(){
       console.log(idtareaPdf);
       const parametros = new URLSearchParams();
@@ -290,14 +293,7 @@
       }
   }
 
-  function generarReporteV(idtarea){
-    const parametros = new URLSearchParams();
-    if(idtarea > 0) {
-    parametros.append("idtarea", idtarea);
-    window.open(`../reports/Tarea/reporte.php?${parametros}`, '_blank');
-    }
-  }
-
+  // Función para listar los proyectos en los filtros
   function listarProyecto(){
     const proyecto = document.querySelector("#buscar-proyecto");
 
@@ -323,6 +319,7 @@
     });
   }
 
+  // Función para listara las fases en los filtros
   function listarFase(){
     const fase = document.querySelector("#buscar-fase");
 
@@ -348,6 +345,7 @@
     });
   }
 
+  // Para listar las fases del proyecto
   function listarFasesSelect(){
     const fase = document.querySelector("#buscar-fase");
     const proyecto = document.querySelector("#buscar-proyecto");

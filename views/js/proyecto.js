@@ -145,7 +145,8 @@ let idtarea = 0;
     }
   })
   }
-
+  
+  // Functión para abrir el modal de información del proyecto(el modal que solo es para editar no el que tienen varios modales)
   function get(id) {
     const modal = document.querySelector("#modalEditar");
     const titulo = document.querySelector("#titulo-update");
@@ -197,6 +198,7 @@ let idtarea = 0;
     });
   }
 
+  // Función para editar el proyecto del modal de solo edición
   function editarProyectoV2(id){
       const titulo = document.querySelector("#titulo-update");
       const tipoproyecto = document.querySelector("#tipoProyecto-update");
@@ -266,8 +268,9 @@ let idtarea = 0;
       })
   }
 
-  // Editar Proyecto
+// Editar Proyecto
 
+  // Función para quitar la función readonly y poder editar el proyecto
   function quitarReadonlyP() {
     const tipoproyecto_p = document.querySelector('#tipo_proyecto');
     const idempresa_p = document.querySelector('#id_empresa');
@@ -342,6 +345,7 @@ let idtarea = 0;
     listarempresaF();
   }
 
+  // Función para agregar de nuevo al funcion readonly y cancelar edición
   function cancelarEdicionP() {
     const tipoproyecto_p = document.querySelector('#tipo_proyecto');
     const idempresa_p = document.querySelector('#id_empresa');
@@ -371,6 +375,7 @@ let idtarea = 0;
     info(idproyecto);
   }
 
+  // Función para editar el proyecto
   function editarProyecto(){
     const tipoproyecto_p = document.querySelector('#tipo_proyecto');
     const idempresa_p = document.querySelector('#id_empresa');
@@ -444,6 +449,7 @@ let idtarea = 0;
 
 // Agregar fase V2
 
+  // Función para abrir el modal para agregar una fase
   function abriModal() {
     const modalFase = document.querySelector("#modalFaseV2");
     const bootstrapModal = new bootstrap.Modal(modalFase);
@@ -531,6 +537,7 @@ let idtarea = 0;
     listarSupervisores();
   }
 
+  // Función para registrar la fase dentro del modal de proyectos
   function agregarFase(){
     const namephase = document.querySelector("#name-faseV2");
     const responsable = document.querySelector("#responsable-faseV2");
@@ -646,7 +653,11 @@ let idtarea = 0;
     })
   }
 
-  // Aquí habre el modal de para agregar fase
+// Fin de agregar Fase
+
+// Agregar fase (modal aparte)
+
+  // Aquí habre el modal de para agregar una fase(es un modal aparte)
   function addPhase(id) {
     const modal = document.querySelector("#modalFase");
     const fechainicio = document.querySelector("#fecha-inicio-phase");
@@ -713,7 +724,7 @@ let idtarea = 0;
       });
   }
 
-  // V1 de agregar fase 
+  // Función para registrar la fase(del modal aparte)
   function createPhase(){
       const namephase = document.querySelector("#name-phase");
       const responsable = document.querySelector("#responsible-phase");
@@ -830,10 +841,9 @@ let idtarea = 0;
       })
   }
 
-// Fin de agregar Fase
-
 // Modal de info de fase (está con la tabla de tareas incluida)
 
+  // Función para abrir modal de información de la fase
   function modalInfoFase(id) {
     const inputs = document.querySelector("#inputs-fase");
     const modalInfoFase = document.querySelector("#modal-info-fase");
@@ -889,6 +899,7 @@ let idtarea = 0;
 
   }
 
+  // Función para generar un reporte de la fase
   function generarReporteF(){
     const parametros = new URLSearchParams();
     if(idfase > 0) {
@@ -996,7 +1007,7 @@ let idtarea = 0;
 
   // Editar Fase
 
-  // Para quitar el readOnly de los inputs
+  // Para quitar el readonly de los inputs
   function quitarReadonly() {
     const nombreFaseInput = document.querySelector('#nombre-Fase');
     const comentarioTextarea = document.querySelector('#comentario-Fase');
@@ -1052,6 +1063,7 @@ let idtarea = 0;
     listarSupervisores();
   }
 
+  // Función cancelar la edición agregando los readonly
   function cancelarEdicion() {
     const nombreFaseInput = document.getElementById('nombre-Fase');
     const porcentajeFase = document.getElementById('porcentaje-Fase');
@@ -1083,6 +1095,7 @@ let idtarea = 0;
     modalInfoFase(idfase);
   }
 
+  // Función para editar la fase
   function editarFase() {
     const nombreFase = document.querySelector('#nombre-Fase');
     const fechaInicioFase = document.querySelector('#fechainicio-fase');
@@ -1196,7 +1209,7 @@ let idtarea = 0;
 
 // Agregar Tarea
 
-// Para abrir un miniModal de registro de tareas
+  // Para abrir un miniModal de registro de tareas
   function openModalAgregarTarea(){
     console.log(idfase);
     const modalAgregarT = document.querySelector("#modal-agregar-t");
@@ -1274,6 +1287,7 @@ let idtarea = 0;
     bootstrapModal.show();
   }
 
+  // Función para registrar una tarea
   function agregarTarea() {
     const idcolaboradores = document.querySelector("#asignar-empleado");
     const roles = document.querySelector("#rol-empleado");
@@ -1389,6 +1403,7 @@ let idtarea = 0;
     })
   }
 
+  // Función para listar las habilidades del colaborador
   function listarHabilidades() {
     const empleadoSelect = document.querySelector("#asignar-empleado");
     const rolSelect = document.querySelector("#rol-empleado");
@@ -1419,6 +1434,7 @@ let idtarea = 0;
 // Fin agregar Tarea
 
 // Modal de Tareas
+  // Función para abrir el modal de información de la tarea con cajas de texto
   function modalInfoTarea(id) {
     const inputs = document.querySelector("#inputs-tarea");
     const modalInfoTarea = document.querySelector("#modal-info-tarea");
@@ -1475,30 +1491,32 @@ let idtarea = 0;
       });
   }
 
+  // Función para obtener las evidencias enviadas de la tareas
   function verEvidenciasTarear(id) {
-  const tabla_Tareas = document.querySelector("#tabla-info-tarea");
-  const parametros = new URLSearchParams();
-  parametros.append("op", "verEvidenciasT");
-  parametros.append("idtarea", id);
-  fetch('../controllers/tarea.php', {
-    method: 'POST',
-    body: parametros
-  })
-  .then(respuesta => {
-    if (respuesta.ok) {
-      return respuesta.text();
-    } else {
-      throw new Error('Error en la solicitud');
-    }
-  })
-  .then(datos => {
-    tabla_Tareas.innerHTML = datos;
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
+    const tabla_Tareas = document.querySelector("#tabla-info-tarea");
+    const parametros = new URLSearchParams();
+    parametros.append("op", "verEvidenciasT");
+    parametros.append("idtarea", id);
+    fetch('../controllers/tarea.php', {
+      method: 'POST',
+      body: parametros
+    })
+    .then(respuesta => {
+      if (respuesta.ok) {
+        return respuesta.text();
+      } else {
+        throw new Error('Error en la solicitud');
+      }
+    })
+    .then(datos => {
+      tabla_Tareas.innerHTML = datos;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
   }
 
+  // Función para generar un reporte de la tarea
   function generarReporteT(){
     const parametros = new URLSearchParams();
     if(idtarea > 0) {
@@ -1519,6 +1537,7 @@ let idtarea = 0;
 
 
 // Editar Tarea
+  // Función para habilitar la edición
   function quitarRead() {
     const nombreTarea = document.getElementById('nombre-tarea');
     const usuarioTarea = document.getElementById('usuario-tarea');
@@ -1572,6 +1591,7 @@ let idtarea = 0;
     usuarioTarea.addEventListener("click", listarHabilidadesEditar);
   }
 
+  // Función para cancelar la edición
   function addRead() {
     const nombreTarea = document.getElementById('nombre-tarea');
     const usuarioTarea = document.getElementById('usuario-tarea');
@@ -1601,6 +1621,7 @@ let idtarea = 0;
     modalInfoTarea(idtarea);
   }
 
+  // Función para listar habilidades segun el colaborador seleccionado
   function listarHabilidadesEditar() {
     const usuarioTarea = document.getElementById('usuario-tarea');
     const rolTarea = document.querySelector('#rol-tarea');
@@ -1628,6 +1649,7 @@ let idtarea = 0;
       });
   }
 
+  // Función para editar la tarea
   function editarTarea(){
     const nombreTarea = document.querySelector('#nombre-tarea');
     const usuarioTarea = document.querySelector('#usuario-tarea');
@@ -1735,6 +1757,7 @@ let idtarea = 0;
 
 // Fin de modal tareas
 
+  // Función para listar los proyectos
   function listar(){
       const table = document.querySelector("#tabla-proyecto");
       const bodytable = table.querySelector("tbody");
@@ -1761,6 +1784,7 @@ let idtarea = 0;
       });
   }
 
+  // Función listar las empresa en diferentes etiquetas select
   function listarempresa(){
       const empresa = document.querySelector("#idempresa");
       const empresaupdate = document.querySelector("#idempresa-update");
@@ -1792,6 +1816,7 @@ let idtarea = 0;
       });
   }
 
+  // Función para listar los tipos de proyectos en diferentes etiquetas select
   function listartipoproyecto(){
       const tipoproyecto = document.querySelector("#tipoProyecto");
       const tipoproyectoupdate = document.querySelector("#tipoProyecto-update");
@@ -1823,6 +1848,7 @@ let idtarea = 0;
       });
   }
 
+  // Función para listar los colaboradores de ranggo S
   function listarColaboradores(){
       const responsable = document.querySelector("#responsible-phase");
       const parametrosURL = new URLSearchParams();
@@ -1847,6 +1873,7 @@ let idtarea = 0;
       });
   }
 
+  // Función para registrar un proyecto
   function registrar(){
       const idtipoproyecto = document.querySelector("#tipoProyecto");
       const idempresa = document.querySelector("#idempresa");
@@ -1914,6 +1941,7 @@ let idtarea = 0;
       
   }
 
+  // Función un reporte del proyecto
   function generarReporteP(idproyecto){
     const parametros = new URLSearchParams();
     if(idproyecto > 0) {
@@ -1922,6 +1950,7 @@ let idtarea = 0;
     }
   }
 
+  // Función para calcular el porcentaje de la fase
   function obtenerPorcentajeF() {
     const formData = new FormData();
     formData.append("op", "obtenerPorcentajeF");
@@ -1941,6 +1970,7 @@ let idtarea = 0;
     });
   }
 
+  // Función para obtener el porcentaje del proyecto
   function obtenerPorcentajeP() {
   const formData = new FormData();
   formData.append("op", "obtenerPorcentajeP");
@@ -1960,6 +1990,7 @@ let idtarea = 0;
   });
   }
 
+  // Función para buscar proyectos
   function buscarProyecto() {
     const table = document.querySelector("#tabla-proyecto");
     const bodytable = table.querySelector("tbody");

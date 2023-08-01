@@ -1,6 +1,7 @@
 let idfase = 0;
 let idtarea = 0;
 
+    // Función para obtener traer las cajas de texto con la información de la fase
     function getPhase(id) {
         const modal = document.querySelector("#modalPhase");
         const infoPhase = document.querySelector("#info-phase");
@@ -119,6 +120,7 @@ let idtarea = 0;
         })
     }
 
+    // Función para listar las fases
     function list(){
         const table = document.querySelector("#tabla-fase");
         const bodytable = table.querySelector("tbody");
@@ -145,6 +147,16 @@ let idtarea = 0;
         });
     }
 
+    // Función para generar un reporte de la fase
+    function generarReporteF(idfase){
+        const parametros = new URLSearchParams();
+        if(idfase > 0) {
+        parametros.append("idfase", idfase);
+        window.open(`../reports/Fase/reporteF.php?${parametros}`, '_blank');
+        }
+    }
+
+    // Función para listar los proyectos en los filtros
     function listarProyectosSelect() {
         const selectProyecto = document.querySelector("#buscar-proyecto");
     
@@ -169,44 +181,7 @@ let idtarea = 0;
             });
     }
 
-    function createPhase(){
-        const idproyecto = document.querySelector("#project-phase");
-        const namephase = document.querySelector("#name-phase");
-        const respnsible = document.querySelector("#responsible-phase");
-        const fechainicio = document.querySelector("#fecha-inicio-phase");
-        const fechafin = document.querySelector("#fecha-fin-phase");
-        const porcentaje = document.querySelector("#porcentaje");
-        const comentario = document.querySelector("#comentario");
-
-        const confirmacion = confirm("¿Estás seguro de los datos ingresados para la fase?");
-
-        if (confirmacion) {
-            const parametrosURL = new URLSearchParams();
-            parametrosURL.append("op", "registerPhase");
-            parametrosURL.append("idproyecto", idproyecto.value);
-            parametrosURL.append("idresponsable", respnsible.value);
-            parametrosURL.append("nombrefase", namephase.value);
-            parametrosURL.append("fechainicio", fechainicio.value);
-            parametrosURL.append("fechafin", fechafin.value);
-            parametrosURL.append("porcentaje", porcentaje.value);
-            parametrosURL.append("comentario", comentario.value);
-            
-
-            fetch('../controllers/fase.php', {
-                method: 'POST',
-                body: parametrosURL
-            })
-            .then(respuesta =>{
-                if(respuesta.ok){
-                    alert('Fase registrada correctamente');
-                    location.reload();
-                } else{
-                    alert('Error en la solicitud');
-                }
-            })
-        }
-    }
-
+    // Función para buscar fases
     function buscarFase(){
         const table = document.querySelector("#tabla-fase");
         const bodytable = table.querySelector("tbody");
@@ -244,7 +219,7 @@ let idtarea = 0;
 
 // Agregar Tarea
 
-// Para abrir un miniModal de registro de tareas
+    // Para abrir un miniModal de registro de tareas
     function openModalAgregarTarea(){
         const modalAgregarT = document.querySelector("#modal-agregar-t");
         const bootstrapModal = new bootstrap.Modal(modalAgregarT);
@@ -316,6 +291,7 @@ let idtarea = 0;
         listarColaboradores_A();
     }
 
+    // Función para registrar una tarea
     function agregarTarea(){
         const idcolaboradores = document.querySelector("#asignar-empleado");
         const roles = document.querySelector("#rol-empleado");
@@ -433,6 +409,7 @@ let idtarea = 0;
         })
     }
 
+    // Función para listar las habilidades del colaborador
     function listarHabilidades() {
     const empleadoSelect = document.querySelector("#asignar-empleado");
     const rolSelect = document.querySelector("#rol-empleado");
@@ -487,6 +464,7 @@ let idtarea = 0;
 
 
 // Editar Tarea
+    // Función para quitar la función readonly para poder editar la tarea
     function quitarRead() {
         const nombreTarea = document.getElementById('nombre-tarea');
         const usuarioTarea = document.getElementById('usuario-tarea');
@@ -538,6 +516,7 @@ let idtarea = 0;
         listarColaboradores_A();
     }
 
+    // Función para cancelar la edición
     function addRead() {
         const nombreTarea = document.getElementById('nombre-tarea');
         const usuarioTarea = document.getElementById('usuario-tarea');
@@ -567,6 +546,7 @@ let idtarea = 0;
         modalInfoTarea(idtarea);
     }
 
+    // Función para editar la tarea
     function editarTarea(){
         const nombreTarea = document.getElementById('nombre-tarea');
         const usuarioTarea = document.getElementById('usuario-tarea');
@@ -683,6 +663,7 @@ let idtarea = 0;
 
     }
 
+    // Función para listar las habilidades de los colaboradores
     function listarHabilidadesEditar() {
         const usuarioTarea = document.getElementById('usuario-tarea');
         const rolTarea = document.getElementById('rol-tarea');
@@ -710,7 +691,8 @@ let idtarea = 0;
           });
     }
 
-    // Modal de Tareas
+// Modal de Tareas
+    // Función para abrir el modal y cargar las cajas de texto con la información de la tarea
     function modalInfoTarea(id) {
         const inputs = document.querySelector("#inputs-tarea");
         const modalInfoTarea = document.querySelector("#modal-info-tarea");
@@ -773,6 +755,7 @@ let idtarea = 0;
         });
     }
 
+    // Función para obtener las evidencias enviadas de la tarea
     function verEvidenciasTarear(id) {
         const tabla_Tareas = document.querySelector("#tabla-info-tarea");
         const parametros = new URLSearchParams();
@@ -797,14 +780,7 @@ let idtarea = 0;
         });
     }
 
-    function generarReporteF(idfase){
-        const parametros = new URLSearchParams();
-        if(idfase > 0) {
-        parametros.append("idfase", idfase);
-        window.open(`../reports/Fase/reporteF.php?${parametros}`, '_blank');
-        }
-    }
-
+    // Función para calcular el porcentaje de la fase
     function obtenerPorcentajeF() {
         const formData = new FormData();
         formData.append("op", "obtenerPorcentajeF");
@@ -824,6 +800,7 @@ let idtarea = 0;
         });
     }
 
+    // Función para obtener el porcentaje del proyecto
     function obtenerPorcentajeP() {
     const formData = new FormData();
     formData.append("op", "obtenerPorcentajeP");
@@ -843,6 +820,7 @@ let idtarea = 0;
     });
     }
 
+    // Función gener el reporte de la tarea
     function generarReporteT(){
         console.log(idtarea);
         const parametros = new URLSearchParams();

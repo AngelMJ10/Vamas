@@ -214,15 +214,6 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                             </div>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Finalizados</h4>
-                                        <canvas id="grafico-proyectos-Finalizados"></canvas>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
                 <!-- /.container-fluid -->

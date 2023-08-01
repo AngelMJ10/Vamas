@@ -136,6 +136,7 @@
             $cierre = "</tbody>";
         }
 
+        // Operación para buscar las tareas
         if ($_POST['op'] == 'buscar_tareas') {
             $idproyecto = $_POST['idproyecto'];
             $idfase = $_POST['idfase'];
@@ -284,6 +285,7 @@
             $cierre = "</tbody>";
         }
 
+        // Operación para listar las habilidades de los colaboradores
         if ($_POST['op'] == 'listar_Habilidades') {
             require_once '../models/Colaboradores.php';
             $colaboradores = new Colaborador();
@@ -295,19 +297,6 @@
             foreach ($datas_H as $registro) {
                 echo "<option value='{$registro['habilidad']}'>{$registro['habilidad']}</option>";
             }
-        }
-
-        if ($_POST['op'] == 'registrarTarea') {
-            $datos = [
-                "idfase"                => $_POST['idfase'],
-                "idcolaboradores"       => $_POST['idcolaboradores'],
-                "roles"                 => $_POST['roles'],
-                "tarea"                 => $_POST['tarea'],
-                "porcentaje"            => $_POST['porcentaje'],
-                "fecha_inicio_tarea"    => $_POST['fecha_inicio_tarea'],
-                "fecha_fin_tarea"       => $_POST['fecha_fin_tarea']
-            ];
-            $tarea->registrarTarea($datos);
         }
 
         // Registrar Tarea y tambien se le envia un correo con la información
@@ -338,6 +327,7 @@
             enviarEmail($getColabolador['correo'],'Nueva tarea asignada',$mensaje);
         }
 
+        // Operación para editar la tarea
         if ($_POST['op'] == 'editarTarea') {
             $datos = [
                 "idtarea"                => $_POST['idtarea'],
@@ -351,61 +341,13 @@
             $tarea->editarTarea($datos);
         }
 
+        // Operación para obtener los datos de la tarea
         if ($_POST['op'] == 'getWork') {
             $idtarea  = $_POST['idtarea'];
             echo json_encode($tarea->getWork($idtarea));
         }
 
-        if ($_POST['op'] == 'sendWork') {
-            $idtarea = $_POST['idtarea'];
-            $documento = "";
-        
-            // Verificar si el usuario envió el archivo
-            if (isset($_FILES['documento']) && $_FILES['documento']['error'] === UPLOAD_ERR_OK) {
-                // Carpeta
-                $rutaDestino = '../views/evidencias/';
-        
-                // Fecha y hora
-                $fechaActual = date("c");       //c = complete (FECHA + HORA)
-        
-                // Encriptado fecha y hora.pdf
-                $nombreArchivo = sha1($fechaActual) . ".pdf";
-        
-                // Ruta final
-                $rutaDestino .= $nombreArchivo;
-        
-                if (move_uploaded_file($_FILES['documento']['tmp_name'], $rutaDestino)) {
-                    // Se logró subir el archivo
-                    // Acciones por definir ...
-                    $documento = $rutaDestino; // Guardar la ruta del documento en lugar del nombre del archivo
-                } else {
-                    // Error al mover el archivo
-                    echo "Error al mover el archivo";
-                    exit;
-                }
-            }
-            $datos =$tarea->getWork($idtarea);
-            $mensajeAdicional = "
-                <h2>{$datos['nombrefase']}</h2>
-                <p>Avance de trabajo</p>
-                <p>{$datos['tarea']}</p>
-                <hr>
-                <h4>
-            ";
-            $mensaje = $_POST['mensaje'];
-            $tarea->sendWork($mensaje, $documento, $idtarea);
-            $mensaje = $mensajeAdicional . $mensaje. "</h4>";
-        
-            // Arreglo con datos a guardar en la tabla de recuperación
-            $correo = $_POST['correo'];
-        
-            // Llamar al método sendWork
-            
-        
-            // Enviando Correo
-            sendEmail($correo, $documento, 'Avance de trabajo: ', $mensaje);
-        }
-
+        // Operación listar los correos de las colaboradores que no sean de rango C
         if ($_POST['op'] == 'listarCorreo') {
             require_once '../models/Colaboradores.php';
             $colaborador = new Colaborador();
@@ -418,6 +360,7 @@
             }
         }
 
+        // Operación para enviar evidencia de la tarea
         if ($_POST['op'] == 'enviarTrabajo') {
             $idtarea = $_POST['idtarea'];
             $documento = "";
@@ -479,6 +422,7 @@
             sendEmail($correo, $documento, 'Avance de trabajo: ', $mensaje);
         }
 
+        // Operación para ver evidencias enviadas
         if ($_POST['op'] == 'verEvidencias') {
             $data = ["idtarea" => $_POST['idtarea']];
             $evidencias = $tarea->verEvidencias($data);
@@ -513,6 +457,7 @@
             }
         }
 
+        // Operación ver evidencias enviadas(con creación de tablas)
         if ($_POST['op'] == 'verEvidenciasT') {
             $data = ["idtarea" => $_POST['idtarea']];
             $evidencias = $tarea->verEvidencias($data);
@@ -557,11 +502,13 @@
             </table>";
         }
         
+        // Operación para obtener los id de la fase y proyecto donde pertenece la tarea
         if ($_POST['op'] == 'obtenerID') {
             $idtarea  = $_POST['idtarea'];
             echo json_encode($tarea->obtenerID($idtarea));
         }
 
+        // Operación para obtener la información de lo tareas en cajas de texto
         if ($_POST['op'] == 'obtenerTarea') {
             $idtarea = $_POST['idtarea'];
             $datos = $tarea->getWork($idtarea);
@@ -639,18 +586,22 @@
             vista($datos);
         }
 
+        // Operación para finalizar tareas
         if ($_POST['op'] == 'finalizar_tarea') {
             $tarea->finalizar_tarea();
         }
 
+        // Operación para finalizar tareas por su ID
         if ($_POST['op'] == 'finalizar_tarea_by_id') {
             $tarea->finalizar_tarea_by_id(["idtarea" => $_POST['idtarea']]);
         }
 
+        // Operación para reactivar las tareas
         if ($_POST['op'] == 'reactivar_tarea') {
             $tarea->reactivar_tarea();
         }
 
+        // Operación para reactivar las tareas por su ID
         if ($_POST['op'] == 'reactivar_tarea_by_id') {
             $tarea->reactivar_tarea_by_id(["idtarea" => $_POST['idtarea']]);
         }

@@ -45,13 +45,13 @@
             }
         }
 
+        // Operación para listar todas las fases
         if ($_POST['op'] == 'listarFases') {
             $datos = $fase->list();
             $etiqueta = "<option value=''>Seleccione la fase</option>";
             echo $etiqueta;
             if ($_SESSION['nivelacceso'] != 'C') {
                 foreach ($datos as $registro){
-               
                     $etiqueta ="<option value='{$registro['idfase']}'>{$registro['nombrefase']}</option>";
                     echo $etiqueta;
                 }
@@ -64,18 +64,7 @@
             }
         }
 
-        if ($_POST['op'] == 'listarFasesV2') {
-            $datos = $fase->getFases_by_P($_POST['idproyecto']);
-            $etiqueta = "<option value=''>Seleccione la fase</option>";
-            echo $etiqueta;
-            foreach ($datos as $registro){
-               
-                $etiqueta2 ="<option value='{$registro['idfase']}'>{$registro['nombrefase']}</option>";
-                echo $etiqueta2;
-            }
-            
-        }
-
+        // Operación para listar fases de un proyecto en específico
         if ($_POST['op'] == 'listarFasesV3') {
             $datos = $fase->listar_fase_proyecto_by_C([
                 "idproyecto"         => $_POST['idproyecto'],
@@ -84,13 +73,13 @@
             $etiqueta = "<option value=''>Seleccione la fase</option>";
             echo $etiqueta;
             foreach ($datos as $registro){
-               
                 $etiqueta2 ="<option value='{$registro['idfase']}'>{$registro['nombrefase']}</option>";
                 echo $etiqueta2;
             }
             
         }
 
+        // Operación para buscar una fase
         if ($_POST['op'] == 'buscarFase') {
             $datos = [
                 "idproyecto"        => $_POST['idproyecto'],
@@ -135,12 +124,14 @@
             }
         }
 
+        // Operación para obtener información de una fase
         if ($_POST['op'] == 'obtenerFase') {
             $idfase = $_POST['idfase']; 
             $datos = $fase->getPhase($idfase);
             echo json_encode($datos);
         }
         
+        // Operación para obtener información de una fase en cajas de texto
         if ($_POST['op'] == 'getPhase') {
             $idfase = $_POST['idfase']; 
             $datos = $fase->getPhase($idfase);
@@ -288,17 +279,6 @@
             ";
         }
 
-        if ($_POST['op'] == 'registerPhase') {
-            $idproyecto = $_POST['idproyecto'];
-            $idresponsable = $_POST['idresponsable'];
-            $nombrefase = $_POST['nombrefase'];
-            $fechainicio = $_POST['fechainicio'];
-            $fechafin = $_POST['fechafin'];
-            $porcentaje = $_POST['porcentaje'];
-            $comentario = $_POST['comentario'];
-            $fase->registerPhase($idproyecto, $idresponsable, $nombrefase, $fechainicio, $fechafin, $porcentaje ,$comentario);
-        }
-
         // Registrar Fases y tambien se envia un correo con la información
         if ($_POST['op'] == 'registerPhaseV2') {
             require_once '../models/Colaboradores.php';
@@ -326,6 +306,7 @@
             enviarEmail($getColabolador['correo'],'Nueva fase asignada',$mensaje);
         }
 
+        // Operación para editar una fase
         if ($_POST['op'] == 'editarFase') {
             $data = [
                 "idfase" => $_POST['idfase'] ,
@@ -339,28 +320,17 @@
             $fase->editarFase($data);
         }
 
+        // Operación para calcular el porcentaje de las fases
         if ($_POST['op'] == 'obtenerPorcentajeF') {
             $fase->obtenerPorcentajeF();
         }
 
-        if ($_POST['op'] == 'tablaFases') {
-            $data = ["idfase" => $_POST['idfase']];
-            $datos = $fase->tablaFases($data);
-            foreach ($datos as $registro) {
-                $evidencia = json_decode($datos[0]['evidencia'], true);
-                foreach ($evidencia as $evidencias) {
-                    $count = count($evidencias);
-                }
-                echo "($count)";
-            }
-            
-            
-        }
-
+        // Operación para reactivar las fases
         if ($_POST['op'] == 'finalizar_fase') {
             $fase->finalizar_fase();
         }
 
+        // Operación para finalizar una fase por su ID
         if ($_POST['op'] == 'finalizar_fase_by_id') {
             require_once '../models/Tarea.php';
             $tarea = new Tarea();
@@ -368,10 +338,12 @@
             $tarea->finalizar_tarea();
         }
 
+        // Operación para reactivar las fases
         if ($_POST['op'] == 'reactivar_fase ') {
             $fase->reactivar_fase();
         }
 
+        // Operación para reactivar una fase por su ID
         if ($_POST['op'] == 'reactivar_fase_by_id') {
             require_once '../models/Tarea.php';
             $tarea = new Tarea();

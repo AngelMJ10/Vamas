@@ -7,6 +7,7 @@
 
         $proyecto = new Proyecto();
 
+        // Operación para listar tareas
         if ($_POST['op'] == 'listar') {
             $datos = $proyecto->listar();
             foreach ($datos as $registro){
@@ -43,13 +44,13 @@
             }
         }
 
+        // Operación para listar proyectos en los filtros de tareas
         if ($_POST['op'] == 'listarProyecto') {
             $datos = $proyecto->listar();
             $etiqueta = "<option value=''>Seleccione el proyecto</option>";
             echo $etiqueta;
             if ($_SESSION['nivelacceso'] != 'C') {
                 foreach ($datos as $registro){
-               
                     $etiqueta ="<option value='{$registro['idproyecto']}'>{$registro['titulo']}</option>";
                     echo $etiqueta;
                 }
@@ -62,6 +63,7 @@
             }
         }
 
+        // Operación para buscar proyectos
         if ($_POST['op'] == 'buscarProyecto') {
             $data = [
                 "idtipoproyecto"    => $_POST['idtipoproyecto'],
@@ -127,6 +129,7 @@
             }
         }
 
+        // Operación para listar proyectos en los filtros de fases
         if ($_POST['op'] == 'listarSelectProyecto') {
             $datos = $proyecto->listar();
             $etiqueta = "<option value=''>Seleccione el proyecto</option>";
@@ -136,6 +139,7 @@
             }
         }
 
+        // Operación para registrar un proyectos
         if ($_POST['op'] == 'registrar') {
             $idtipoproyecto = $_POST['idtipoproyecto'];
             $idempresa = $_POST['idempresa'];
@@ -149,6 +153,7 @@
             echo $idusuariore;
         }
 
+        // Operación para editar un proyecto
         if ($_POST['op'] == 'editar') {
             $data = [
                 "idproyecto" => $_POST['idproyecto'] ,
@@ -164,6 +169,7 @@
             echo "Proyecto creado";
         }
 
+        // Operación obtener los datos del proyecto
         if ($_POST['op'] == 'get') {
             $idproyecto = $_POST['idproyecto'];
             $datos = $proyecto->get($idproyecto);
@@ -198,40 +204,7 @@
             echo json_encode($result); // Devolver el array como JSON
         }
 
-        // Gráfico 2
-        if ($_POST['op'] == "listarPFinalizados") {
-            $datos = $proyecto->listarPFinalizados();
-            $fechas = array(); // Array para almacenar las fechas
-            $labels = array(); // Array para almacenar los títulos
-            $data = array(); // Array para almacenar los porcentajes
-        
-            foreach ($datos as $registro) {
-                $porcentaje = $registro['porcentaje'];
-                $titulo = $registro['titulo'];
-                $fecha = $registro['fechafin']; // Obtener la fecha del registro
-        
-                if ($porcentaje) {
-                    $porcentaje = rtrim($porcentaje, "0");
-                    $porcentaje = rtrim($porcentaje, ".");
-                } elseif ($porcentaje == null || $porcentaje == 0) {
-                    $porcentaje = 0;
-                }
-        
-                $fechas[] = $fecha; // Agregar la fecha al array de fechas
-                $labels[] = $titulo; // Agregar el título al array de labels
-                $data[] = $porcentaje; // Agregar el porcentaje al array de data
-            }
-        
-            $result = array(
-                "fechas" => $fechas,
-                "labels" => $labels,
-                "data" => $data
-            );
-        
-            echo json_encode($result); // Devolver el array como JSON
-        }   
-
-        // Info Proyecto
+        // Operación obtener información del proyecto en cajas de texto
         if ($_POST['op'] == 'info') {
             $idproyecto = $_POST['idproyecto'];
             $datos = $proyecto->get($idproyecto);
@@ -308,6 +281,7 @@
             echo($inputs);
         }
 
+        // Operación obtener información de las fases del proyectos en una tabla
         if ($_POST['op'] == 'getPhase') {
             require_once '../models/Fase.php';
             $fase = new Fase();
@@ -405,6 +379,7 @@
             ";
         }
 
+        // Operación para listar los tipos de proyectos en los filtros
         if ($_POST['op'] == 'listartipoproyecto') {
             $datos = $proyecto->listarTipoProyecto();
             $etiqueta = "<option value=''>Seleccione el tipo de proyecto</option>";
@@ -414,16 +389,19 @@
             }
         }
 
+        // Operación para contar los proyectos activos
         if ($_POST['op'] == 'countProjects') {
             $projects = $proyecto->countProjects();
             echo "{$projects['proyectos']}";
         }
 
+        // Operación para contar los proyectos finalizados
         if ($_POST['op'] == 'countFinishProjects') {
             $projects = $proyecto->countFinishProjects();
             echo "{$projects['ProjectsFinish']}";
         }
 
+        // Operación los usuarios
         if ($_POST['op'] == 'countUsers') {
             require_once '../models/Colaboradores.php';
             $colaborador = new Colaborador();
@@ -431,6 +409,7 @@
             echo "{$datos['users']}";
         }
 
+        // Operación para listar los supervisores en el registro de fases
         if ($_POST['op'] == 'listarColaborador') {
             require_once '../models/Colaboradores.php';
             $colaborador = new Colaborador();
@@ -442,6 +421,7 @@
             }
         }
 
+        // Operación para listar a todos los usuario menos al administrador
         if ($_POST['op'] == 'listarColaborador_A') {
             require_once '../models/Colaboradores.php';
             $colaborador = new Colaborador();
@@ -460,15 +440,7 @@
             
         }
 
-        if ($_POST['op'] == 'listProject') {
-            $datos = $proyecto->listar();
-            $etiqueta = "<option value='0'>Seleccione un proyecto</option>";
-            echo $etiqueta;
-            foreach ($datos as $registro) {
-                echo "<option value='{$registro['idproyecto']}'>{$registro['titulo']}</option>";
-            }
-        }
-
+        // Operación calcular el porcentaje del proyecto
         if ($_POST['op'] == 'obtenerPorcentajeP') {
             $proyecto->obtenerPorcentajeP();
         }
