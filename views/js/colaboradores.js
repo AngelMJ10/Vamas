@@ -377,7 +377,6 @@ function asignarHabilidad() {
     });
 }
 
-
 function buscarColaboradores(){
     const parametros = new URLSearchParams();
     parametros.append("op", "buscarColaboradores");

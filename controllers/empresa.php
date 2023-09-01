@@ -8,11 +8,12 @@
 
         if ($_POST['op'] == 'listar') {
             $datos = $empresa->listar();
+            $contador = 1;
             foreach ($datos as $registro){
                 $estado = $registro['estado'] == 1 ? 'Activo' : $registro['estado'];
                 echo "
                     <tr class='mb-2'>
-                        <td class='p-3' data-label='#'>{$registro['idempresa']}</td>
+                        <td class='p-3' data-label='#'>{$contador}</td>
                         <td class='p-3' data-label='Nombre'>{$registro['nombre']}</td>
                         <td class='p-3' data-label='Razón Social'>{$registro['razonsocial']}</td>
                         <td class='p-3' data-label='Tipo de Documento'>{$registro['tipodocumento']}</td>
@@ -26,6 +27,7 @@
                         </td>
                     </tr>
                 ";
+                $contador++;
             }
         }
 

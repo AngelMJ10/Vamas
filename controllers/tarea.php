@@ -605,7 +605,7 @@
         if ($_POST['op'] == 'reactivar_tarea_by_id') {
             $tarea->reactivar_tarea_by_id(["idtarea" => $_POST['idtarea']]);
         }
-        
+
     }
 
 ?>

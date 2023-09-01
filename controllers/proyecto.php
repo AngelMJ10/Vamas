@@ -10,6 +10,7 @@
         // Operación para listar tareas
         if ($_POST['op'] == 'listar') {
             $datos = $proyecto->listar();
+            $contador = 1;
             foreach ($datos as $registro){
                 $estado = $registro['estado'] == 1 ? 'Activo' : $registro['estado'];
                 $porcentaje = $registro['porcentaje'];
@@ -23,7 +24,7 @@
                 }
                 echo "
                     <tr class='mb-2' ondblclick='info({$registro['idproyecto']})'>
-                        <td class='p-3' data-label='#'>{$registro['idproyecto']}</td>
+                        <td class='p-3' data-label='#'>{$contador}</td>
                         <td class='p-3' data-label='Titulo'>{$registro['titulo']}</td>
                         <td class='p-3' data-label='Fecha de Inicio'>{$registro['fechainicio']}</td>
                         <td class='p-3' data-label='Fecha de Fin'>{$registro['fechafin']}</td>
@@ -41,6 +42,7 @@
                         </td>
                     </tr>
                 ";
+                $contador++;
             }
         }
 

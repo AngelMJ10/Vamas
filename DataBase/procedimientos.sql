@@ -223,7 +223,7 @@ BEGIN
          AND (NULLIF(_nivelacceso, '') IS NULL OR col.nivelacceso= _nivelacceso)
          AND (NULLIF(_correo, '') IS NULL OR col.correo LIKE CONCAT('%', _correo, '%'));
 END $$
-DROP PROCEDURE buscar_colaboradores
+
 CALL buscar_colaboradores('A','','');
 -------------------------------------------
 -- P.A Para obtener la información de un colaborador por su ID
@@ -242,7 +242,6 @@ BEGIN
     WHERE col.idcolaboradores = _idcolaboradores AND col.estado = '1'
     GROUP BY col.idcolaboradores;
 END $$
-
 
 DROP PROCEDURE obtener_info_colaborador
 CALL obtener_info_colaborador(2)
@@ -374,7 +373,7 @@ BEGIN
         ORDER BY pro.idproyecto; -- Ordenar por el ID de proyecto
     END IF;
 END $$
-DELIMITER ;
+
 
 DROP PROCEDURE listar_proyecto_by_Colaborador
 CALL listar_proyecto_by_Colaborador(1);
@@ -581,7 +580,6 @@ BEGIN
         ORDER BY fas.fechainicio;
     END IF;
 END $$
-DELIMITER ;
 
 DROP PROCEDURE listar_fase_proyecto_by_C
 CALL listar_fase_proyecto_by_C('',4);
@@ -722,7 +720,6 @@ BEGIN
         END IF;
     END IF;
 END $$
-DELIMITER ;
 
 DROP PROCEDURE buscarTareas;
 CALL buscarTareas('1','','','','4','');
@@ -792,6 +789,7 @@ BEGIN
         INNER JOIN colaboradores col_fase ON fas.idresponsable = col_fase.idcolaboradores
         WHERE tar.idtarea = _idtarea;
 END $$
+
 DROP PROCEDURE obtener_tarea
 CALL obtener_tarea(1);
 

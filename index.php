@@ -17,8 +17,6 @@ if (isset($_SESSION['login'])){
     <title>Inicio de Sesion</title>
 </head>
 <style>
-
-    
     .gradient-box {
     width: 100%;
     height: 100vh;
