@@ -205,7 +205,7 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                     
                     <!-- Gráfico -->
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-8">
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title">Producción</h4>
@@ -419,7 +419,7 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                 const coloresBorde = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)']; // Colores de borde para las barras (puedes personalizarlos)
 
                 grafico = new Chart(lienzo, {
-                    type: 'pie',
+                    type: 'line',
                     data: {
                         labels: etiquetas,
                         datasets: [
