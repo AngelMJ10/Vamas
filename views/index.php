@@ -397,8 +397,17 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                     legend: { position: 'bottom' },
                     scales: {
                         y: {
-                            min: valMin,
-                            max: valMax
+                            min: 1,
+                            max: 12,
+                            ticks: {
+                                callback: function (value) {
+                                    const meses = [
+                                        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                                        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                                    ];
+                                    return meses[value - 1]; // Restamos 1 porque los meses están indexados desde 1
+                                }
+                            }
                         }
                     },
                     plugins: {
@@ -419,12 +428,12 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                 const coloresBorde = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)']; // Colores de borde para las barras (puedes personalizarlos)
 
                 grafico = new Chart(lienzo, {
-                    type: 'line',
+                    type: 'bar',
                     data: {
                         labels: etiquetas,
                         datasets: [
                             {
-                                label: 'Avance %',
+                                label: 'Nº Mes',
                                 data: [], // Datos de ejemplo, serán reemplazados por los datos obtenidos de la operación
                                 backgroundColor: coloresFondo,
                                 borderWidth: borde,
@@ -432,7 +441,7 @@ if (!isset($_SESSION['login']) || !$_SESSION['login']['status']){
                             }
                         ]
                     },
-                    options: getConfig(0, 100, 'Proyectos en proceso')
+                    options: getConfig(1, 12, 'Proyectos en proceso') // Rango de 1 a 12 para los meses
                 });
 
                 obtenerDatos();

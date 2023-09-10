@@ -268,6 +268,33 @@
     </div>
   </div>
 
+  <!-- Modal para el gráfico -->
+  <div class="modal fade" id="modal-grafico" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header text-light" style='background-color: #005478;'>
+          <h1 class="modal-title fs-5" id="modalEditarLabel">Gráfico</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h5>Gráfico de avance del proyecto</h5>
+          <h5 id='porcentajeP'></h5>
+          <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-8">
+              <canvas id="grafico-proyecto"></canvas>
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <!-- Modal para más información del proyecto -->
   <div class="modal fade" id="modal-info" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-fullscreen" >

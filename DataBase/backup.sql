@@ -21,23 +21,23 @@ USE `vamas2`;
 DROP TABLE IF EXISTS `colaboradores`;
 
 CREATE TABLE `colaboradores` (
-  `idcolaboradores` SMALLINT(6) NOT NULL AUTO_INCREMENT,
-  `idpersona` SMALLINT(6) NOT NULL,
-  `usuario` VARCHAR(20) NOT NULL,
-  `clave` VARCHAR(200) NOT NULL,
-  `correo` VARCHAR(100) DEFAULT NULL,
-  `nivelacceso` CHAR(1) NOT NULL DEFAULT 'C',
-  `fecha_create` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  `fecha_update` DATETIME DEFAULT NULL,
-  `estado` CHAR(1) NOT NULL DEFAULT '1',
+  `idcolaboradores` smallint(6) NOT NULL AUTO_INCREMENT,
+  `idpersona` smallint(6) NOT NULL,
+  `usuario` varchar(20) NOT NULL,
+  `clave` varchar(200) NOT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `nivelacceso` char(1) NOT NULL DEFAULT 'C',
+  `fecha_create` datetime NOT NULL DEFAULT current_timestamp(),
+  `fecha_update` datetime DEFAULT NULL,
+  `estado` char(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`idcolaboradores`),
   KEY `fk_idpersona_per` (`idpersona`),
   CONSTRAINT `fk_idpersona_per` FOREIGN KEY (`idpersona`) REFERENCES `personas` (`idpersona`)
-) ENGINE=INNODB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `colaboradores` */
 
-INSERT  INTO `colaboradores`(`idcolaboradores`,`idpersona`,`usuario`,`clave`,`correo`,`nivelacceso`,`fecha_create`,`fecha_update`,`estado`) VALUES 
+insert  into `colaboradores`(`idcolaboradores`,`idpersona`,`usuario`,`clave`,`correo`,`nivelacceso`,`fecha_create`,`fecha_update`,`estado`) values 
 (1,1,'AngelMJ','$2y$10$WY.iP85bEYxBMkVBG0jKO.9Q97kEbofLVwJPUT1OAmsDzLXQ8Pcka','angelitomasna200410@gmail.com','A','2023-07-12 00:26:28',NULL,'1'),
 (2,2,'MarksPC','$2y$10$WY.iP85bEYxBMkVBG0jKO.9Q97kEbofLVwJPUT1OAmsDzLXQ8Pcka','1342364@senati.pe','S','2023-07-12 00:26:28',NULL,'1'),
 (3,5,'EmyMJ','$2y$10$WY.iP85bEYxBMkVBG0jKO.9Q97kEbofLVwJPUT1OAmsDzLXQ8Pcka','1342364@senati.pe','S','2023-07-12 00:26:28',NULL,'1'),
@@ -50,64 +50,74 @@ INSERT  INTO `colaboradores`(`idcolaboradores`,`idpersona`,`usuario`,`clave`,`co
 DROP TABLE IF EXISTS `empresas`;
 
 CREATE TABLE `empresas` (
-  `idempresa` SMALLINT(6) NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(40) NOT NULL,
-  `razonsocial` VARCHAR(40) NOT NULL,
-  `tipodocumento` VARCHAR(20) NOT NULL,
-  `documento` VARCHAR(40) NOT NULL,
-  `fecha_create` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  `fecha_update` DATETIME DEFAULT NULL,
-  `estado` CHAR(1) NOT NULL DEFAULT '1',
+  `idempresa` smallint(6) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(40) NOT NULL,
+  `razonsocial` varchar(40) NOT NULL,
+  `tipodocumento` varchar(20) NOT NULL,
+  `documento` varchar(40) NOT NULL,
+  `fecha_create` datetime NOT NULL DEFAULT current_timestamp(),
+  `fecha_update` datetime DEFAULT NULL,
+  `estado` char(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`idempresa`)
-) ENGINE=INNODB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `empresas` */
+
+insert  into `empresas`(`idempresa`,`nombre`,`razonsocial`,`tipodocumento`,`documento`,`fecha_create`,`fecha_update`,`estado`) values 
+(5,'VAMAS S.A.C','VAMAS','RUC','20609878313','2023-08-31 19:40:15',NULL,'1'),
+(6,'Mamá Carmen','Restaurant Mamá Carmen','RUC','200356478941','2023-08-31 19:40:41',NULL,'1');
 
 /*Table structure for table `fases` */
 
 DROP TABLE IF EXISTS `fases`;
 
 CREATE TABLE `fases` (
-  `idfase` SMALLINT(6) NOT NULL AUTO_INCREMENT,
-  `idproyecto` SMALLINT(6) NOT NULL,
-  `idresponsable` SMALLINT(6) NOT NULL,
-  `nombrefase` VARCHAR(40) NOT NULL,
-  `fechainicio` DATE NOT NULL,
-  `fechafin` DATE NOT NULL,
-  `comentario` VARCHAR(200) NOT NULL,
-  `porcentaje_fase` DECIMAL(5,2) DEFAULT 0.00,
-  `porcentaje` DECIMAL(5,2) NOT NULL,
-  `fecha_create` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  `fecha_update` DATETIME DEFAULT NULL,
-  `estado` CHAR(1) NOT NULL DEFAULT '1',
+  `idfase` smallint(6) NOT NULL AUTO_INCREMENT,
+  `idproyecto` smallint(6) NOT NULL,
+  `idresponsable` smallint(6) NOT NULL,
+  `nombrefase` varchar(40) NOT NULL,
+  `fechainicio` date NOT NULL,
+  `fechafin` date NOT NULL,
+  `comentario` varchar(200) NOT NULL,
+  `porcentaje_fase` decimal(5,2) DEFAULT 0.00,
+  `porcentaje` decimal(5,2) NOT NULL,
+  `fecha_create` datetime NOT NULL DEFAULT current_timestamp(),
+  `fecha_update` datetime DEFAULT NULL,
+  `estado` char(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`idfase`),
   KEY `fk_idproyecto_fas` (`idproyecto`),
   KEY `fk_idresponsable_fas` (`idresponsable`),
   CONSTRAINT `fk_idproyecto_fas` FOREIGN KEY (`idproyecto`) REFERENCES `proyecto` (`idproyecto`),
   CONSTRAINT `fk_idresponsable_fas` FOREIGN KEY (`idresponsable`) REFERENCES `colaboradores` (`idcolaboradores`)
-) ENGINE=INNODB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `fases` */
+
+insert  into `fases`(`idfase`,`idproyecto`,`idresponsable`,`nombrefase`,`fechainicio`,`fechafin`,`comentario`,`porcentaje_fase`,`porcentaje`,`fecha_create`,`fecha_update`,`estado`) values 
+(9,4,2,'Creación de bocetos','2023-08-31','2023-09-01','En esta fase se tiene que crear los bocetos y escoger uno al final de esta',50.00,25.00,'2023-08-31 19:44:43',NULL,'1'),
+(10,5,2,'Crear un modelo relacional de la base de','2023-09-04','2023-09-06','Crea un modelo relacional de la base de datos',50.00,25.00,'2023-09-04 18:51:23',NULL,'1'),
+(11,6,2,'Prueba 1','2023-09-04','2023-09-06','Prueba',50.00,50.00,'2023-09-04 19:11:25',NULL,'1'),
+(12,7,2,'Creación de bocetos','2023-09-04','2023-09-06','Crea bocetos',75.00,50.00,'2023-09-04 19:14:08',NULL,'1');
 
 /*Table structure for table `habilidades` */
 
 DROP TABLE IF EXISTS `habilidades`;
 
 CREATE TABLE `habilidades` (
-  `idhabilidades` SMALLINT(6) NOT NULL AUTO_INCREMENT,
-  `idcolaboradores` SMALLINT(6) NOT NULL,
-  `habilidad` VARCHAR(40) NOT NULL,
-  `fecha_create` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  `fecha_update` DATETIME DEFAULT NULL,
-  `estado` CHAR(1) NOT NULL DEFAULT '1',
+  `idhabilidades` smallint(6) NOT NULL AUTO_INCREMENT,
+  `idcolaboradores` smallint(6) NOT NULL,
+  `habilidad` varchar(40) NOT NULL,
+  `fecha_create` datetime NOT NULL DEFAULT current_timestamp(),
+  `fecha_update` datetime DEFAULT NULL,
+  `estado` char(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`idhabilidades`),
   KEY `fk_idcolaboradores_col` (`idcolaboradores`),
   CONSTRAINT `fk_idcolaboradores_col` FOREIGN KEY (`idcolaboradores`) REFERENCES `colaboradores` (`idcolaboradores`)
-) ENGINE=INNODB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `habilidades` */
 
-INSERT  INTO `habilidades`(`idhabilidades`,`idcolaboradores`,`habilidad`,`fecha_create`,`fecha_update`,`estado`) VALUES 
+insert  into `habilidades`(`idhabilidades`,`idcolaboradores`,`habilidad`,`fecha_create`,`fecha_update`,`estado`) values 
 (1,1,'Front-end Intermedio','2023-07-20 11:52:55',NULL,'1'),
 (2,1,'Analista de datos','2023-07-20 11:53:47',NULL,'1'),
 (3,1,'Back-end Intermedio','2023-07-20 11:54:04',NULL,'1'),
@@ -115,31 +125,37 @@ INSERT  INTO `habilidades`(`idhabilidades`,`idcolaboradores`,`habilidad`,`fecha_
 (5,5,'Diseño Gráfico','2023-07-31 21:50:01',NULL,'1'),
 (6,6,'Front-end Intermedio','2023-08-01 20:16:56',NULL,'1'),
 (7,6,'Analista de datos','2023-08-01 20:17:03',NULL,'1'),
-(8,6,'Diseño Gráfico','2023-08-01 20:17:10',NULL,'1');
+(8,6,'Diseño Gráfico','2023-08-01 20:17:10',NULL,'1'),
+(9,2,'Front-end Intermedio','2023-09-04 18:52:07',NULL,'1'),
+(10,2,'Back-end Intermedio','2023-09-04 18:52:15',NULL,'1'),
+(11,4,'Front-end Intermedio','2023-09-04 18:52:23',NULL,'1'),
+(12,3,'Back-end FrameWork Laravel','2023-09-04 18:52:29',NULL,'1'),
+(13,3,'Front-end Framework React','2023-09-04 18:52:36',NULL,'1'),
+(14,4,'Analista de datos','2023-09-04 18:52:44',NULL,'1');
 
 /*Table structure for table `personas` */
 
 DROP TABLE IF EXISTS `personas`;
 
 CREATE TABLE `personas` (
-  `idpersona` SMALLINT(6) NOT NULL AUTO_INCREMENT,
-  `apellidos` VARCHAR(40) NOT NULL,
-  `nombres` VARCHAR(40) NOT NULL,
-  `tipodocumento` VARCHAR(20) NOT NULL,
-  `nrodocumento` CHAR(8) NOT NULL,
-  `telefono` CHAR(9) NOT NULL,
-  `genero` CHAR(1) NOT NULL,
-  `direccion` VARCHAR(200) NOT NULL,
-  `estado` CHAR(1) NOT NULL DEFAULT '1',
-  `fechanac` DATE NOT NULL,
-  `fecha_create` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  `fechabaja` DATETIME DEFAULT NULL,
+  `idpersona` smallint(6) NOT NULL AUTO_INCREMENT,
+  `apellidos` varchar(40) NOT NULL,
+  `nombres` varchar(40) NOT NULL,
+  `tipodocumento` varchar(20) NOT NULL,
+  `nrodocumento` char(8) NOT NULL,
+  `telefono` char(9) NOT NULL,
+  `genero` char(1) NOT NULL,
+  `direccion` varchar(200) NOT NULL,
+  `estado` char(1) NOT NULL DEFAULT '1',
+  `fechanac` date NOT NULL,
+  `fecha_create` datetime NOT NULL DEFAULT current_timestamp(),
+  `fechabaja` datetime DEFAULT NULL,
   PRIMARY KEY (`idpersona`)
-) ENGINE=INNODB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `personas` */
 
-INSERT  INTO `personas`(`idpersona`,`apellidos`,`nombres`,`tipodocumento`,`nrodocumento`,`telefono`,`genero`,`direccion`,`estado`,`fechanac`,`fecha_create`,`fechabaja`) VALUES 
+insert  into `personas`(`idpersona`,`apellidos`,`nombres`,`tipodocumento`,`nrodocumento`,`telefono`,`genero`,`direccion`,`estado`,`fechanac`,`fecha_create`,`fechabaja`) values 
 (1,'Marquina Jaime','Ángel Eduardo','DNI','72745028','951531166','M','León de Vivero MZ V L-2','1','2004-07-10','2023-07-12 00:26:21',NULL),
 (2,'Padilla Chumbiauca','Marks Steven','DNI','72854857','924563458','M','Atrás de plaza vea','1','2004-06-07','2023-07-12 00:26:21',NULL),
 (3,'Uribe Garcia','Cristhian Manuel','DNI','72548675','95123654','M','Rosedal por donde roban','1','2004-05-21','2023-07-12 00:26:21',NULL),
@@ -153,20 +169,20 @@ INSERT  INTO `personas`(`idpersona`,`apellidos`,`nombres`,`tipodocumento`,`nrodo
 DROP TABLE IF EXISTS `proyecto`;
 
 CREATE TABLE `proyecto` (
-  `idproyecto` SMALLINT(6) NOT NULL AUTO_INCREMENT,
-  `idtipoproyecto` SMALLINT(6) NOT NULL,
-  `idempresa` SMALLINT(6) NOT NULL,
-  `titulo` VARCHAR(60) NOT NULL,
-  `descripcion` VARCHAR(200) NOT NULL,
-  `fechainicio` DATE NOT NULL,
-  `fechafin` DATE NOT NULL,
-  `precio` DECIMAL(6,2) NOT NULL,
-  `condiciones` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (JSON_VALID(`condiciones`)),
-  `idusuariore` SMALLINT(6) NOT NULL,
-  `porcentaje` DECIMAL(5,2) DEFAULT 0.00,
-  `estado` CHAR(1) NOT NULL DEFAULT '1',
-  `fecha_create` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  `fecha_update` DATETIME DEFAULT NULL,
+  `idproyecto` smallint(6) NOT NULL AUTO_INCREMENT,
+  `idtipoproyecto` smallint(6) NOT NULL,
+  `idempresa` smallint(6) NOT NULL,
+  `titulo` varchar(60) NOT NULL,
+  `descripcion` varchar(200) NOT NULL,
+  `fechainicio` date NOT NULL,
+  `fechafin` date NOT NULL,
+  `precio` decimal(6,2) NOT NULL,
+  `condiciones` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`condiciones`)),
+  `idusuariore` smallint(6) NOT NULL,
+  `porcentaje` decimal(5,2) DEFAULT 0.00,
+  `estado` char(1) NOT NULL DEFAULT '1',
+  `fecha_create` datetime NOT NULL DEFAULT current_timestamp(),
+  `fecha_update` datetime DEFAULT NULL,
   PRIMARY KEY (`idproyecto`),
   KEY `fk_idtipoproyecto_pro` (`idtipoproyecto`),
   KEY `fk_idempresa_tip` (`idempresa`),
@@ -174,26 +190,31 @@ CREATE TABLE `proyecto` (
   CONSTRAINT `fk_idempresa_tip` FOREIGN KEY (`idempresa`) REFERENCES `empresas` (`idempresa`),
   CONSTRAINT `fk_idtipoproyecto_pro` FOREIGN KEY (`idtipoproyecto`) REFERENCES `tiposproyecto` (`idtipoproyecto`),
   CONSTRAINT `fk_idusuariore_pro` FOREIGN KEY (`idusuariore`) REFERENCES `colaboradores` (`idcolaboradores`)
-) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `proyecto` */
 
+insert  into `proyecto`(`idproyecto`,`idtipoproyecto`,`idempresa`,`titulo`,`descripcion`,`fechainicio`,`fechafin`,`precio`,`condiciones`,`idusuariore`,`porcentaje`,`estado`,`fecha_create`,`fecha_update`) values 
+(4,1,5,'Página web','Crear una página web para la empresa Vamas que promocione a esta','2023-08-31','2023-09-15',2000.00,NULL,1,12.50,'1','2023-08-31 19:42:27',NULL),
+(5,2,6,'Sistema de ventas para un restaurante','Diseñar un sistema de ventas','2023-09-04','2023-10-04',2000.00,NULL,1,12.50,'1','2023-09-04 18:49:53',NULL),
+(6,3,6,'Sistema de almacen para el restaurante Mamá Carmen','Prueba','2023-09-04','2023-10-04',1000.00,NULL,1,25.00,'1','2023-09-04 19:10:48',NULL),
+(7,4,5,'Página web sobre la empresa VAMAS SAC','Diseña una pagina web para la empresa Vamas','2023-09-04','2023-10-04',500.00,NULL,1,37.50,'1','2023-09-04 19:13:42',NULL);
 
 /*Table structure for table `recuperarclave` */
 
 DROP TABLE IF EXISTS `recuperarclave`;
 
 CREATE TABLE `recuperarclave` (
-  `idrecuperar` INT(11) NOT NULL AUTO_INCREMENT,
-  `idcolaboradores` SMALLINT(6) NOT NULL,
-  `fecharegeneracion` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  `correo` VARCHAR(200) NOT NULL,
-  `clavegenerada` CHAR(4) NOT NULL,
-  `estado` CHAR(1) NOT NULL DEFAULT '1',
+  `idrecuperar` int(11) NOT NULL AUTO_INCREMENT,
+  `idcolaboradores` smallint(6) NOT NULL,
+  `fecharegeneracion` datetime NOT NULL DEFAULT current_timestamp(),
+  `correo` varchar(200) NOT NULL,
+  `clavegenerada` char(4) NOT NULL,
+  `estado` char(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`idrecuperar`),
   KEY `fk_idcolaboradores_rcl` (`idcolaboradores`),
   CONSTRAINT `fk_idcolaboradores_rcl` FOREIGN KEY (`idcolaboradores`) REFERENCES `colaboradores` (`idcolaboradores`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `recuperarclave` */
 
@@ -202,45 +223,50 @@ CREATE TABLE `recuperarclave` (
 DROP TABLE IF EXISTS `tareas`;
 
 CREATE TABLE `tareas` (
-  `idtarea` SMALLINT(6) NOT NULL AUTO_INCREMENT,
-  `idfase` SMALLINT(6) NOT NULL,
-  `idcolaboradores` SMALLINT(6) NOT NULL,
-  `roles` VARCHAR(40) NOT NULL,
-  `tarea` VARCHAR(200) NOT NULL,
-  `porcentaje_tarea` DECIMAL(5,2) DEFAULT 0.00,
-  `porcentaje` DECIMAL(5,2) NOT NULL,
-  `evidencia` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (JSON_VALID(`evidencia`)),
-  `fecha_inicio_tarea` DATE NOT NULL,
-  `fecha_fin_tarea` DATE NOT NULL,
-  `fecha_create` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  `fecha_update` DATETIME DEFAULT NULL,
-  `estado` CHAR(1) NOT NULL DEFAULT '1',
+  `idtarea` smallint(6) NOT NULL AUTO_INCREMENT,
+  `idfase` smallint(6) NOT NULL,
+  `idcolaboradores` smallint(6) NOT NULL,
+  `roles` varchar(40) NOT NULL,
+  `tarea` varchar(200) NOT NULL,
+  `porcentaje_tarea` decimal(5,2) DEFAULT 0.00,
+  `porcentaje` decimal(5,2) NOT NULL,
+  `evidencia` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`evidencia`)),
+  `fecha_inicio_tarea` date NOT NULL,
+  `fecha_fin_tarea` date NOT NULL,
+  `fecha_create` datetime NOT NULL DEFAULT current_timestamp(),
+  `fecha_update` datetime DEFAULT NULL,
+  `estado` char(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`idtarea`),
   KEY `fk_idfase_tar` (`idfase`),
   KEY `fk_idcolaboradores_tar` (`idcolaboradores`),
   CONSTRAINT `fk_idcolaboradores_tar` FOREIGN KEY (`idcolaboradores`) REFERENCES `colaboradores` (`idcolaboradores`),
   CONSTRAINT `fk_idfase_tar` FOREIGN KEY (`idfase`) REFERENCES `fases` (`idfase`)
-) ENGINE=INNODB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `tareas` */
 
+insert  into `tareas`(`idtarea`,`idfase`,`idcolaboradores`,`roles`,`tarea`,`porcentaje_tarea`,`porcentaje`,`evidencia`,`fecha_inicio_tarea`,`fecha_fin_tarea`,`fecha_create`,`fecha_update`,`estado`) values 
+(11,9,4,'Diseño Gráfico','Crea un boceto para la página web de la empresa Vamas SAC',100.00,50.00,'[{\"colaborador\": \"JesusPC\", \"receptor\": \"MarksPC\", \"mensaje\": \"Hola ,este es mi avance\", \"documento\": \"https://drive.google.com/open?id=1hXOCDaMhc1K5GdWeMWT34PAWElJt9mAy\", \"fecha\": \"2023-08-31\", \"hora\": \"19:49:12\", \"porcentaje\": \"50\"}, {\"colaborador\": \"AngelMJ\", \"receptor\": \"AngelMJ\", \"mensaje\": \"100\", \"documento\": \"https://drive.google.com/open?id=1_vNs7NCZv-7mVi4yEkd74_FKoIbf9BoH\", \"fecha\": \"2023-08-31\", \"hora\": \"20:17:10\", \"porcentaje\": \"100\"}]','2023-08-31','2023-09-01','2023-08-31 19:47:34','2023-09-04 19:12:17','2'),
+(12,10,4,'Analista de datos','Crea propuesta de base de datos relacional',100.00,50.00,'[{\"colaborador\": \"JesusPC\", \"receptor\": \"MarksPC\", \"mensaje\": \"Hola\", \"documento\": \"https://drive.google.com/open?id=1xEZzMIsKyK2jWeSPwZBShPjK7J3uTEIQ\", \"fecha\": \"2023-09-04\", \"hora\": \"18:54:24\", \"porcentaje\": \"100\"}]','2023-09-04','2023-09-05','2023-09-04 18:53:12','2023-09-04 19:12:30','2'),
+(13,11,2,'Back-end Intermedio','Crea propuesta de base de datos relacional',50.00,100.00,'[{\"colaborador\": \"AngelMJ\", \"receptor\": \"MarksPC\", \"mensaje\": \"Hola\", \"documento\": \"https://drive.google.com/open?id=16YX829FfQi3ulM0jZVCdjTENVUavvV2i\", \"fecha\": \"2023-09-04\", \"hora\": \"19:12:50\", \"porcentaje\": \"50\"}]','2023-09-04','2023-09-05','2023-09-04 19:11:49',NULL,'1'),
+(14,12,4,'Diseño Gráfico','Crea un boceto para la página web de la empresa Vamas SAC',75.00,100.00,'[{\"colaborador\": \"AngelMJ\", \"receptor\": \"MarksPC\", \"mensaje\": \"75\", \"documento\": \"https://drive.google.com/open?id=1FqPIstdpLyxC5FAKDuVmdF2cUcUPnZeO\", \"fecha\": \"2023-09-04\", \"hora\": \"19:15:08\", \"porcentaje\": \"75\"}]','2023-09-04','2023-09-05','2023-09-04 19:14:33',NULL,'1');
 
 /*Table structure for table `tiposproyecto` */
 
 DROP TABLE IF EXISTS `tiposproyecto`;
 
 CREATE TABLE `tiposproyecto` (
-  `idtipoproyecto` SMALLINT(6) NOT NULL AUTO_INCREMENT,
-  `tipoproyecto` VARCHAR(40) NOT NULL,
-  `fecha_create` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  `fecha_update` DATETIME DEFAULT NULL,
-  `estado` CHAR(1) NOT NULL DEFAULT '1',
+  `idtipoproyecto` smallint(6) NOT NULL AUTO_INCREMENT,
+  `tipoproyecto` varchar(40) NOT NULL,
+  `fecha_create` datetime NOT NULL DEFAULT current_timestamp(),
+  `fecha_update` datetime DEFAULT NULL,
+  `estado` char(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`idtipoproyecto`)
-) ENGINE=INNODB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `tiposproyecto` */
 
-INSERT  INTO `tiposproyecto`(`idtipoproyecto`,`tipoproyecto`,`fecha_create`,`fecha_update`,`estado`) VALUES 
+insert  into `tiposproyecto`(`idtipoproyecto`,`tipoproyecto`,`fecha_create`,`fecha_update`,`estado`) values 
 (1,'Desarollo Web','2023-07-12 00:26:47',NULL,'1'),
 (2,'Sistema de ventas','2023-07-12 00:26:47',NULL,'1'),
 (3,'Sistema de almacen','2023-07-12 00:26:47',NULL,'1'),

@@ -1,6 +1,6 @@
 let idfase = 0;
 let idtarea = 0;
-
+let lienzo = document.querySelector("#grafico-fase");
     // Función para obtener traer las cajas de texto con la información de la fase
     function getPhase(id) {
         const modal = document.querySelector("#modalPhase");
@@ -839,6 +839,82 @@ let idtarea = 0;
 
     const btnModalP = document.querySelector("#tarea-modal");
     btnModalP.addEventListener("click",cerrarModaltarea);
+
+     // Función para abrir el modal de graficos de proyecto
+
+    function abrirGrafico(id){
+        grafico.destroy();
+        const modal = document.querySelector("#modal-grafico");
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+        idfase = id;
+        console.log(idfase)
+        renderGrafico();
+    }
+
+    function obtenerDatos() {
+        const parametros = new URLSearchParams();
+        parametros.append('op', 'graficoF');
+        parametros.append('idfase', idfase);
+        fetch('../controllers/fase.php', {
+            method: 'POST',
+            body: parametros
+        })
+        .then(respuesta => respuesta.json())
+        .then(datos => {
+            // console.log(datos.Covid)
+            grafico.data.labels = datos.labels;
+            grafico.data.datasets[0].data = datos.data;
+            grafico.update();
+        });
+    }
+
+    function getConfig(valMin, valMax, titulo) {
+        const configuraciones = {
+            responsive: true,
+            legend: { position: 'bottom' },
+            scales: {
+                y: {
+                min: valMin,
+                max: valMax
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: titulo
+                },
+                legend: { position: 'bottom' }
+            }
+        };
+        return configuraciones;
+    }
+
+    function renderGrafico() {
+        const etiquetas = [];
+        const coloresFondo = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)']; // Colores de fondo para las barras (puedes personalizarlos)
+        const borde = 1; // Ancho del borde de las barras
+        const coloresBorde = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)']; // Colores de borde para las barras (puedes personalizarlos)
+
+        grafico = new Chart(lienzo, {
+            type: 'bar',
+            data: {
+                labels: etiquetas,
+                datasets: [
+                    {
+                        label: 'Avance',
+                        data: [], // Datos de ejemplo, serán reemplazados por los datos obtenidos de la operación
+                        backgroundColor: coloresFondo,
+                        borderWidth: borde,
+                        borderColor: coloresBorde
+                    }
+                ]
+            },
+            options: getConfig(0, 100, 'Fases en proceso') // Rango de 1 a 12 para los meses
+        });
+
+        obtenerDatos();
+    }
 
 listarColaboradores();
 listarProyectosSelect();

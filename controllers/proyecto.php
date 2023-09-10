@@ -37,6 +37,7 @@
                                 <button type='button' onclick='get({$registro['idproyecto']})'  title='Clic, para editar el proyecto.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
                                 <button type='button' onclick='addPhase({$registro['idproyecto']})' class='btn btn-outline-success btn-sm' title='Clic, para agregar una fase.'><i class='fas fa-arrow-alt-circle-down'></i></button>
                                 <button type='button' onclick='generarReporteP({$registro['idproyecto']})' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
+                                <button type='button' onclick='abrirGrafico({$registro['idproyecto']})' class='btn btn-outline-info btn-sm' title='Clic, para ver gráfico de avance.'><i class='fa-solid fa-chart-column'></i></button>
                                 <button type='button' onclick='finalizarProyecto({$registro['idproyecto']})' class='btn btn-outline-primary btn-sm' title='Clic, para finalizar el proyecto.'><i class='fa-solid fa-check'></i></button>
                             </div>
                         </td>
@@ -178,6 +179,7 @@
             echo json_encode($datos);
         }
 
+        // Graficos
         // Gráfico 1
         if ($_POST['op'] == "iniGrafico") {
             $datos = $proyecto->listar();
@@ -186,21 +188,55 @@
         
             foreach ($datos as $registro) {
                 $porcentaje = $registro['porcentaje'];
-                $titulo = $registro['titulo'];
+                $fechafin = $registro['fechafin'];
                 if ($porcentaje) {
                     $porcentaje = rtrim($porcentaje, "0");
                     $porcentaje = rtrim($porcentaje, ".");
                 } elseif ($porcentaje == null || $porcentaje == 0) {
                     $porcentaje = 0;
                 }
+
+                // Extraer el número del mes a partir de la fecha de finalización
+                $mes = date('n', strtotime($fechafin));
         
-                $labels[] = $titulo; // Agregar el título al array de labels
-                $data[] = $porcentaje; // Agregar el porcentaje al array de data
+                $labels[] = $porcentaje.'%'; // Agregar el porcentaje al array de data
+                $data[] = $mes; // Agregar el nº del mes en que finaliza
             }
         
             $result = array(
                 "labels" => $labels,
                 "data" => $data
+            );
+        
+            echo json_encode($result); // Devolver el array como JSON
+        }
+
+        if ($_POST['op'] == "graficoP") {
+            require_once '../models/Fase.php';
+            $fase = new Fase();
+            $idproyecto = $_POST['idproyecto'];
+            $datos = $fase->getFases_by_P($idproyecto);
+            $labels = array(); // Array para almacenar los títulos
+            $data = array(); // Array para almacenar los porcentajes
+            $porcentajeP = array(); // Array para almacenar los porcentajes
+            foreach ($datos as $registro) {
+                $porcentaje = $registro['porcentaje'];
+                $nombrefase = $registro['nombrefase'];
+                if ($porcentaje) {
+                    $porcentaje = rtrim($porcentaje, "0");
+                    $porcentaje = rtrim($porcentaje, ".");
+                } elseif ($porcentaje == null || $porcentaje == 0) {
+                    $porcentaje = 0;
+                }
+                $labels[] = $nombrefase; // Agregar el porcentaje al array de data
+                $data[] = $porcentaje; // Agregar el nº del mes en que finaliza
+                $porcentajeP[] = 'El proyecto está al '.$registro['porcentaje_pro'] . '%'; // Agregar el nº del mes en que finaliza
+            }
+        
+            $result = array(
+                "labels" => $labels,
+                "data" => $data,
+                "porcentajep" => $porcentajeP
             );
         
             echo json_encode($result); // Devolver el array como JSON
