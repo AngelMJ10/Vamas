@@ -2204,6 +2204,7 @@ let lienzo = document.querySelector("#grafico-proyecto");
     idproyecto = id;
     console.log(idproyecto)
     renderGrafico();
+    graficosF(idproyecto);
   }
 
   function obtenerDatos() {
@@ -2272,6 +2273,126 @@ let lienzo = document.querySelector("#grafico-proyecto");
       obtenerDatos();
   }
 
+  let chartF = {};
+  function obtenerDatosF(idfaseG, chart) {
+    const parametros = new URLSearchParams();
+    parametros.append('op', 'graficoF');
+    parametros.append('idfase', idfaseG);
+    fetch('../controllers/fase.php', {
+        method: 'POST',
+        body: parametros
+    })
+    .then(respuesta => respuesta.json())
+    .then(datos => {
+        // Actualizar el gráfico específico con sus datos
+        chart.data.labels = datos.labels;
+        chart.data.datasets[0].data = datos.data;
+        chart.update();
+    });
+  }
+
+  function getConfigF(valMin, valMax, titulo) {
+      const configuraciones = {
+          responsive: true,
+          legend: { position: 'bottom' },
+          scales: {
+              y: {
+              min: valMin,
+              max: valMax
+              }
+          },
+          plugins: {
+              title: {
+                  display: true,
+                  text: titulo
+              },
+              legend: { position: 'bottom' }
+          }
+      };
+      return configuraciones;
+  }
+
+  function renderGraficoF(graficoId,idfaseG) {
+    const etiquetas = []; // Define tus etiquetas según tus datos
+    const datos = []; // Define tus datos según tus datos
+
+    const coloresFondo = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)']; // Define colores de fondo
+    const coloresBorde = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)']; // Define colores de borde
+
+    const ctx = document.getElementById(graficoId);
+    console.log(graficoId)
+    
+    chartF = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: etiquetas,
+            datasets: [
+                {
+                    label: 'Avance',
+                    data: datos,
+                    backgroundColor: coloresFondo,
+                    borderWidth: 1,
+                    borderColor: coloresBorde
+                }
+            ]
+        },
+        options: getConfigF(0, 100, 'Tareas en procesor')
+    });
+    obtenerDatosF(idfaseG);
+  }
+  
+  function graficosF(id) {
+    const lienzoF = document.querySelector("#graficos-fases");
+    const parametos = new URLSearchParams();
+    parametos.append("op", "getDatos");
+    parametos.append("idproyecto", id);
+    fetch(`../controllers/proyecto.php`, {
+        method: 'POST',
+        body: parametos
+    })
+    .then(respuesta => respuesta.json())
+    .then(datos => {
+        lienzoF.innerHTML = "";
+        datos.forEach(element => {
+            const graficoId = `graficoF_${element.idfase}`;
+            const fasesContainer = document.createElement('div');
+            fasesContainer.innerHTML = `
+                <p>La fase :${element.nombrefase}</p>
+                <p>Está al ${element.porcentaje_fase} %</p>
+                <div class='row'>
+                    <div class='col-md-2'></div>
+                    <div class='col-md-8'>
+                        <canvas id='${graficoId}'></canvas>
+                    </div>
+                    <div class='col-md-2'></div>
+                </div>
+            `;
+            lienzoF.appendChild(fasesContainer);
+            
+            // Inicializar un nuevo objeto Chart para cada gráfico
+            const ctx = document.getElementById(graficoId);
+            chartF[graficoId] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Avance',
+                            data: [],
+                            backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+                            borderWidth: 1,
+                            borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)']
+                        }
+                    ]
+                },
+                options: getConfigF(0, 100, 'Tareas en proceso')
+            });
+
+            // Llamar a obtenerDatosF con el gráfico y el idfase correspondientes
+            obtenerDatosF(element.idfase, chartF[graficoId]);
+        });
+    });
+  }
   
   // Iniciar la ejecución diaria
   ejecutarDiariamente();

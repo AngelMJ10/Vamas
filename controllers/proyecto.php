@@ -211,6 +211,14 @@
             echo json_encode($result); // Devolver el array como JSON
         }
 
+        if ($_POST['op'] == "getDatos") {
+            require_once '../models/Fase.php';
+            $fase = new Fase();
+            $idproyecto = $_POST['idproyecto'];
+            $datos = $fase->getFases_by_P($idproyecto);
+            echo json_encode($datos);
+        }
+
         if ($_POST['op'] == "graficoP") {
             require_once '../models/Fase.php';
             $fase = new Fase();
@@ -220,14 +228,9 @@
             $data = array(); // Array para almacenar los porcentajes
             $porcentajeP = array(); // Array para almacenar los porcentajes
             foreach ($datos as $registro) {
-                $porcentaje = $registro['porcentaje'];
+                $porcentaje = $registro['porcentaje_fase'];
                 $nombrefase = $registro['nombrefase'];
-                if ($porcentaje) {
-                    $porcentaje = rtrim($porcentaje, "0");
-                    $porcentaje = rtrim($porcentaje, ".");
-                } elseif ($porcentaje == null || $porcentaje == 0) {
-                    $porcentaje = 0;
-                }
+                
                 $labels[] = $nombrefase; // Agregar el porcentaje al array de data
                 $data[] = $porcentaje; // Agregar el nº del mes en que finaliza
                 $porcentajeP[] = 'El proyecto está al '.$registro['porcentaje_pro'] . '%'; // Agregar el nº del mes en que finaliza

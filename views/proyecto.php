@@ -287,6 +287,7 @@
             </div>
             <div class="col-md-2"></div>
           </div>
+          <div id="graficos-fases"></div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
