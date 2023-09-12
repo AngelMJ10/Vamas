@@ -101,6 +101,7 @@
                                     <button type='button' onclick='get({$registro['idproyecto']})'  title='Clic, para editar el proyecto.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
                                     <button type='button' onclick='addPhase({$registro['idproyecto']})' class='btn btn-outline-success btn-sm' title='Clic, para agregar una fase.'><i class='fas fa-arrow-alt-circle-down'></i></button>
                                     <button type='button' onclick='generarReporteP({$registro['idproyecto']})' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
+                                    <button type='button' onclick='abrirGrafico({$registro['idproyecto']})' class='btn btn-outline-info btn-sm' title='Clic, para ver gráfico de avance.'><i class='fa-solid fa-chart-column'></i></button>
                                     <button type='button' onclick='finalizarProyecto({$registro['idproyecto']})' class='btn btn-outline-primary btn-sm' title='Clic, para finalizar el proyecto.'><i class='fa-solid fa-check'></i></button>
                                 </div>
                             </td>
@@ -122,6 +123,7 @@
                                     <button type='button' onclick='get({$registro['idproyecto']})'  title='Clic, para editar el proyecto.' class='btn btn-outline-warning btn-sm editar-btn'><i class='fa-solid fa-pencil'></i></button>
                                     <button type='button' onclick='addPhase({$registro['idproyecto']})' class='btn btn-outline-success btn-sm' title='Clic, para agregar una fase.'><i class='fas fa-arrow-alt-circle-down'></i></button>
                                     <button type='button' onclick='generarReporteP({$registro['idproyecto']})' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
+                                    <button type='button' onclick='abrirGrafico({$registro['idproyecto']})' class='btn btn-outline-info btn-sm' title='Clic, para ver gráfico de avance.'><i class='fa-solid fa-chart-column'></i></button>
                                     <button type='button' onclick='reactivarProyecto({$registro['idproyecto']})' class='btn btn-outline-primary btn-sm' title='Clic, para reactivar el proyecto.'><i class='fa-solid fa-arrows-rotate'></i></button>    
                                 </div>
                             </td>

@@ -347,6 +347,32 @@
             echo json_encode($tarea->getWork($idtarea));
         }
 
+        // Gráficos
+        // Operación para los graficos de la fase
+        if ($_POST['op'] == 'graficoT') {
+            $labels = array(); // Array para almacenar los títulos
+            $data = array(); // Array para almacenar los porcentajes
+            $datos = ["idtarea" => $_POST['idtarea']];
+            $evidencias = $tarea->verEvidencias($datos);
+            $contador = 1;
+                foreach ($evidencias as $evidencia) {
+                    $evidenciaArray = json_decode($evidencia['evidencia'], true);
+        
+                    foreach ($evidenciaArray as $item) {
+                        $porcentaje = $item['porcentaje'];
+                        $fecha = $item['fecha'];
+                        $labels[] = $fecha;
+                        $data[] = $porcentaje;
+                    }
+                }
+            $result = array(
+                "labels" => $labels,
+                "data" => $data
+            );
+        
+            echo json_encode($result); // Devolver el array como JSON
+        }
+
         // Operación listar los correos de las colaboradores que no sean de rango C
         if ($_POST['op'] == 'listarCorreo') {
             require_once '../models/Colaboradores.php';

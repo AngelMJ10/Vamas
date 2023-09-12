@@ -55,23 +55,36 @@
             foreach ($datos as $registro) {
                 $porcentaje = $registro['porcentaje_tarea'];
                 $nombrefase = $registro['tarea'];
+
+                // Cortar el nombre si contiene más de 4 palabras
+                $palabras = explode(" ", $nombrefase);
+                if (count($palabras) > 4) {
+                    $nombrefase = implode(" ", array_slice($palabras, 0, 4)) . "...";
+                }
+
                 if ($porcentaje) {
                     $porcentaje = rtrim($porcentaje, "0");
                     $porcentaje = rtrim($porcentaje, ".");
                 } elseif ($porcentaje == null || $porcentaje == 0) {
                     $porcentaje = 0;
                 }
-        
+
                 $labels[] = $nombrefase; // Agregar el porcentaje al array de data
                 $data[] = $porcentaje; // Agregar el nº del mes en que finaliza
             }
-        
+
             $result = array(
                 "labels" => $labels,
                 "data" => $data
             );
-        
+
             echo json_encode($result); // Devolver el array como JSON
+        }
+
+        if ($_POST['op'] == 'tareaxF') {
+            $idfase = ["idfase" => $_POST['idfase']];
+            $datos = $fase->tablaFases($idfase);
+            echo json_encode($datos);
         }
 
         // Operación para listar todas las fases
@@ -143,6 +156,7 @@
                         <td data-label='Acciones'>
                             <div class='btn-group' role='group'>
                                 <button type='button' data-id='{$registro['idproyecto']}' class='btn btn-outline-primary btn-sm' title='Clic, para más información'><i class='fa-sharp fa-solid fa-circle-info'></i></button>
+                                <button type='button' onclick='abrirGrafico({$registro['idfase']})' class='btn btn-outline-info btn-sm' title='Clic, para ver gráfico de avance.'><i class='fa-solid fa-chart-column'></i></button>
                                 <button type='button' onclick='generarReporteF({$registro['idfase']})' class='btn btn-outline-danger btn-sm' title='Clic, para ver los reportes del proyecto.'><i class='fa-solid fa-file-pdf'></i></button>
                             </div>
                         </td>

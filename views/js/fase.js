@@ -1,6 +1,7 @@
 let idfase = 0;
 let idtarea = 0;
 let lienzo = document.querySelector("#grafico-fase");
+
     // Función para obtener traer las cajas de texto con la información de la fase
     function getPhase(id) {
         const modal = document.querySelector("#modalPhase");
@@ -850,6 +851,7 @@ let lienzo = document.querySelector("#grafico-fase");
         idfase = id;
         console.log(idfase)
         renderGrafico();
+        graficosT(id)
     }
 
     function obtenerDatos() {
@@ -914,6 +916,130 @@ let lienzo = document.querySelector("#grafico-fase");
         });
 
         obtenerDatos();
+    }
+
+    let chartF = {};
+    function obtenerDatosT(idtareaG, chart) {
+        const parametros = new URLSearchParams();
+        parametros.append('op', 'graficoT');
+        parametros.append('idtarea', idtareaG);
+        fetch('../controllers/tarea.php', {
+            method: 'POST',
+            body: parametros
+        })
+        .then(respuesta => respuesta.json())
+        .then(datos => {
+            // Actualizar el gráfico específico con sus datos
+            chart.data.labels = datos.labels;
+            chart.data.datasets[0].data = datos.data;
+            chart.update();
+        });
+    }
+
+    function getConfigT(valMin, valMax, titulo) {
+        const configuraciones = {
+            responsive: true,
+            legend: { position: 'bottom' },
+            scales: {
+                y: {
+                min: valMin,
+                max: valMax
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: titulo
+                },
+                legend: { position: 'bottom' }
+            }
+        };
+        return configuraciones;
+    }
+
+    function renderGraficoT(graficoId,idtareaG) {
+        const etiquetas = []; // Define tus etiquetas según tus datos
+        const datos = []; // Define tus datos según tus datos
+
+        const coloresFondo = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)']; // Define colores de fondo
+        const coloresBorde = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)']; // Define colores de borde
+
+        const ctx = document.getElementById(graficoId);
+        console.log(graficoId)
+        
+        chartF = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: etiquetas,
+                datasets: [
+                    {
+                        label: 'Avance',
+                        data: datos,
+                        backgroundColor: coloresFondo,
+                        borderWidth: 1,
+                        borderColor: coloresBorde
+                    }
+                ]
+            },
+            options: getConfigT(0, 100, 'Tareas en procesor')
+        });
+        obtenerDatosT(idtareaG);
+    }
+    
+    function graficosT(id) {
+        const lienzoF = document.querySelector("#graficos-tareas");
+        const parametos = new URLSearchParams();
+        parametos.append("op", "tareaxF");
+        parametos.append("idfase", id);
+        fetch(`../controllers/fase.php`, {
+            method: 'POST',
+            body: parametos
+        })
+        .then(respuesta => respuesta.json())
+        .then(datos => {
+            let contador = 1;
+            lienzoF.innerHTML = "";
+            datos.forEach(element => {
+                const graficoId = `graficoF_${element.idtarea}`;
+                const fasesContainer = document.createElement('div');
+                fasesContainer.innerHTML = `
+                    <hr>
+                    <p>Tarea N° ${contador}: <b>${element.tarea}</b></p>
+                    <p>Avance: <b>${element.porcentaje_tarea} %</b></p>
+                    <div class='row'>
+                        <div class='col-md-2'></div>
+                        <div class='col-md-8'>
+                            <canvas id='${graficoId}'></canvas>
+                        </div>
+                        <div class='col-md-2'></div>
+                    </div>
+                `;
+                lienzoF.appendChild(fasesContainer);
+                
+                // Inicializar un nuevo objeto Chart para cada gráfico
+                const ctx = document.getElementById(graficoId);
+                chartF[graficoId] = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: [],
+                        datasets: [
+                            {
+                                label: 'Avance',
+                                data: [],
+                                backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+                                borderWidth: 1,
+                                borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)']
+                            }
+                        ]
+                    },
+                    options: getConfigT(0, 100, 'Evidencias')
+                });
+
+                // Llamar a obtenerDatosF con el gráfico y el idfase correspondientes
+                obtenerDatosT(element.idtarea, chartF[graficoId]);
+                contador++;
+            });
+        });
     }
 
 listarColaboradores();

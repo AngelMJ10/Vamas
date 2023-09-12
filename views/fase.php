@@ -115,7 +115,7 @@
   </div>
 
 <!-- Modal para el gráfico -->
-<div class="modal fade" id="modal-grafico" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal fade" id="modal-grafico" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
         <div class="modal-header text-light" style='background-color: #005478;'>
@@ -131,9 +131,7 @@
             </div>
             <div class="col-md-2"></div>
           </div>
-          <div class="row">
-            <canvas id="grafico-fase"></canvas>
-          </div>
+          <div id="graficos-tareas"></div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -142,7 +140,8 @@
     </div>
   </div>
 
-<!-- Modal-->
+
+  <!-- Modal-->
 <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">

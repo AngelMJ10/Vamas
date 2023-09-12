@@ -2259,7 +2259,7 @@ let lienzo = document.querySelector("#grafico-proyecto");
               labels: etiquetas,
               datasets: [
                   {
-                      label: 'Avance',
+                      label: 'Porcentaje de avance',
                       data: [], // Datos de ejemplo, serán reemplazados por los datos obtenidos de la operación
                       backgroundColor: coloresFondo,
                       borderWidth: borde,
@@ -2352,13 +2352,15 @@ let lienzo = document.querySelector("#grafico-proyecto");
     })
     .then(respuesta => respuesta.json())
     .then(datos => {
+        let contador = 1;
         lienzoF.innerHTML = "";
         datos.forEach(element => {
             const graficoId = `graficoF_${element.idfase}`;
             const fasesContainer = document.createElement('div');
             fasesContainer.innerHTML = `
-                <p>La fase :${element.nombrefase}</p>
-                <p>Está al ${element.porcentaje_fase} %</p>
+                <hr>
+                <p>Fase N° ${contador}: <b>${element.nombrefase}</b></p>
+                <p>Avance: <b>${element.porcentaje_fase} %</b></p>
                 <div class='row'>
                     <div class='col-md-2'></div>
                     <div class='col-md-8'>
@@ -2390,6 +2392,7 @@ let lienzo = document.querySelector("#grafico-proyecto");
 
             // Llamar a obtenerDatosF con el gráfico y el idfase correspondientes
             obtenerDatosF(element.idfase, chartF[graficoId]);
+            contador++;
         });
     });
   }
